@@ -1,0 +1,133 @@
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+.card-container.card {
+  max-width: 450px !important;
+  padding: 40px 40px;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px 25px 30px;
+  margin: 0 auto 25px;
+  box-shadow: 1px 1px 10px rgb(42 26 93 / 10%);
+  border-radius: 8px;
+  border:0px;
+  margin-top:100px;
+}
+.navbar-brand {
+  margin-right:5rem;
+}
+.profile-img-card {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 10px;
+  display: block;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+body {
+  font-family: 'futura-pt' !important;
+  position: relative;
+  margin:0;
+}
+
+.logo-header {
+  width:200px;
+}
+.navbar {
+  background-color:#FFF !important;
+  padding-left: 80px;
+  padding-right: 80px;
+  box-shadow:1px 1px 10px rgb(42 26 93 / 10%);
+  padding-top:20px;
+  padding-bottom:20px;
+}
+.navbar a {
+  color:#000;
+}
+.navbar i {
+  color:#000;
+}
+.btn-primary {
+  background-image: linear-gradient(#FE1F92, #8A1644);
+  border:1px solid #e63590;
+  background-color:#FE1F92;
+}
+.btn-primary:hover {
+  border:1px solid #e63590;
+  background:transparent;
+  color:#FE1F92;
+}
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  border:1px solid #e63590;
+  background-color: transparent;
+  color:#FE1F92;
+}
+
+.btn-secondary {
+  background: #FFF;
+  border:1px solid #000;
+  color:#000;
+}
+.btn-primary.focus, .btn-primary:focus, .btn-primary.active, .btn-primary:active {
+  color: #fff;
+  background-color:transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.alert-danger {
+  margin-top:5px;
+}
+.login-form h1 {
+  line-height: 30px;
+}
+.login-form .subh1 {
+  font-size:17px;
+  color:#777;
+}
+.profile-card {
+    box-shadow: 1px 1px 10px rgb(42 26 93 / 10%);
+    padding: 60px;
+    margin-top: 0px;
+    border-radius: 0px 0px 8px 8px;
+
+}
+.jumbotron {
+  margin-top:80px;
+  padding: 2rem 2rem;
+  margin-bottom: 0px;
+  background-image: linear-gradient(#FE1F92, #8A1644);
+  border-radius: 8px 8px 0px 0px;
+  color: #FFF;
+  
+}
+.new-experience-button {
+  float:right;
+}
+label.cameraButton {
+  display: inline-block;
+    margin: 1em 0;
+    padding: 0.5em;
+    border: 1px solid #e63590;
+    background-color: #FFF;
+    color: #e63590;
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 25px;
+}
+
+/* Look like a clicked/depressed button */
+label.cameraButton:active {
+  border-color: #CCC #EEE #EEE #CCC;
+}
+
+/* This is the part that actually hides the 'Choose file' text box for camera inputs */
+label.cameraButton input[accept*="camera"] {
+  display: none;
+}
