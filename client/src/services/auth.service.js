@@ -1,19 +1,21 @@
 import axios from "axios";
 
-const API_URL = "http://165.232.157.193:3000/explorer/#/UserController/UserController.";
+const API_URL = "http://165.232.157.193:3000";
+
 
 class AuthService {
   login(username, password) {
     return axios
-      .post(API_URL + "signin", {
-        username,
-        password
+      .post(API_URL + "/login", {
+        "email": username,
+        "password": password
       })
       .then(response => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
 
+        console.log(JSON.stringify(response.data));
         return response.data;
       });
   }
@@ -23,16 +25,21 @@ class AuthService {
   }
 
   register(username, email, password, firstName, lastName, address, birthDate, telegramId, walletAddress) {
-    return axios.post(API_URL + "signup", {
-      username,
-      email,
-      password,
-      firstName,
-      lastName,
-      address,
-      birthDate,
-      telegramId,
-      walletAddress
+    
+    let birthday = new Date(birthDate);
+    
+    return axios.post( API_URL + "/signup", {
+      "firstName": firstName,
+      "lastName": lastName,
+      "telegramId": telegramId,
+      "birthDate": birthday,
+      "email": email,
+      "address_1": address,
+      "address_2": "",
+      "password": password,
+      "walletAddress": walletAddress,
+      "roleId": 1,
+      "statusId": 3
     });
   }
 
