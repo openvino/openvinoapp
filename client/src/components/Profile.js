@@ -49,10 +49,10 @@ export default class Profile extends Component {
         {this.state.userReady ? (
           <div className="container profile-card">
             <p>
-              <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)}{" "}
+              <strong>Token:</strong> {currentUser.token.substring(0, 20)}{" "}
               ...{" "}
-              {currentUser.accessToken.substr(
-                currentUser.accessToken.length - 20
+              {currentUser.token.substr(
+                currentUser.token.length - 20
               )}
             </p>
             <p>
