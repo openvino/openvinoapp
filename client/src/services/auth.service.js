@@ -4,10 +4,10 @@ const API_URL = "http://165.232.157.193:3000";
 
 
 class AuthService {
-  login(username, password) {
+  login(email, password) {
     return axios
       .post(API_URL + "/login", {
-        "email": username,
+        "email": email,
         "password": password
       })
       .then(response => {
@@ -24,7 +24,7 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  register(username, email, password, firstName, lastName, address, birthDate, telegramId, walletAddress) {
+  register(email, password, firstName, lastName, address, birthDate, telegramId, walletAddress) {
     
     let birthday = new Date(birthDate);
     

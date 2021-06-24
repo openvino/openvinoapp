@@ -50,7 +50,6 @@ export default class Register extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeFirstName = this.onChangeFirstName.bind(this);
@@ -63,7 +62,6 @@ export default class Register extends Component {
     /* QR Reading */
     console.log(this.props.match.params.id);
     this.state = {
-      username: "",
       email: "",
       password: "",
       firstName: "",
@@ -76,12 +74,6 @@ export default class Register extends Component {
       qr: this.props.match.params.id,
       message: "",
     };
-  }
-
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value,
-    });
   }
 
   onChangeEmail(e) {
@@ -144,7 +136,6 @@ export default class Register extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.register(
-        this.state.username,
         this.state.email,
         this.state.password,
         this.state.firstName,
@@ -266,17 +257,6 @@ export default class Register extends Component {
                     value={this.state.email}
                     onChange={this.onChangeEmail}
                     validations={[required, email]}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    name="username"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    validations={[required, vusername]}
                   />
                 </div>
                 <div className="form-group">
