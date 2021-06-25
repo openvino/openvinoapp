@@ -1,21 +1,34 @@
 import React, { Component } from "react";
+import ExperienceService from "../services/experience.service";
+import AuthService from "../services/auth.service";
+
 
 class NewExperience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentStep: 1,
-      photoFileName: "",
+      photoFileName: "string",
       answer1: "",
       answer2: "",
       answer3: "",
-      date: Date().toLocaleString(),
-      status: "0",
+      qrValue: "string",
+      statusId: 0,
+      location: "string",
+      userId: "",
+      date: "2021-06-25T17:00:46.699Z",
       latitude: null,
       longitude: null,
     };
   }
+
   componentDidMount() {
+    const currentUser = AuthService.getCurrentUser();
+
+
+    if (!currentUser) this.setState({ redirect: "/" });
+    this.setState({ currentUser: currentUser, userReady: true });
+
     window.navigator.geolocation.getCurrentPosition((success) =>
       this.setState({
         latitude: success.coords.latitude,
@@ -32,25 +45,44 @@ class NewExperience extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const {
-      photoFileName,
-      status,
-      date,
-      answer1,
-      answer2,
-      answer3,
-      latitude,
-      longitude,
-    } = this.state;
-    alert(`Your registration detail: \n 
-             Selfie: ${photoFileName} \n 
-             Status: ${status} \n
-             Latitude: ${this.state.latitude} \n
-             Longitude: ${this.state.longitude} \n
-             Date: ${date} \n
-             Answer1: ${answer1} \n
-             Answer2: ${answer2} \n
-             Answer3: ${answer3}`);
+    const { currentUser } = this.state;
+
+    this.setState({
+      message: "",
+      successful: false,
+    });
+
+      ExperienceService.addExperience(
+        this.state.photoFileName,
+        this.state.statusId,
+        this.state.date,
+        this.state.qrValue,
+        this.state.location,
+        this.state.userId,
+        this.state.currentUser,
+       
+      ).then(
+        (response) => {
+          this.setState({
+            message: response.data.message,
+            successful: true,
+          });
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          this.setState({
+            successful: false,
+            message: resMessage,
+          });
+        }
+      );
+  
   };
 
   _next = () => {
@@ -103,14 +135,13 @@ class NewExperience extends React.Component {
     }
     return null;
   }
-
   render() {
     return (
       <React.Fragment>
         <div className="col-md-12">
           <div className="card card-container login-form">
             <h1>Add New Experience</h1>
-            <span class="subh1">Step {this.state.currentStep} </span>
+            <span className="subh1">Step {this.state.currentStep} </span>
 
             <form onSubmit={this.handleSubmit}>
               {/* 
@@ -119,14 +150,19 @@ class NewExperience extends React.Component {
               <Step1
                 currentStep={this.state.currentStep}
                 handleChange={this.handleChange}
-                photoFileName={this.state.photoFileName}
+                photoFileName={this.state.photoFileName2}
               />
               <Step2
                 currentStep={this.state.currentStep}
                 handleChange={this.handleChange}
-                answer1={this.state.answer1}
-                answer2={this.state.answer2}
-                answer3={this.state.answer3}
+                //answer1={this.state.answer1}
+                //answer2={this.state.answer2}
+                //answer3={this.state.answer3}
+                date = {this.state.date}
+                statusId = {this.state.statusId}
+                qrValue = {this.state.qrValue}
+                location = {this.state.qrValue}
+                userId = {this.state.userId}
               />
               {this.previousButton()}
               {this.nextButton()}
@@ -144,12 +180,12 @@ function Step1(props) {
   }
   return (
     <div className="form-group">
-      <label class="cameraButton">
-        <i class="fas fa-camera-retro"></i> Take a picture
+      <label className="cameraButton">
+        <i className="fas fa-camera-retro"></i> Take a picture
         <input
           type="file"
           name="photoFileName"
-          value={props.photoFileName}
+          value={props.photoFileName2}
           onChange={props.handleChange}
           accept="image/*;capture=camera"
         />

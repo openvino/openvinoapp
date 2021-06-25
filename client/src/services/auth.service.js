@@ -12,16 +12,15 @@ class AuthService {
       })
       .then(response => {
         if (response.data.token) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem('user', JSON.stringify(response.data));
         }
 
-        console.log(JSON.stringify(response.data));
         return response.data;
       });
   }
 
   logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem('user');
   }
 
   register(email, password, firstName, lastName, address, birthDate, telegramId, walletAddress) {
@@ -44,8 +43,10 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
+    return JSON.parse(localStorage.getItem('user'));
   }
+
+
 }
 
 export default new AuthService();
