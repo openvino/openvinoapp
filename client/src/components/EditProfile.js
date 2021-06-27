@@ -19,8 +19,15 @@ export default class EditProfile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "" },
+      currentUser: { email: "" },
     };
+  }
+
+  componentDidMount() {
+    const currentUser = AuthService.getCurrentUser();
+    const currentToken = AuthService.getToken();
+    if (!currentUser) this.setState({ redirect: "/" });
+    this.setState({ currentUser: currentUser, userReady: true });
   }
 
   onChangeFirstName(e) {
@@ -78,27 +85,22 @@ export default class EditProfile extends Component {
            Wallet Address: ${walletAddress}`);
   };
 
-  componentDidMount() {
-    const currentUser = AuthService.getCurrentUser();
-
-    if (!currentUser) this.setState({ redirect: "/" });
-    this.setState({ currentUser: currentUser, userReady: true });
-  }
 
   render() {
+    const { currentUser } = this.state;
+    const { currentToken } = this.state;
+    console.log(currentUser);
+
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
-
-    const { currentUser } = this.state;
-    console.log(currentUser);
     return (
       <div>
         <header className="jumbotron">
           <div className="row">
             <div className="col-md">
               <h3>
-                <strong>{currentUser.username}</strong> Edit Profile
+                <strong>{currentUser.email}</strong> Edit Profile
               </h3>
             </div>
             <div className="col-md">
@@ -127,6 +129,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="firstName"
                       value={this.state.firstName}
+                      placeholder={currentUser.firstName}
                       onChange={this.onChangeFirstName}
                     />
                   </div>
@@ -137,6 +140,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="lastName"
                       value={this.state.lastName}
+                      placeholder={currentUser.lastName}
                       onChange={this.onChangeLastName}
                     />
                   </div>
@@ -147,6 +151,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="address"
                       value={this.state.address}
+                      placeholder={currentUser.address_1}
                       onChange={this.onChangeAddress}
                     />
                   </div>
@@ -157,6 +162,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="birthdate"
                       value={this.state.birthdate}
+                      placeholder={currentUser.birthDate}
                       onChange={this.onChangeBirthday}
                     />
                   </div>
@@ -167,6 +173,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="telegramId"
                       value={this.state.telegramId}
+                      placeholder={currentUser.telegramId}
                       onChange={this.onChangeTelegram}
                     />
                   </div>
@@ -177,6 +184,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="walletAddress"
                       value={this.state.walletAddress}
+                      placeholder={currentUser.walletAddress}
                       onChange={this.onChangeWalletAddress}
                     />
                   </div>

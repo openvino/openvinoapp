@@ -71,7 +71,7 @@ export default class Profile extends Component {
               <strong>Last Name:</strong> {currentUser.lastName}
             </p>
             <p>
-              <strong>Address:</strong> {currentUser.address}
+              <strong>Address:</strong> {currentUser.address_1}
             </p>
             <p>
               <strong>Birthdate:</strong> {currentUser.birthDate}
