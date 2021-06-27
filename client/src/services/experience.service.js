@@ -19,4 +19,15 @@ class ExperienceService {
   }
 }
 
+// datos de prueba
+// {
+//   "date": "2021-06-27T22:02:40.593Z",
+//   "location": "Mi casa",
+//   "photoFileName": "photoFileName",
+//   "statusId": 1,
+//   "qrValue": "MTB18.00002.226C9",
+//   "userId": 2
+// }
+
+
 export default new ExperienceService();
