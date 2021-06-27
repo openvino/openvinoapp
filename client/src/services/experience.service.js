@@ -15,7 +15,7 @@ class ExperienceService {
           "statusId": statusId,
           "qrValue": qrValue,
           "userId": userId
-      }, { headers: authHeader() })
+      },{ headers: authHeader() })
   }
 }
 
