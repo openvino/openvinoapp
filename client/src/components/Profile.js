@@ -16,9 +16,11 @@ export default class Profile extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
+    const currentToken = AuthService.getToken();
 
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
+    this.setState({ currentToken: currentToken, userReady: true });
   }
 
   render() {
@@ -27,6 +29,7 @@ export default class Profile extends Component {
     }
 
     const { currentUser } = this.state;
+    const { currentToken } = this.state;
     console.log(currentUser);
     return (
       <div>
@@ -49,10 +52,10 @@ export default class Profile extends Component {
         {this.state.userReady ? (
           <div className="container profile-card">
             <p>
-              <strong>Token:</strong> {currentUser.token.substring(0, 20)}{" "}
+              <strong>Token:</strong> {currentToken.substring(0, 20)}{" "}
               ...{" "}
-              {currentUser.token.substr(
-                currentUser.token.length - 20
+              {currentToken.substr(
+                currentToken.length - 20
               )}
             </p>
             <p>

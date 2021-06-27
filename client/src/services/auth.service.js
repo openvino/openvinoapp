@@ -11,8 +11,13 @@ class AuthService {
         "password": password
       })
       .then(response => {
-        if (response.data.token) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+        
+        console.log(response.data.loginResponse.token);
+        console.log(response.data.loginResponse.user);
+
+        if (response.data.loginResponse.token) {
+          localStorage.setItem('token', JSON.stringify(response.data.loginResponse.token));
+          localStorage.setItem('user', JSON.stringify(response.data.loginResponse.user));
         }
 
         console.log(JSON.stringify(response.data));
@@ -46,6 +51,11 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem("user"));
   }
+
+  getToken() {
+    return JSON.parse(localStorage.getItem('token'));
+  }
+
 }
 
 export default new AuthService();
