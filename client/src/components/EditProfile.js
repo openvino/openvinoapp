@@ -50,7 +50,7 @@ export default class EditProfile extends Component {
 
   onChangeBirthday(e) {
     this.setState({
-      birthdate: e.target.value,
+      birthDate: e.target.value,
     });
   }
 
@@ -72,7 +72,7 @@ export default class EditProfile extends Component {
       firstName,
       lastName,
       address,
-      birthdate,
+      birthDate,
       telegramId,
       walletAddress,
     } = this.state;
@@ -80,7 +80,7 @@ export default class EditProfile extends Component {
            First Name: ${firstName} \n 
            Last Name: ${lastName} \n
            Address: ${address} \n
-           Birthdate: ${birthdate} \n
+           Birthdate: ${birthDate} \n
            Telegram: ${telegramId} \n
            Wallet Address: ${walletAddress}`);
   };
@@ -156,12 +156,12 @@ export default class EditProfile extends Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="birthdate">Birthdate</label>
+                    <label htmlFor="birthDate">Birthdate</label>
                     <Input
                       type="date"
                       className="form-control"
-                      name="birthdate"
-                      value={this.state.birthdate}
+                      name="birthDate"
+                      value={this.state.birthDate}
                       placeholder={currentUser.birthDate}
                       onChange={this.onChangeBirthday}
                     />
