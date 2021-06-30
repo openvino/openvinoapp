@@ -37,16 +37,15 @@ const vusername = (value) => {
   }
 };
 
-const qrCode = async (value) => {
-  if (value) {
+const qrCode = (value) => {
+  if (value == false) {
     return (
       <div className="alert alert-danger" role="alert">
-        The QR code is invalid.
+        Invalid QR Code.
       </div>
     );
   }
 };
-
 
 const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
@@ -70,7 +69,6 @@ export default class Register extends Component {
     this.onChangeBirthDate = this.onChangeBirthDate.bind(this);
     this.onChangeTelegramId = this.onChangeTelegramId.bind(this);
     this.onChangeWalletAddress = this.onChangeWalletAddress.bind(this);
-    this.onChangeQRCode = this.onChangeQRCode.bind(this);
 
     /* QR Reading */
     this.state = {
@@ -83,23 +81,15 @@ export default class Register extends Component {
       telegramId: "",
       walletAddress: "",
       successful: false,
-      qrValue: this.props.match.params.id,
+      qrValue: "",
       message: "",
     };
-    
-    const qrValue = this.props.match.params.id;
-
-    console.log(qrService.checkQR(qrValue));
-
-    
-    
-
   }
 
-  componentWillMount() {
-
-    
-   
+  async componentDidMount() {
+      const qrValid = await qrService.checkQR(this.props.match.params.id);
+      console.log(qrValid);
+      this.setState({ qrValue: qrValid});
   }
 
   onChangeEmail(e) {
@@ -150,11 +140,7 @@ export default class Register extends Component {
     });
   }
 
-  onChangeQRCode(e) {
-    this.setState({
-      qrValue: e.target.value,
-    })
-  }
+  
 
   handleRegister(e) {
     e.preventDefault();
@@ -175,9 +161,12 @@ export default class Register extends Component {
         this.state.address,
         this.state.birthDate,
         this.state.telegramId,
-        this.state.walletAddress
+        this.state.walletAddress,
+        this.state.qrValue
       ).then(
         (response) => {
+          this.props.history.push("/login");
+          window.location.reload();
           this.setState({
             message: response.data.message,
             successful: true,
@@ -209,7 +198,6 @@ export default class Register extends Component {
             <br />
             <span className="subh1">Register to continue!</span>
             <br />
-            <span className="subh1">QR Code is: {this.state.qrValue}</span>
           </h1>
 
           <Form
@@ -221,14 +209,12 @@ export default class Register extends Component {
             {!this.state.successful && (
               <div>
               <div className="form-group">
-                  <label htmlFor="qrCode">QR Code</label>
                   <Input
-                    type="text"
+                    type="hidden"
                     className="form-control"
                     name="qrCode"
                     value={this.state.qrValue}
-                    onChange={this.onChangeQRCode}
-                    validations={[required, qrCode]}
+                    validations={[qrCode, required]}
                   />
                 </div>
                 <div className="form-group">
