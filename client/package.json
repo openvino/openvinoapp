@@ -2,6 +2,7 @@
   "name": "react-jwt-auth",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://165.232.157.193:3000",
   "dependencies": {
     "@loopback/authentication": "^7.3.1",
     "@loopback/authentication-jwt": "^0.9.1",
@@ -21,6 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "docker:build": "docker build -t ydiyoi-front .",
+    "docker:run": "docker run -p 80:80 -d ydiyoi-front",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
