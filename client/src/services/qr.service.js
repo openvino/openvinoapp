@@ -11,7 +11,7 @@ class QrService {
         .then (response => {
             //console.log("response.data");
             //console.log(response.data);
-            console.log(response.data.allowClaim);
+            //console.log(response.data.allowClaim);
             // guardo en sesión para utilizardo desde el resto de la app
             localStorage.setItem('allowClaim', JSON.stringify(response.data.allowClaim));
             //retorna el valor boolean de allowClaim
