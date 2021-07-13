@@ -3,6 +3,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
+
 import AuthService from "../services/auth.service";
 
 const required = (value) => {
@@ -14,6 +15,8 @@ const required = (value) => {
     );
   }
 };
+
+
 
 export default class Login extends Component {
   constructor(props) {

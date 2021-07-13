@@ -4,9 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import logo from "./assets/images/website-logo.png";
 import { withRouter } from "react-router-dom";
-
 import AuthService from "./services/auth.service";
-
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -20,6 +18,8 @@ import SingleExperience from "./components/SingleExperience";
 
 class App extends Component {
   constructor(props) {
+     
+   
     super(props);
     this.logOut = this.logOut.bind(this);
 
@@ -30,9 +30,9 @@ class App extends Component {
     };
   }
 
+
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-
     if (user) {
       this.setState({
         currentUser: user,
@@ -48,7 +48,7 @@ class App extends Component {
 
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
-
+   
     return (
       <div>
         <nav className="navbar navbar-expand">
