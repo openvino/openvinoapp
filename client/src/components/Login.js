@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-
-
 import AuthService from "../services/auth.service";
+import qrService from "../services/qr.service";
 
 const required = (value) => {
   if (!value) {
@@ -24,13 +23,30 @@ export default class Login extends Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-
     this.state = {
       email: "",
       password: "",
       loading: false,
       message: "",
+      currentUser: { email: "" },
+      userReady: false
     };
+  }
+
+  async componentDidMount() {
+    //const qrValid = await qrService.checkQR(this.props.match.params.id);
+    //qrService.checkQR(this.props.match.params.id);
+    //console.log(qrValid);
+    //console.log(qrService.getallowClaim());
+    //console.log(qrService.getQRClaimed());
+    qrService.getallowClaim();
+    qrService.getQRClaimed();
+    //this.setState({ qrValue: qrValid});
+    const currentUser = AuthService.getCurrentUser();
+    const currentToken = AuthService.getToken();
+    if (!currentUser)
+    this.setState({ currentUser: currentUser, userReady: true });
+    this.setState({ currentToken: currentToken, userReady: true });
   }
 
   onChangeEmail(e) {
@@ -58,7 +74,7 @@ export default class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.email, this.state.password).then(
         () => {
-          this.props.history.push("/profile");
+          this.props.history.push("/app/add-experience");
           window.location.reload();
         },
         (error) => {
@@ -83,6 +99,7 @@ export default class Login extends Component {
   }
 
   render() {
+   
     return (
       <div className="col-md-12">
         <div className="card card-container login-form">

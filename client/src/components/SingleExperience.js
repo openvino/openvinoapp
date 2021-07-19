@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import AuthService from "../services/auth.service";
 import { Switch, Route, Link } from "react-router-dom";
 
 export default class SingleExperience extends Component {
@@ -10,15 +9,13 @@ export default class SingleExperience extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "" },
+      currentUser: { email: "" }    
     };
   }
 
-  componentDidMount() {
-    const currentUser = AuthService.getCurrentUser();
-
-    if (!currentUser) this.setState({ redirect: "/" });
-    this.setState({ currentUser: currentUser, userReady: true });
+  async componentDidMount() {
+    
+   
   }
 
   render() {
@@ -36,7 +33,7 @@ export default class SingleExperience extends Component {
               <h3>Experience ID {currentUser.id}</h3>
             </div>
             <div className="col-md">
-              <Link to={"/user"} className="nav-link">
+              <Link to={"/app/user"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
                   Back to Experiences
                 </button>

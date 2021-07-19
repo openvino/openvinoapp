@@ -41,7 +41,7 @@ export default class BoardUser extends Component {
               <h3>Experiences</h3>
             </div>
             <div className="col-md">
-              <Link to={"/experiences"} className="nav-link">
+              <Link to={"/app/add-experience"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
                   New Experience
                 </button>
@@ -68,7 +68,7 @@ export default class BoardUser extends Component {
                   <td>MTB</td>
                   <td>#2020</td>
                   <td>
-                    <Link to={"/single-experience"} className="nav-link">
+                    <Link to={"/app/single-experience"} className="nav-link">
                       <button className="btn-primary btn">View</button>
                     </Link>
                   </td>
@@ -79,7 +79,7 @@ export default class BoardUser extends Component {
                   <td>MTB</td>
                   <td>#2020</td>
                   <td>
-                    <Link to={"/single-experience"} className="nav-link">
+                    <Link to={"/app/single-experience"} className="nav-link">
                       <button className="btn-primary btn">View</button>
                     </Link>
                   </td>
@@ -90,7 +90,7 @@ export default class BoardUser extends Component {
                   <td>MTB</td>
                   <td>#2020</td>
                   <td>
-                    <Link to={"/single-experience"} className="nav-link">
+                    <Link to={"/app/single-experience"} className="nav-link">
                       <button className="btn-primary btn">View</button>
                     </Link>
                   </td>

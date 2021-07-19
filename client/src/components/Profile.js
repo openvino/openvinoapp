@@ -17,7 +17,6 @@ export default class Profile extends Component {
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
-
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
@@ -41,7 +40,7 @@ export default class Profile extends Component {
               </h3>
             </div>
             <div className="col-md">
-              <Link to={"/edit-profile"} className="nav-link">
+              <Link to={"/app/edit-profile"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
                   Edit Profile
                 </button>

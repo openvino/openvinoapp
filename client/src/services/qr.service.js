@@ -9,18 +9,11 @@ class QrService {
         return axios
         .get(API_URL + "/qrstatus/" + qrValue)
         .then (response => {
-            //console.log("response.data");
-            //console.log(response.data);
-            //console.log(response.data.allowClaim);
-            // guardo en sesión para utilizardo desde el resto de la app
             localStorage.setItem('allowClaim', JSON.stringify(response.data.allowClaim));
             localStorage.setItem('qrCodeT', JSON.stringify(qrValue));
-            //retorna el valor boolean de allowClaim
             return response.data.allowClaim;
         });
     }
-
-    // esto lo agrego siguinedo el modelo de auth.service
     getallowClaim() {
         return JSON.parse(localStorage.getItem('allowClaim'));
     }

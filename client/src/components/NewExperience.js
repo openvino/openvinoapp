@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ExperienceService from "../services/experience.service";
 import AuthService from "../services/auth.service";
-
+import qrService from "../services/qr.service";
 
 class NewExperience extends React.Component {
   constructor(props) {
@@ -9,26 +9,29 @@ class NewExperience extends React.Component {
     this.state = {
       currentStep: 1,
       photoFileName: "string",
-      answer1: "",
-      answer2: "",
-      answer3: "",
-      qrValue: "string",
+      qrValue: "MTB18.00002.226C9",
       statusId: 0,
       location: "string",
-      userId: "",
-      date: "2021-06-25T17:00:46.699Z",
+      userId: 2,
+      date: "2021-06-27T22:02:40.593Z",
       latitude: null,
       longitude: null,
     };
   }
 
   componentDidMount() {
+    
     const currentUser = AuthService.getCurrentUser();
-
+    const currentToken = AuthService.getToken();
+    const qrCode = qrService.getQRClaimed();
 
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
-
+    this.setState({ currentToken: currentToken, userReady: true });
+    console.log(currentToken);
+    console.log(currentUser);
+    console.log(currentUser.id)
+    console.log(qrCode);
     window.navigator.geolocation.getCurrentPosition((success) =>
       this.setState({
         latitude: success.coords.latitude,
@@ -43,26 +46,29 @@ class NewExperience extends React.Component {
     });
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const { currentUser } = this.state;
+  handleSubmit = (e) => {
+    e.preventDefault();
 
     this.setState({
       message: "",
       successful: false,
     });
 
+    //this.form.validateAll();
+
       ExperienceService.addExperience(
         this.state.photoFileName,
-        this.state.statusId,
         this.state.date,
         this.state.qrValue,
+        this.state.statusId,
         this.state.location,
         this.state.userId,
-        this.state.currentUser,
-       
+        this.state.date,
+        
       ).then(
         (response) => {
+          this.props.history.push("/app/experiences");
+          window.location.reload();
           this.setState({
             message: response.data.message,
             successful: true,
@@ -82,9 +88,9 @@ class NewExperience extends React.Component {
           });
         }
       );
+    
+  }
   
-  };
-
   _next = () => {
     let currentStep = this.state.currentStep;
     currentStep = currentStep >= 2 ? 3 : currentStep + 1;
@@ -150,19 +156,16 @@ class NewExperience extends React.Component {
               <Step1
                 currentStep={this.state.currentStep}
                 handleChange={this.handleChange}
-                photoFileName={this.state.photoFileName2}
               />
               <Step2
                 currentStep={this.state.currentStep}
                 handleChange={this.handleChange}
-                //answer1={this.state.answer1}
-                //answer2={this.state.answer2}
-                //answer3={this.state.answer3}
-                date = {this.state.date}
-                statusId = {this.state.statusId}
-                qrValue = {this.state.qrValue}
-                location = {this.state.qrValue}
-                userId = {this.state.userId}
+                answer1={this.state.answer1}
+                answer2={this.state.answer2}
+                answer3={this.state.answer3}
+                answer4={this.state.answer4}
+                answer5={this.state.answer5}
+                
               />
               {this.previousButton()}
               {this.nextButton()}
@@ -185,7 +188,7 @@ function Step1(props) {
         <input
           type="file"
           name="photoFileName"
-          value={props.photoFileName2}
+          value={props.photoFileName}
           onChange={props.handleChange}
           accept="image/*;capture=camera"
         />
@@ -201,7 +204,7 @@ function Step2(props) {
   return (
     <React.Fragment>
       <div className="form-group">
-        <label htmlFor="username">Question 1</label>
+        <label htmlFor="username">Are you sharing this bottle with other people? How many?</label>
         <textarea
           className="form-control"
           id="answer1"
@@ -211,7 +214,7 @@ function Step2(props) {
           value={props.answer1}
           onChange={props.handleChange}
         />
-        <label htmlFor="username">Question 2</label>
+        <label htmlFor="username">Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?</label>
         <textarea
           className="form-control"
           id="answer2"
@@ -221,7 +224,7 @@ function Step2(props) {
           value={props.answer2}
           onChange={props.handleChange}
         />
-        <label htmlFor="username">Question 3</label>
+        <label htmlFor="username">Are you drinking this wine with food? What are you eating?</label>
         <textarea
           className="form-control"
           id="answer3"
@@ -229,6 +232,26 @@ function Step2(props) {
           type="textarea"
           placeholder="Enter your answer"
           value={props.answer3}
+          onChange={props.handleChange}
+        />
+        <label htmlFor="username">Do you like this wine? How would you rank it?</label>
+        <textarea
+          className="form-control"
+          id="answer4"
+          name="answer4"
+          type="textarea"
+          placeholder="Enter your answer"
+          value={props.answer4}
+          onChange={props.handleChange}
+        />
+         <label htmlFor="username">Do you think we should build a colony on Mars?</label>
+        <textarea
+          className="form-control"
+          id="answer5"
+          name="answer5"
+          type="textarea"
+          placeholder="Enter your answer"
+          value={props.answer5}
           onChange={props.handleChange}
         />
       </div>
