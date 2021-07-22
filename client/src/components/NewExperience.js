@@ -6,38 +6,49 @@ import qrService from "../services/qr.service";
 class NewExperience extends React.Component {
   constructor(props) {
     super(props);
+    this.onChangePhotoFileName = this.onChangePhotoFileName.bind(this);
+
     this.state = {
       currentStep: 1,
-      photoFileName: "string",
-      qrValue: "MTB18.00002.226C9",
-      statusId: 0,
-      location: "string",
-      userId: 2,
-      date: "2021-06-27T22:02:40.593Z",
+      photoFileName: '',
+      qrValue: '',
+      statusId: '',
+      location: '',
+      userId: '',
+      date: '',
       latitude: null,
       longitude: null,
     };
   }
 
   componentDidMount() {
-    
+    //const questions = ExperienceService.getQuestions(1);
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
     const qrCode = qrService.getQRClaimed();
-
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
+    this.setState({ qrValue: qrCode});
+    this.setState({ userId: currentUser.id});
+    this.setState({ date: Date()});
+
     console.log(currentToken);
     console.log(currentUser);
     console.log(currentUser.id)
     console.log(qrCode);
+    //console.log(questions);
     window.navigator.geolocation.getCurrentPosition((success) =>
       this.setState({
         latitude: success.coords.latitude,
         longitude: success.coords.longitude,
       })
     );
+  }
+  onChangePhotoFileName(e) {
+    this.setState({
+      photoFileName: e.target.value,
+    });
   }
   handleChange = (event) => {
     const { name, value } = event.target;
@@ -58,12 +69,7 @@ class NewExperience extends React.Component {
 
       ExperienceService.addExperience(
         this.state.photoFileName,
-        this.state.date,
-        this.state.qrValue,
-        this.state.statusId,
-        this.state.location,
-        this.state.userId,
-        this.state.date,
+        
         
       ).then(
         (response) => {
@@ -142,6 +148,12 @@ class NewExperience extends React.Component {
     return null;
   }
   render() {
+    console.log(this.state.qrValue);
+    console.log(this.state.date);
+    console.log(this.state.statusId);
+    console.log(this.state.location);
+    console.log(this.state.userId);
+    console.log(this.state.photoFileName);
     return (
       <React.Fragment>
         <div className="col-md-12">

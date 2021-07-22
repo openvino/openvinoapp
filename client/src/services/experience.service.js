@@ -3,19 +3,31 @@ import authHeader from './auth-header';
 
 const API_URL = "http://165.232.157.193:3000";
 
-
 class ExperienceService {
 
   addExperience(photoFileName, statusId, date, userId, location, qrValue) {
+        let dateFormatted = new Date(date);
+
       return axios
       .post(API_URL + "/experiences", {
-          "date": date,
+          "date": dateFormatted,
           "location": location,
           "photoFileName": photoFileName,
           "statusId": statusId,
           "qrValue": qrValue,
           "userId": userId
       },{ headers: authHeader() })
+  }
+  
+  async getQuestions(id) {
+    return axios
+    .get(API_URL + "​/survey-questions/" + id) 
+    .then (response => {
+      console.log(response.data);
+    },{ headers: authHeader() })
+    .catch(e =>  {
+      console.log(e);
+    });
   }
 }
 
