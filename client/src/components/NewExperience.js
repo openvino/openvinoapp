@@ -12,7 +12,7 @@ class NewExperience extends React.Component {
       currentStep: 1,
       photoFileName: '',
       qrValue: '',
-      statusId: '',
+      statusId: 5,
       location: '',
       userId: '',
       date: '',
@@ -31,8 +31,8 @@ class NewExperience extends React.Component {
     this.setState({ currentToken: currentToken, userReady: true });
     this.setState({ qrValue: qrCode});
     this.setState({ userId: currentUser.id});
-    this.setState({ date: Date()});
-
+    this.setState({ date: new Date()});
+    this.setState({ location: 'Mendoza'});
     console.log(currentToken);
     console.log(currentUser);
     console.log(currentUser.id)
@@ -65,15 +65,19 @@ class NewExperience extends React.Component {
       successful: false,
     });
 
-    //this.form.validateAll();
+      //this.form.validateAll();
 
       ExperienceService.addExperience(
         this.state.photoFileName,
-        
+        this.state.statusId,
+        this.state.userId,
+        this.state.date,
+        this.state.location,
+        this.state.qrValue,
         
       ).then(
         (response) => {
-          this.props.history.push("/app/experiences");
+          this.props.history.push("/app/user");
           window.location.reload();
           this.setState({
             message: response.data.message,
@@ -150,7 +154,6 @@ class NewExperience extends React.Component {
   render() {
     console.log(this.state.qrValue);
     console.log(this.state.date);
-    console.log(this.state.statusId);
     console.log(this.state.location);
     console.log(this.state.userId);
     console.log(this.state.photoFileName);
