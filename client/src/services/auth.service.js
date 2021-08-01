@@ -29,6 +29,27 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
+  update(email, password, firstName, lastName, address, birthDate, telegramId, walletAddress, userId) {
+    
+    let birthday = new Date(birthDate);
+    
+    return axios.patch( API_URL + "/users" + userId, {
+      "firstName": firstName,
+      "lastName": lastName,
+      "telegramId": telegramId,
+      "birthDate": birthday,
+      "email": email,
+      "address_1": address,
+      "address_2": "",
+      "password": password,
+      "walletAddress": walletAddress,
+      "roleId": 1,
+      "statusId": 3,
+      "resetKey": "string"
+    });
+  }
+
+
   register(email, password, firstName, lastName, address, birthDate, telegramId, walletAddress) {
     
     let birthday = new Date(birthDate);

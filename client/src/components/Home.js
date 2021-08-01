@@ -3,6 +3,7 @@ import {history} from 'react-dom';
 import UserService from "../services/user.service";
 import qrService from "../services/qr.service";
 import Login from "./Login";
+import AuthService from "../services/auth.service";
 
 export default class Home extends Component {
   constructor(props) {

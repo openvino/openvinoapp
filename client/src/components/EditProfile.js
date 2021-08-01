@@ -66,23 +66,51 @@ export default class EditProfile extends Component {
     });
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const {
-      firstName,
-      lastName,
-      address,
-      birthDate,
-      telegramId,
-      walletAddress,
-    } = this.state;
-    alert(`Your registration detail: \n 
-           First Name: ${firstName} \n 
-           Last Name: ${lastName} \n
-           Address: ${address} \n
-           Birthdate: ${birthDate} \n
-           Telegram: ${telegramId} \n
-           Wallet Address: ${walletAddress}`);
+  handleUpdate = (e) => {
+    e.preventDefault();
+
+    this.setState({
+      message: "",
+      successful: false,
+    });
+
+    this.form.validateAll();
+
+    if (this.checkBtn.context._errors.length === 0) {
+      AuthService.register(
+        this.state.email,
+        this.state.password,
+        this.state.firstName,
+        this.state.lastName,
+        this.state.address,
+        this.state.birthDate,
+        this.state.telegramId,
+        this.state.walletAddress,
+        this.state.qrValue
+      ).then(
+        (response) => {
+          this.props.history.push("/login");
+          window.location.reload();
+          this.setState({
+            message: response.data.message,
+            successful: true,
+          });
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          this.setState({
+            successful: false,
+            message: resMessage,
+          });
+        }
+      );
+    }
   };
 
 
@@ -115,7 +143,7 @@ export default class EditProfile extends Component {
         {this.state.userReady ? (
           <div className="container profile-card">
             <Form
-              onSubmit={this.handleSubmit}
+              onSubmit={this.handleUpdate}
               ref={(c) => {
                 this.form = c;
               }}

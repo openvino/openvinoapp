@@ -4,6 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
+import { withRouter } from "react-router-dom";
 
 const required = (value) => {
   if (!value) {
@@ -17,7 +18,7 @@ const required = (value) => {
 
 
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
@@ -170,3 +171,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default withRouter(Login);
