@@ -66,19 +66,20 @@ class NewExperience extends React.Component {
     });
 
       //this.form.validateAll();
-
+    
       ExperienceService.addExperience(
         this.state.photoFileName,
         this.state.statusId,
-        this.state.userId,
         this.state.date,
+        this.state.userId,
         this.state.location,
         this.state.qrValue,
         
       ).then(
         (response) => {
-          this.props.history.push("/app/user");
-          window.location.reload();
+          // *** comento para que no me refresque pa pàgina y pueda ver la consola
+          // this.props.history.push("/app/user");
+          // window.location.reload();
           this.setState({
             message: response.data.message,
             successful: true,
@@ -98,7 +99,14 @@ class NewExperience extends React.Component {
           });
         }
       );
+      
+      // *** prueba obtener pregutas
+      ExperienceService.getQuestions();
     
+      // *** prueba grabarr pregutas
+      const preguntas = ["pf1", "pf2", "pf3"];
+      const respuestas = ["Rf1", "Rf2", "Rf3"];
+      ExperienceService.saveQuestions(17, preguntas, respuestas);
   }
   
   _next = () => {

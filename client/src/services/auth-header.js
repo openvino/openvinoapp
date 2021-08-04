@@ -4,7 +4,7 @@ export default function authHeader() {
 
   if (user && token) {
     console.log("token " + token);
-     return { Authorization: 'Bearer ' + token }; 
+    return { Authorization: 'Bearer ' + token };
   } else {
     return {};
   }
