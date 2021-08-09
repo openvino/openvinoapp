@@ -48,6 +48,7 @@ class Login extends Component {
     if (!currentUser)
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
+    
   }
 
   onChangeEmail(e) {

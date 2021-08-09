@@ -25,7 +25,7 @@ class App extends Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
-      test:''
+      test:'',
     };
   }
 

@@ -3,18 +3,18 @@ import {history} from 'react-dom';
 import UserService from "../services/user.service";
 import qrService from "../services/qr.service";
 import Login from "./Login";
-import AuthService from "../services/auth.service";
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
     };
   }
 
   async componentDidMount() {
+    
     //const { history } = this.props;
     //console.log(window.location.pathname);
     //const qrpath = window.location.pathname;
