@@ -87,11 +87,12 @@ export default class Register extends Component {
   }
 
   async componentDidMount() {
-      const qrValid = await qrService.checkQR(this.props.match.params.id);
-      console.log(qrValid);
+      //const qrValid = await qrService.checkQR(this.props.match.params.id);
+      //console.log(qrValid);
       console.log(qrService.getallowClaim());
       console.log(qrService.getQRClaimed());
-      this.setState({ qrValue: qrValid});
+      this.setState({ qrValue: qrService.getQRClaimed()});
+      //this.setState({ qrValue: qrValid});
   }
 
   onChangeEmail(e) {

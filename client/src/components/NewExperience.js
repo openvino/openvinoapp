@@ -2,8 +2,32 @@ import React, { Component } from "react";
 import ExperienceService from "../services/experience.service";
 import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
+import { withRouter } from "react-router-dom";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
+  }
+};
+
+const qrCode = (value) => {
+  if (value == false) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Invalid QR Code.
+      </div>
+    );
+  }
+};
 
 class NewExperience extends React.Component {
+
   constructor(props) {
     super(props);
     this.onChangePhotoFileName = this.onChangePhotoFileName.bind(this);
@@ -18,6 +42,7 @@ class NewExperience extends React.Component {
       date: '',
       latitude: null,
       longitude: null,
+      experienceId: ''
     };
   }
 
@@ -50,6 +75,7 @@ class NewExperience extends React.Component {
       photoFileName: e.target.value,
     });
   }
+
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
@@ -78,10 +104,11 @@ class NewExperience extends React.Component {
       ).then(
         (response) => {
           // *** comento para que no me refresque pa pàgina y pueda ver la consola
-          // this.props.history.push("/app/user");
-          // window.location.reload();
+          //this.props.history.push("/app/user");
+          //window.location.reload();
           this.setState({
             message: response.data.message,
+            experienceId: response.data.id,
             successful: true,
           });
         },
@@ -100,12 +127,15 @@ class NewExperience extends React.Component {
         }
       );
       
+
+      console.log(this.state.experienceId);
       // *** prueba obtener pregutas
       ExperienceService.getQuestions();
     
       // *** prueba grabarr pregutas
-      const preguntas = ["pf1", "pf2", "pf3"];
-      const respuestas = ["Rf1", "Rf2", "Rf3"];
+      const preguntas = [this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5];
+      const respuestas = [this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5];
+      //const experienceIdt = this.state.experienceId;
       ExperienceService.saveQuestions(17, preguntas, respuestas);
   }
   
@@ -213,6 +243,7 @@ function Step1(props) {
           name="photoFileName"
           value={props.photoFileName}
           onChange={props.handleChange}
+          validations={[required]}
           accept="image/*;capture=camera"
         />
       </label>
@@ -268,7 +299,7 @@ function Step2(props) {
           onChange={props.handleChange}
         />
          <label htmlFor="username">Do you think we should build a colony on Mars?</label>
-        <textarea
+          <textarea
           className="form-control"
           id="answer5"
           name="answer5"
@@ -276,11 +307,11 @@ function Step2(props) {
           placeholder="Enter your answer"
           value={props.answer5}
           onChange={props.handleChange}
-        />
+          />
       </div>
       <button className="btn btn-primary float-right">Register</button>
     </React.Fragment>
   );
 }
 
-export default NewExperience;
+export default withRouter(NewExperience);

@@ -12,7 +12,7 @@ class ExperienceService {
         "location": location,
         "photoFileName": photoFileName,
         "statusId": statusId,
-        "qrValue": date,
+        "qrValue": qrValue,
         "userId": userId
       },
         {
@@ -39,7 +39,8 @@ class ExperienceService {
         "question2": questions[1],
         "answer2": answers[1],
         "question3": questions[2],
-        "answer3": answers[2]
+        "answer3": answers[2],
+        "experienceId": experienceId
       },
         {
           headers: authHeader()
