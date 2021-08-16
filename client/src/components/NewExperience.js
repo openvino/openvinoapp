@@ -35,6 +35,7 @@ class NewExperience extends React.Component {
     this.state = {
       currentStep: 1,
       photoFileName: '',
+      ipfsUrl: '',
       qrValue: '',
       statusId: 5,
       location: '',
@@ -54,10 +55,10 @@ class NewExperience extends React.Component {
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
-    this.setState({ qrValue: qrCode});
-    this.setState({ userId: currentUser.id});
-    this.setState({ date: new Date()});
-    this.setState({ location: 'Mendoza'});
+    this.setState({ qrValue: qrCode });
+    this.setState({ userId: currentUser.id });
+    this.setState({ date: new Date() });
+    this.setState({ location: 'Mendoza' });
     console.log(currentToken);
     console.log(currentUser);
     console.log(currentUser.id)
@@ -91,54 +92,87 @@ class NewExperience extends React.Component {
       successful: false,
     });
 
-      //this.form.validateAll();
-    
-      ExperienceService.addExperience(
-        this.state.photoFileName,
-        this.state.statusId,
-        this.state.date,
-        this.state.userId,
-        this.state.location,
-        this.state.qrValue,
-        
-      ).then(
-        (response) => {
-          // *** comento para que no me refresque pa pàgina y pueda ver la consola
-          //this.props.history.push("/app/user");
-          //window.location.reload();
+    //this.form.validateAll();
+
+    // grabación de la experiencia y de las respuesta
+    // la busqueda de las preguntas no debería ir acá
+
+    ExperienceService.addExperience(
+      this.state.photoFileName,
+      this.state.statusId,
+      this.state.date,
+      this.state.userId,
+      this.state.location,
+      this.state.qrValue,
+      this.state.ipfsUrl,
+    ).then(
+      (response) => {
+        // *** comento para que no me refresque pa pàgina y pueda ver la consola ***
+        //this.props.history.push("/app/user");
+        //window.location.reload();
+
+        //valido el status de la respuesta para saber si la experiencia se grabó correctamente
+        if (response.data.status) {
+          
+          // la experiencia se grabó exitosamente
           this.setState({
             message: response.data.message,
-            experienceId: response.data.id,
+            experienceId: response.data.experienceId,
             successful: true,
           });
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
 
+          // grabar respuestas
+          // *** prueba obtener pregutas, esto no debería estar acà, las preguntas 
+          // debería buscarlas antes para mostrarlas en la interface ***
+          // la grabación esta dentro de la búsqueda solo para que se realicen en ese orden sincrónico
+          let arrQuestions = [];
+          ExperienceService.getQuestions()
+            .then(
+              (response) => {
+                // transformo el json a un array
+                arrQuestions.push(response.data[0].question1)
+                arrQuestions.push(response.data[0].question2)
+                arrQuestions.push(response.data[0].question3)
+                arrQuestions.push(response.data[0].question4)
+                arrQuestions.push(response.data[0].question5)
+
+                // *** prueba grabar preguntas ***
+                // armo un array con las respuetas y paso ambos array para grabar
+                const arrAnswers = [this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5];
+                ExperienceService.saveQuestions(this.state.experienceId, arrQuestions, arrAnswers);
+
+              },
+              (error) => {
+                console.log(error.toString());
+              }
+            );
+
+        } else {
+          // *** la experiencia no se grabó, no avanzar en la ejecución  ***
           this.setState({
+            message: response.data.message,
+            experienceId: 0,
             successful: false,
-            message: resMessage,
           });
         }
-      );
-      
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-      console.log(this.state.experienceId);
-      // *** prueba obtener pregutas
-      ExperienceService.getQuestions();
-    
-      // *** prueba grabarr pregutas
-      const preguntas = [this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5];
-      const respuestas = [this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5];
-      //const experienceIdt = this.state.experienceId;
-      ExperienceService.saveQuestions(17, preguntas, respuestas);
+        this.setState({
+          successful: false,
+          message: resMessage,
+        });
+      }
+    );
+
   }
-  
+
   _next = () => {
     let currentStep = this.state.currentStep;
     currentStep = currentStep >= 2 ? 3 : currentStep + 1;
@@ -195,6 +229,7 @@ class NewExperience extends React.Component {
     console.log(this.state.location);
     console.log(this.state.userId);
     console.log(this.state.photoFileName);
+    console.log(this.state.ipfsUrl);
     return (
       <React.Fragment>
         <div className="col-md-12">
@@ -218,7 +253,7 @@ class NewExperience extends React.Component {
                 answer3={this.state.answer3}
                 answer4={this.state.answer4}
                 answer5={this.state.answer5}
-                
+
               />
               {this.previousButton()}
               {this.nextButton()}
@@ -298,8 +333,8 @@ function Step2(props) {
           value={props.answer4}
           onChange={props.handleChange}
         />
-         <label htmlFor="username">Do you think we should build a colony on Mars?</label>
-          <textarea
+        <label htmlFor="username">Do you think we should build a colony on Mars?</label>
+        <textarea
           className="form-control"
           id="answer5"
           name="answer5"
@@ -307,7 +342,7 @@ function Step2(props) {
           placeholder="Enter your answer"
           value={props.answer5}
           onChange={props.handleChange}
-          />
+        />
       </div>
       <button className="btn btn-primary float-right">Register</button>
     </React.Fragment>
