@@ -168,7 +168,7 @@ export default class Register extends Component {
         this.state.qrValue
       ).then(
         (response) => {
-          this.props.history.push("/login");
+          this.props.history.push("/app/add-experience");
           window.location.reload();
           this.setState({
             message: response.data.message,
