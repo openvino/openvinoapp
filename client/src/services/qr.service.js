@@ -13,7 +13,9 @@ class QrService {
             .get(API_URL + "/qrstatus/" + qrValue)
             .then(response => {
                 localStorage.setItem('allowClaim', JSON.stringify(response.data.allowClaim));
+                if (qrValue != undefined) {
                 localStorage.setItem('qrCodeT', JSON.stringify(qrValue));
+            }
                 return response.data.allowClaim;
             });
     }
