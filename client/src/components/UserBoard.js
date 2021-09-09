@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
-
+import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
+import ExperienceService from "../services/experience.service";
 
 export default class BoardUser extends Component {
   constructor(props) {
@@ -9,10 +10,18 @@ export default class BoardUser extends Component {
 
     this.state = {
       content: "",
+      userReady: false,
+      currentUser: { email: "" },
+      experiencesCount: "",
+      experiences: [],
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const currentUser = AuthService.getCurrentUser();
+    const currentToken = AuthService.getToken();
+    this.setState({ currentUser: currentUser, userReady: true });
+    this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
       (response) => {
         this.setState({
@@ -30,9 +39,43 @@ export default class BoardUser extends Component {
         });
       }
     );
+
+    await ExperienceService.getExperiences().then(
+       (response) => {
+        //console.log((response.data).length);
+        for (let i = 0; i < (response.data).length; i++) {
+          this.setState({
+            experiencesCount: (response.data).length
+          });
+          if(response.data[i].userId == currentUser.id) {
+            this.setState({
+              experiences: response.data[i],
+            });
+            console.log(this.state.experiences);
+          }
+        }
+       
+      },
+      (error) => {
+        this.setState({
+          experiences:
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString(),
+        });
+      }
+    );
   }
 
   render() {
+    //console.log(this.state.experiences);
+    if(this.state.experiences.userId == this.state.currentUser.id) {
+      //console.log("works");
+      //console.log(this.state.experiencesCount);
+    }
+
     return (
       <div className="container">
         <header className="jumbotron">
@@ -58,40 +101,18 @@ export default class BoardUser extends Component {
                   <th scope="col">Status</th>
                   <th scope="col">Token</th>
                   <th scope="col">Token ID</th>
-                  <th scope="col">Actions</th>
+                  <th scope="col">Mint NFT</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>24/04/2020</td>
+                  <td>{this.state.experiences.date}</td>
                   <td>Pending</td>
                   <td>MTB</td>
-                  <td>#2020</td>
+                  <td>{this.state.experiences.qrValue}</td>
                   <td>
-                    <Link to={"/app/single-experience"} className="nav-link">
-                      <button className="btn-primary btn">View</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>24/04/2020</td>
-                  <td>Approved</td>
-                  <td>MTB</td>
-                  <td>#2020</td>
-                  <td>
-                    <Link to={"/app/single-experience"} className="nav-link">
-                      <button className="btn-primary btn">View</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr>
-                  <td>24/04/2020</td>
-                  <td>Removed</td>
-                  <td>MTB</td>
-                  <td>#2020</td>
-                  <td>
-                    <Link to={"/app/single-experience"} className="nav-link">
-                      <button className="btn-primary btn">View</button>
+                    <Link to={"/app/user"} className="nav-link">
+                      <button className="btn-primary btn">Mint</button>
                     </Link>
                   </td>
                 </tr>
