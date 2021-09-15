@@ -14,12 +14,18 @@ export default class BoardUser extends Component {
       currentUser: { email: "" },
       experiencesCount: "",
       experiences: [],
+      currentExperiences: []
     };
   }
 
   async componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
+    const currentExperiences = await ExperienceService.getExperiences();
+      this.setState({
+        currentExperiences: currentExperiences,
+      });
+    console.log(currentExperiences);
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -41,20 +47,20 @@ export default class BoardUser extends Component {
     );
 
     await ExperienceService.getExperiences().then(
-       (response) => {
+      (response) => {
+        //console.log(response);
         //console.log((response.data).length);
-        for (let i = 0; i < (response.data).length; i++) {
+        for (let i = 0; i < response.data.length; i++) {
           this.setState({
-            experiencesCount: (response.data).length
+            experiencesCount: response.data.length,
           });
-          if(response.data[i].userId == currentUser.id) {
+          if (response.data[i].userId == currentUser.id) {
             this.setState({
               experiences: response.data[i],
             });
             console.log(this.state.experiences);
           }
         }
-       
       },
       (error) => {
         this.setState({
@@ -71,11 +77,15 @@ export default class BoardUser extends Component {
 
   render() {
     //console.log(this.state.experiences);
-    if(this.state.experiences.userId == this.state.currentUser.id) {
-      //console.log("works");
-      //console.log(this.state.experiencesCount);
+    if (this.state.experiences.userId == this.state.currentUser.id) {
     }
+    const arrayOfObjects = [this.state.experiences];
 
+    const listItems = Object.entries(this.state.experiences).map((item) => (
+      <li>{item}</li>
+    ));
+
+   
     return (
       <div className="container">
         <header className="jumbotron">

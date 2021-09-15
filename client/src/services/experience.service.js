@@ -10,7 +10,7 @@ class ExperienceService {
   async getExperiences() {
     const response = await axios.get(API_URL + "/experiences/", {
       headers: authHeader(),
-    });
+    }); 
     return response;
   }
 

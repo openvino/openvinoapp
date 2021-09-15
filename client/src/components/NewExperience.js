@@ -27,23 +27,22 @@ const qrCode = (value) => {
 };
 
 class NewExperience extends React.Component {
-
   constructor(props) {
     super(props);
     this.onChangePhotoFileName = this.onChangePhotoFileName.bind(this);
 
     this.state = {
       currentStep: 1,
-      photoFileName: '',
-      ipfsUrl: '',
-      qrValue: '',
+      photoFileName: "",
+      ipfsUrl: "",
+      qrValue: "",
       statusId: 5,
-      location: '',
-      userId: '',
-      date: '',
+      location: "",
+      userId: "",
+      date: "",
       latitude: null,
       longitude: null,
-      experienceId: ''
+      experienceId: "",
     };
   }
 
@@ -58,10 +57,10 @@ class NewExperience extends React.Component {
     this.setState({ qrValue: qrCode });
     this.setState({ userId: currentUser.id });
     this.setState({ date: new Date() });
-    this.setState({ location: 'Mendoza' });
+    this.setState({ location: "Mendoza" });
     console.log(currentToken);
     console.log(currentUser);
-    console.log(currentUser.id)
+    console.log(currentUser.id);
     console.log(qrCode);
     //console.log(questions);
     window.navigator.geolocation.getCurrentPosition((success) =>
@@ -104,7 +103,7 @@ class NewExperience extends React.Component {
       this.state.userId,
       this.state.location,
       this.state.qrValue,
-      this.state.ipfsUrl,
+      this.state.ipfsUrl
     ).then(
       (response) => {
         // *** comento para que no me refresque pa pàgina y pueda ver la consola ***
@@ -113,7 +112,6 @@ class NewExperience extends React.Component {
 
         //valido el status de la respuesta para saber si la experiencia se grabó correctamente
         if (response.data.status) {
-          
           // la experiencia se grabó exitosamente
           this.setState({
             message: response.data.message,
@@ -122,31 +120,38 @@ class NewExperience extends React.Component {
           });
 
           // grabar respuestas
-          // *** prueba obtener pregutas, esto no debería estar acà, las preguntas 
+          // *** prueba obtener pregutas, esto no debería estar acà, las preguntas
           // debería buscarlas antes para mostrarlas en la interface ***
           // la grabación esta dentro de la búsqueda solo para que se realicen en ese orden sincrónico
           let arrQuestions = [];
-          ExperienceService.getQuestions()
-            .then(
-              (response) => {
-                // transformo el json a un array
-                arrQuestions.push(response.data[0].question1)
-                arrQuestions.push(response.data[0].question2)
-                arrQuestions.push(response.data[0].question3)
-                arrQuestions.push(response.data[0].question4)
-                arrQuestions.push(response.data[0].question5)
+          ExperienceService.getQuestions().then(
+            (response) => {
+              // transformo el json a un array
+              arrQuestions.push(response.data[0].question1);
+              arrQuestions.push(response.data[0].question2);
+              arrQuestions.push(response.data[0].question3);
+              arrQuestions.push(response.data[0].question4);
+              arrQuestions.push(response.data[0].question5);
 
-                // *** prueba grabar preguntas ***
-                // armo un array con las respuetas y paso ambos array para grabar
-                const arrAnswers = [this.state.answer1, this.state.answer2, this.state.answer3, this.state.answer4, this.state.answer5];
-                ExperienceService.saveQuestions(this.state.experienceId, arrQuestions, arrAnswers);
-
-              },
-              (error) => {
-                console.log(error.toString());
-              }
-            );
-
+              // *** prueba grabar preguntas ***
+              // armo un array con las respuetas y paso ambos array para grabar
+              const arrAnswers = [
+                this.state.answer1,
+                this.state.answer2,
+                this.state.answer3,
+                this.state.answer4,
+                this.state.answer5,
+              ];
+              ExperienceService.saveQuestions(
+                this.state.experienceId,
+                arrQuestions,
+                arrAnswers
+              );
+            },
+            (error) => {
+              console.log(error.toString());
+            }
+          );
         } else {
           // *** la experiencia no se grabó, no avanzar en la ejecución  ***
           this.setState({
@@ -170,8 +175,7 @@ class NewExperience extends React.Component {
         });
       }
     );
-
-  }
+  };
 
   _next = () => {
     let currentStep = this.state.currentStep;
@@ -253,7 +257,6 @@ class NewExperience extends React.Component {
                 answer3={this.state.answer3}
                 answer4={this.state.answer4}
                 answer5={this.state.answer5}
-
               />
               {this.previousButton()}
               {this.nextButton()}
@@ -293,7 +296,9 @@ function Step2(props) {
   return (
     <React.Fragment>
       <div className="form-group">
-        <label htmlFor="username">Are you sharing this bottle with other people? How many?</label>
+        <label htmlFor="username">
+          Are you sharing this bottle with other people? How many?
+        </label>
         <textarea
           className="form-control"
           id="answer1"
@@ -303,7 +308,10 @@ function Step2(props) {
           value={props.answer1}
           onChange={props.handleChange}
         />
-        <label htmlFor="username">Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?</label>
+        <label htmlFor="username">
+          Did you buy this bottle with crypto? or in a shop or restaurant? was
+          it a gift?
+        </label>
         <textarea
           className="form-control"
           id="answer2"
@@ -313,7 +321,9 @@ function Step2(props) {
           value={props.answer2}
           onChange={props.handleChange}
         />
-        <label htmlFor="username">Are you drinking this wine with food? What are you eating?</label>
+        <label htmlFor="username">
+          Are you drinking this wine with food? What are you eating?
+        </label>
         <textarea
           className="form-control"
           id="answer3"
@@ -323,7 +333,9 @@ function Step2(props) {
           value={props.answer3}
           onChange={props.handleChange}
         />
-        <label htmlFor="username">Do you like this wine? How would you rank it?</label>
+        <label htmlFor="username">
+          Do you like this wine? How would you rank it?
+        </label>
         <textarea
           className="form-control"
           id="answer4"
@@ -333,7 +345,9 @@ function Step2(props) {
           value={props.answer4}
           onChange={props.handleChange}
         />
-        <label htmlFor="username">Do you think we should build a colony on Mars?</label>
+        <label htmlFor="username">
+          Do you think we should build a colony on Mars?
+        </label>
         <textarea
           className="form-control"
           id="answer5"
