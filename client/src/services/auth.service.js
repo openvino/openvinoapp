@@ -1,9 +1,8 @@
 import axios from "axios";
 
-// Prod
-// const API_URL = "http://165.232.157.193:3000";
 // Dev
-const API_URL = "http://104.248.49.119:3000";
+// const API_URL = "http://104.248.49.119:3000";  
+const API_URL = "https://api.openvino.org";  
 
 class AuthService {
   async login(email, password) {
