@@ -21,11 +21,12 @@ export default class BoardUser extends Component {
   async componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
-    const currentExperiences = await ExperienceService.getExperiences();
-      this.setState({
-        currentExperiences: currentExperiences,
-      });
-    console.log(currentExperiences);
+    const currentExperiences = await ExperienceService.getExperiences(currentUser.id);
+
+    this.setState({
+      currentExperiences: currentExperiences,
+    });
+
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -46,10 +47,11 @@ export default class BoardUser extends Component {
       }
     );
 
-    await ExperienceService.getExperiences().then(
+    await ExperienceService.getExperiences(currentUser.id).then(
       (response) => {
-        //console.log(response);
-        //console.log((response.data).length);
+        console.log(response.data);
+        console.log((response.data).length);
+
         for (let i = 0; i < response.data.length; i++) {
           this.setState({
             experiencesCount: response.data.length,
@@ -85,7 +87,7 @@ export default class BoardUser extends Component {
       <li>{item}</li>
     ));
 
-   
+
     return (
       <div className="container">
         <header className="jumbotron">

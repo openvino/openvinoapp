@@ -6,8 +6,10 @@ import authHeader from "./auth-header";
 const API_URL = "https://api.openvino.org";  
 
 class ExperienceService {
-  async getExperiences() {
-    const response = await axios.get(API_URL + "/experiences/", {
+
+  // /users/{id}/experiencesdetail
+  async getExperiences(pUserId) {
+    const response = await axios.get(API_URL + "/users/" + pUserId + "/experiencesdetail", {
       headers: authHeader(),
     }); 
     return response;
@@ -39,7 +41,8 @@ class ExperienceService {
       }
     );
 
-    // response: { "status" : true , "message" : "Nueva experiencia creada: 1", "experienceId" : 1 }
+    // response ok : { "status" : true , "message" : "Nueva experiencia creada: 1", "experienceId" : 1 }
+    // responose error: { "status" : false , "message" : "El QRValue no es válido", "experienceId" : 0 }
     return response;
   }
 
