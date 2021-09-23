@@ -2,7 +2,7 @@
   "name": "react-jwt-auth",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://165.232.157.193:3000",
+  "proxy": "http://104.248.49.119:3000",
   "dependencies": {
     "@loopback/authentication": "^7.3.1",
     "@loopback/authentication-jwt": "^0.9.1",

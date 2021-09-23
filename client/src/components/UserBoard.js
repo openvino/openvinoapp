@@ -49,20 +49,17 @@ export default class BoardUser extends Component {
 
     await ExperienceService.getExperiences(currentUser.id).then(
       (response) => {
-        console.log(response.data);
-        console.log((response.data).length);
-
+        console.log(response.data.length);
+        this.setState({
+          experiences: response.data,
+        });
         for (let i = 0; i < response.data.length; i++) {
           this.setState({
             experiencesCount: response.data.length,
           });
-          if (response.data[i].userId == currentUser.id) {
-            this.setState({
-              experiences: response.data[i],
-            });
-            console.log(this.state.experiences);
-          }
+        
         }
+        console.log(this.state.experiences);
       },
       (error) => {
         this.setState({
@@ -78,15 +75,22 @@ export default class BoardUser extends Component {
   }
 
   render() {
-    //console.log(this.state.experiences);
-    if (this.state.experiences.userId == this.state.currentUser.id) {
-    }
-    const arrayOfObjects = [this.state.experiences];
-
-    const listItems = Object.entries(this.state.experiences).map((item) => (
-      <li>{item}</li>
-    ));
-
+   
+    const listItems = this.state.experiences.map((item) => (
+       <tr>
+                  <td>{item.date}</td>
+                  <td>{item.statusId}</td>
+                  <td>{item.wine.name}</td>
+                  <td>{item.wine.qrValue}</td>
+                  <td>
+                    <Link to={"/app/user"} className="nav-link">
+                      <button className="btn-primary btn">Mint</button>
+                    </Link>
+                  </td>
+                </tr>
+    )
+    );
+    console.log(this.state.experiences);
 
     return (
       <div className="container">
@@ -117,17 +121,7 @@ export default class BoardUser extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>{this.state.experiences.date}</td>
-                  <td>Pending</td>
-                  <td>MTB</td>
-                  <td>{this.state.experiences.qrValue}</td>
-                  <td>
-                    <Link to={"/app/user"} className="nav-link">
-                      <button className="btn-primary btn">Mint</button>
-                    </Link>
-                  </td>
-                </tr>
+                {listItems}
               </tbody>
             </table>
           </div>
