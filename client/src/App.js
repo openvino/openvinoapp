@@ -32,7 +32,6 @@ class App extends Component {
 
   componentDidMount() {
     const test = window.location.pathname;
-    console.log(test);
     const user = AuthService.getCurrentUser();
     if (user) {
       this.setState({

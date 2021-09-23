@@ -49,7 +49,6 @@ export default class BoardUser extends Component {
 
     await ExperienceService.getExperiences(currentUser.id).then(
       (response) => {
-        console.log(response.data.length);
         this.setState({
           experiences: response.data,
         });
@@ -59,7 +58,6 @@ export default class BoardUser extends Component {
           });
         
         }
-        console.log(this.state.experiences);
       },
       (error) => {
         this.setState({
@@ -90,7 +88,6 @@ export default class BoardUser extends Component {
                 </tr>
     )
     );
-    console.log(this.state.experiences);
 
     return (
       <div className="container">
