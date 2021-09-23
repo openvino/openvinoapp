@@ -50,7 +50,7 @@ class NewExperience extends React.Component {
     //const questions = ExperienceService.getQuestions(1);
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
-    const qrCode = qrService.getQRClaimed();
+    const qrCode = qrService.getallowClaim();
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
@@ -234,6 +234,7 @@ class NewExperience extends React.Component {
     console.log(this.state.userId);
     console.log(this.state.photoFileName);
     console.log(this.state.ipfsUrl);
+    if (this.state.qrValue == true) {
     return (
       <React.Fragment>
         <div className="col-md-12">
@@ -265,8 +266,29 @@ class NewExperience extends React.Component {
         </div>
       </React.Fragment>
     );
+  } else {
+    return (
+      <React.Fragment>
+        <div className="col-md-12">
+          <div className="card card-container login-form">
+            <h1 style={{
+                fontSize: '35px',
+                fontWeight: 'bold',
+                color: '#B0195C',
+                lineHeight: '33px'
+          }}>SCAN YOUR QR CODE</h1>
+            <p style={{
+                marginTop: '20px'
+          }}>First, you have to scan the QR Code that is in the reverse of your wine bottle.</p>
+          </div>
+        </div>
+      </React.Fragment>
+    ) 
   }
 }
+} 
+
+
 
 function Step1(props) {
   if (props.currentStep !== 1) {
