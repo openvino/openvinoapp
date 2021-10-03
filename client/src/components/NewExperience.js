@@ -43,6 +43,7 @@ class NewExperience extends React.Component {
       latitude: null,
       longitude: null,
       experienceId: "",
+      qRCodeClaim: "",
     };
   }
 
@@ -50,11 +51,13 @@ class NewExperience extends React.Component {
     //const questions = ExperienceService.getQuestions(1);
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
-    const qrCode = qrService.getallowClaim();
+    const qrCode = qrService.getQRClaimed();
+    const qRCodeClaim = qrService.getallowClaim();
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     this.setState({ qrValue: qrCode });
+    this.setState({ qRCodeClaim: qRCodeClaim });
     this.setState({ userId: currentUser.id });
     this.setState({ date: new Date() });
     this.setState({ location: "Mendoza" });
@@ -234,61 +237,68 @@ class NewExperience extends React.Component {
     console.log(this.state.userId);
     console.log(this.state.photoFileName);
     console.log(this.state.ipfsUrl);
-    if (this.state.qrValue == true) {
-    return (
-      <React.Fragment>
-        <div className="col-md-12">
-          <div className="card card-container login-form">
-            <h1>Add New Experience</h1>
-            <span className="subh1">Step {this.state.currentStep} </span>
+    if (this.state.qRCodeClaim == true) {
+      return (
+        <React.Fragment>
+          <div className="col-md-12">
+            <div className="card card-container login-form">
+              <h1>Add New Experience</h1>
+              <span className="subh1">Step {this.state.currentStep} </span>
 
-            <form onSubmit={this.handleSubmit}>
-              {/* 
+              <form onSubmit={this.handleSubmit}>
+                {/* 
           render the form steps and pass required props in
         */}
-              <Step1
-                currentStep={this.state.currentStep}
-                handleChange={this.handleChange}
-              />
-              <Step2
-                currentStep={this.state.currentStep}
-                handleChange={this.handleChange}
-                answer1={this.state.answer1}
-                answer2={this.state.answer2}
-                answer3={this.state.answer3}
-                answer4={this.state.answer4}
-                answer5={this.state.answer5}
-              />
-              {this.previousButton()}
-              {this.nextButton()}
-            </form>
+                <Step1
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                />
+                <Step2
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  answer1={this.state.answer1}
+                  answer2={this.state.answer2}
+                  answer3={this.state.answer3}
+                  answer4={this.state.answer4}
+                  answer5={this.state.answer5}
+                />
+                {this.previousButton()}
+                {this.nextButton()}
+              </form>
+            </div>
           </div>
-        </div>
-      </React.Fragment>
-    );
-  } else {
-    return (
-      <React.Fragment>
-        <div className="col-md-12">
-          <div className="card card-container login-form">
-            <h1 style={{
-                fontSize: '35px',
-                fontWeight: 'bold',
-                color: '#B0195C',
-                lineHeight: '33px'
-          }}>SCAN YOUR QR CODE</h1>
-            <p style={{
-                marginTop: '20px'
-          }}>First, you have to scan the QR Code that is in the reverse of your wine bottle.</p>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <div className="col-md-12">
+            <div className="card card-container login-form">
+              <h1
+                style={{
+                  fontSize: "35px",
+                  fontWeight: "bold",
+                  color: "#B0195C",
+                  lineHeight: "33px",
+                }}
+              >
+                SCAN YOUR QR CODE
+              </h1>
+              <p
+                style={{
+                  marginTop: "20px",
+                }}
+              >
+                First, you have to scan the QR Code that is in the reverse of
+                your wine bottle.
+              </p>
+            </div>
           </div>
-        </div>
-      </React.Fragment>
-    ) 
+        </React.Fragment>
+      );
+    }
   }
 }
-} 
-
-
 
 function Step1(props) {
   if (props.currentStep !== 1) {
