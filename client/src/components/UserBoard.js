@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
 import ExperienceService from "../services/experience.service";
+import { init, mintToken } from "../Web3Client";
 
 export default class BoardUser extends Component {
   constructor(props) {
@@ -14,14 +15,18 @@ export default class BoardUser extends Component {
       currentUser: { email: "" },
       experiencesCount: "",
       experiences: [],
-      currentExperiences: []
+      currentExperiences: [],
+      minted: false,
+      setMinted: false,
     };
   }
 
   async componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
-    const currentExperiences = await ExperienceService.getExperiences(currentUser.id);
+    const currentExperiences = await ExperienceService.getExperiences(
+      currentUser.id
+    );
 
     this.setState({
       currentExperiences: currentExperiences,
@@ -56,7 +61,6 @@ export default class BoardUser extends Component {
           this.setState({
             experiencesCount: response.data.length,
           });
-        
         }
       },
       (error) => {
@@ -73,21 +77,43 @@ export default class BoardUser extends Component {
   }
 
   render() {
-   
+    // Mint Token Function Called
+    const createCollectible = () => {
+      mintToken()
+        .then((tx) => {
+          console.log(tx);
+          this.setState({
+            setMinted: true,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     const listItems = this.state.experiences.map((item) => (
-       <tr>
-                  <td>{item.date}</td>
-                  <td>{item.statusId}</td>
-                  <td>{item.wine.name}</td>
-                  <td>{item.wine.qrValue}</td>
-                  <td>
-                    <Link to={"/app/user"} className="nav-link">
-                      <button className="btn-primary btn">Mint</button>
-                    </Link>
-                  </td>
-                </tr>
-    )
-    );
+      <tr>
+        <td>{item.date}</td>
+        <td>{item.statusId}</td>
+        <td>{item.wine.name}</td>
+        <td>{item.wine.qrValue}</td>
+        <td>
+          <Link to={"/app/user"} className="nav-link">
+            {!this.state.minted ? (
+              <button
+                className="btn-primary btn"
+                onClick={() => createCollectible()}
+              >
+                {" "}
+                Mint NFT
+              </button>
+            ) : (
+              <p>NFT Minted Succesfully!</p>
+            )}
+          </Link>
+        </td>
+      </tr>
+    ));
 
     return (
       <div className="container">
@@ -114,12 +140,10 @@ export default class BoardUser extends Component {
                   <th scope="col">Status</th>
                   <th scope="col">Token</th>
                   <th scope="col">Token ID</th>
-                  <th scope="col">Mint NFT</th>
+                  <th scope="col">Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {listItems}
-              </tbody>
+              <tbody>{listItems}</tbody>
             </table>
           </div>
         </div>
