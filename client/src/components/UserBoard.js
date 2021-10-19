@@ -84,6 +84,7 @@ export default class BoardUser extends Component {
           console.log(tx);
           this.setState({
             setMinted: true,
+            minted: true,
           });
         })
         .catch((err) => {
@@ -98,19 +99,12 @@ export default class BoardUser extends Component {
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
         <td>
-          <Link to={"/app/user"} className="nav-link">
-            {!this.state.minted ? (
-              <button
-                className="btn-primary btn"
-                onClick={() => createCollectible()}
-              >
-                {" "}
-                Mint NFT
-              </button>
-            ) : (
-              <p>NFT Minted Succesfully!</p>
-            )}
-          </Link>
+        {console.log(this.state.minted)}
+        {!this.state.minted ?(
+        <button className="btn-primary btn" onClick={() => createCollectible()}> Mint Experience NFT</button>
+        ) : (
+          <p>NFT Minted Succesfully!</p>
+        ) }
         </td>
       </tr>
     ));

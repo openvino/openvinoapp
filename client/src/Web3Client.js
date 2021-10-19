@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 
-import NFTContractBuild from './contract/SimpleCollectible.json';
+import NFTContractBuild from '../src/contract/SimpleCollectible.json'
 
 // GET Request for this parameter.
 let token_uri = "https://ipfs.io/ipfs/QmWxzMCE1EWWJ3vtyRqgD3mTt55jDsCqv3Wc2kbgUWuwv5?filename=1-MTB.json";
