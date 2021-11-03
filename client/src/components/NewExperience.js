@@ -5,6 +5,10 @@ import qrService from "../services/qr.service";
 import { withRouter } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
+import { create } from "ipfs-http-client";
+
+/* Create an instance of the client */
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const required = (value) => {
   if (!value) {
@@ -29,11 +33,10 @@ const qrCode = (value) => {
 class NewExperience extends React.Component {
   constructor(props) {
     super(props);
-    this.onChangePhotoFileName = this.onChangePhotoFileName.bind(this);
+    this.onChangeFile = this.onChangeFile.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      currentStep: 1,
-      photoFileName: "",
       ipfsUrl: "",
       qrValue: "",
       statusId: 5,
@@ -61,10 +64,10 @@ class NewExperience extends React.Component {
     this.setState({ userId: currentUser.id });
     this.setState({ date: new Date() });
     this.setState({ location: "Mendoza" });
-    console.log(currentToken);
-    console.log(currentUser);
-    console.log(currentUser.id);
-    console.log(qrCode);
+    //console.log(currentToken);
+    //console.log(currentUser);
+    //console.log(currentUser.id);
+    //console.log(qrCode);
     //console.log(questions);
     window.navigator.geolocation.getCurrentPosition((success) =>
       this.setState({
@@ -73,10 +76,19 @@ class NewExperience extends React.Component {
       })
     );
   }
-  onChangePhotoFileName(e) {
-    this.setState({
-      photoFileName: e.target.value,
-    });
+
+  async onChangeFile(e) {
+    const file = e.target.files[0];
+    try {
+      const added = await client.add(file);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      this.setState({
+        ipfsUrl: url,
+      });
+      console.log(this.state.ipfsUrl);
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
   }
 
   handleChange = (event) => {
@@ -100,7 +112,6 @@ class NewExperience extends React.Component {
     // la busqueda de las preguntas no debería ir acá
 
     ExperienceService.addExperience(
-      this.state.photoFileName,
       this.state.statusId,
       this.state.date,
       this.state.userId,
@@ -180,94 +191,93 @@ class NewExperience extends React.Component {
     );
   };
 
-  _next = () => {
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep >= 2 ? 3 : currentStep + 1;
-    this.setState({
-      currentStep: currentStep,
-    });
-  };
-
-  _prev = () => {
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
-    this.setState({
-      currentStep: currentStep,
-    });
-  };
-
-  /*
-   * the functions for our button
-   */
-  previousButton() {
-    let currentStep = this.state.currentStep;
-    if (currentStep !== 1) {
-      return (
-        <button
-          className="btn btn-secondary"
-          type="button"
-          onClick={this._prev}
-        >
-          Previous
-        </button>
-      );
-    }
-    return null;
-  }
-
-  nextButton() {
-    let currentStep = this.state.currentStep;
-    if (currentStep < 2) {
-      return (
-        <button
-          className="btn btn-primary float-right"
-          type="button"
-          onClick={this._next}
-        >
-          Next
-        </button>
-      );
-    }
-    return null;
-  }
   render() {
-    console.log(this.state.qrValue);
-    console.log(this.state.date);
-    console.log(this.state.location);
-    console.log(this.state.userId);
-    console.log(this.state.photoFileName);
-    console.log(this.state.ipfsUrl);
     if (this.state.qRCodeClaim == true) {
       return (
-        <React.Fragment>
+        <form onSubmit={this.handleSubmit}>
           <div className="col-md-12">
             <div className="card card-container login-form">
               <h1>Add New Experience</h1>
-              <span className="subh1">Step {this.state.currentStep} </span>
-
-              <form onSubmit={this.handleSubmit}>
-                {/* 
-          render the form steps and pass required props in
-        */}
-                <Step1
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
+              <div className="form-group">
+                <label className="cameraButton">
+                  <i className="fas fa-camera-retro"></i> Take a picture
+                  <input
+                    type="file"
+                    onChange={this.onChangeFile}
+                    accept="image/*;capture=camera"
+                  />
+                </label>
+                {this.state.ipfsUrl && (
+                  <img src={this.state.ipfsUrl} width="370px" />
+                )}
+              </div>
+              <div className="form-group">
+                <label htmlFor="username">Are you sharing this bottle with other people? How many?</label>
+                <textarea
+                  className="form-control"
+                  id="answer1"
+                  name="answer1"
+                  type="textarea"
+                  placeholder="Enter your answer"
+                  value={this.state.answer1}
+                  onChange={this.handleChange}
                 />
-                <Step2
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  answer1={this.state.answer1}
-                  answer2={this.state.answer2}
-                  answer3={this.state.answer3}
-                  answer4={this.state.answer4}
-                  answer5={this.state.answer5}
+                <label htmlFor="username">
+                  Did you buy this bottle with crypto? or in a shop or
+                  restaurant? was it a gift?
+                </label>
+                <textarea
+                  className="form-control"
+                  id="answer2"
+                  name="answer2"
+                  type="textarea"
+                  placeholder="Enter your answer"
+                  value={this.state.answer2}
+                  onChange={this.handleChange}
                 />
-                {this.previousButton()}
-                {this.nextButton()}
-              </form>
+                <label htmlFor="username">
+                  Are you drinking this wine with food? What are you eating?
+                </label>
+                <textarea
+                  className="form-control"
+                  id="answer3"
+                  name="answer3"
+                  type="textarea"
+                  placeholder="Enter your answer"
+                  value={this.state.answer3}
+                  onChange={this.handleChange}
+                />
+                <label htmlFor="username">
+                  Do you like this wine? How would you rank it?
+                </label>
+                <textarea
+                  className="form-control"
+                  id="answer4"
+                  name="answer4"
+                  type="textarea"
+                  placeholder="Enter your answer"
+                  value={this.state.answer4}
+                  onChange={this.handleChange}
+                />
+                <label htmlFor="username">
+                  Do you think we should build a colony on Mars?
+                </label>
+                <textarea
+                  className="form-control"
+                  id="answer5"
+                  name="answer5"
+                  type="textarea"
+                  placeholder="Enter your answer"
+                  value={this.state.answer5}
+                  onChange={this.handleChange}
+                />
+              </div>
+              <button className="btn btn-primary float-right">
+                Register Experience
+              </button>
             </div>
           </div>
-        </React.Fragment>
+        </form>
       );
     } else {
       return (
@@ -299,100 +309,4 @@ class NewExperience extends React.Component {
     }
   }
 }
-
-function Step1(props) {
-  if (props.currentStep !== 1) {
-    return null;
-  }
-  return (
-    <div className="form-group">
-      <label className="cameraButton">
-        <i className="fas fa-camera-retro"></i> Take a picture
-        <input
-          type="file"
-          name="photoFileName"
-          value={props.photoFileName}
-          onChange={props.handleChange}
-          validations={[required]}
-          accept="image/*;capture=camera"
-        />
-      </label>
-    </div>
-  );
-}
-
-function Step2(props) {
-  if (props.currentStep !== 2) {
-    return null;
-  }
-  return (
-    <React.Fragment>
-      <div className="form-group">
-        <label htmlFor="username">
-          Are you sharing this bottle with other people? How many?
-        </label>
-        <textarea
-          className="form-control"
-          id="answer1"
-          name="answer1"
-          type="textarea"
-          placeholder="Enter your answer"
-          value={props.answer1}
-          onChange={props.handleChange}
-        />
-        <label htmlFor="username">
-          Did you buy this bottle with crypto? or in a shop or restaurant? was
-          it a gift?
-        </label>
-        <textarea
-          className="form-control"
-          id="answer2"
-          name="answer2"
-          type="textarea"
-          placeholder="Enter your answer"
-          value={props.answer2}
-          onChange={props.handleChange}
-        />
-        <label htmlFor="username">
-          Are you drinking this wine with food? What are you eating?
-        </label>
-        <textarea
-          className="form-control"
-          id="answer3"
-          name="answer3"
-          type="textarea"
-          placeholder="Enter your answer"
-          value={props.answer3}
-          onChange={props.handleChange}
-        />
-        <label htmlFor="username">
-          Do you like this wine? How would you rank it?
-        </label>
-        <textarea
-          className="form-control"
-          id="answer4"
-          name="answer4"
-          type="textarea"
-          placeholder="Enter your answer"
-          value={props.answer4}
-          onChange={props.handleChange}
-        />
-        <label htmlFor="username">
-          Do you think we should build a colony on Mars?
-        </label>
-        <textarea
-          className="form-control"
-          id="answer5"
-          name="answer5"
-          type="textarea"
-          placeholder="Enter your answer"
-          value={props.answer5}
-          onChange={props.handleChange}
-        />
-      </div>
-      <button className="btn btn-primary float-right">Register</button>
-    </React.Fragment>
-  );
-}
-
 export default withRouter(NewExperience);

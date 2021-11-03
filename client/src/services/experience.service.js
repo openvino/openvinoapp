@@ -16,7 +16,6 @@ class ExperienceService {
   }
 
   async addExperience(
-    photoFileName,
     statusId,
     date,
     userId,
@@ -29,7 +28,6 @@ class ExperienceService {
       {
         date: date,
         location: location,
-        photoFileName: photoFileName,
         statusId: statusId,
         qrValue: qrValue,
         ipfsUrl: ipfsUrl, //"https://ipfs.io/ipfs/QmbcKQTe44AYBrfhUypuUapCaQUQAHbWiqGufhR7eoCpwU"
