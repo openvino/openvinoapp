@@ -4,6 +4,10 @@ import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
 import ExperienceService from "../services/experience.service";
 import { init, mintToken } from "../Web3Client";
+import { create } from "ipfs-http-client";
+
+/* Create an instance of the client */
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 export default class BoardUser extends Component {
   constructor(props) {
@@ -17,7 +21,6 @@ export default class BoardUser extends Component {
       experiences: [],
       currentExperiences: [],
       minted: false,
-      setMinted: false,
     };
   }
 
@@ -75,7 +78,19 @@ export default class BoardUser extends Component {
       }
     );
   }
-
+    async onChangeFile(e) {
+      const file = e.target.files[0];
+      try {
+        const added = await client.add(file);
+        const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+        this.setState({
+          ipfsUrl: url,
+        });
+        console.log(this.state.ipfsUrl);
+      } catch (error) {
+        console.log("Error uploading file: ", error);
+      }
+    }
   render() {
     // Mint Token Function Called
     const createCollectible = () => {
@@ -83,7 +98,6 @@ export default class BoardUser extends Component {
         .then((tx) => {
           console.log(tx);
           this.setState({
-            setMinted: true,
             minted: true,
           });
         })
@@ -91,7 +105,6 @@ export default class BoardUser extends Component {
           console.log(err);
         });
     };
-
     const listItems = this.state.experiences.map((item) => (
       <tr>
         <td>{item.date}</td>
@@ -99,7 +112,6 @@ export default class BoardUser extends Component {
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
         <td>
-        {console.log(this.state.minted)}
         {!this.state.minted ?(
         <button className="btn-primary btn" onClick={() => createCollectible()}> Mint Experience NFT</button>
         ) : (
