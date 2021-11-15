@@ -3,7 +3,8 @@ import Web3 from 'web3';
 import NFTContractBuild from '../src/contract/SimpleCollectible.json'
 
 // GET Request for this parameter.
-let token_uri = "https://ipfs.io/ipfs/QmWxzMCE1EWWJ3vtyRqgD3mTt55jDsCqv3Wc2kbgUWuwv5?filename=1-MTB.json";
+// let token_uri = "https://ipfs.io/ipfs/QmWxzMCE1EWWJ3vtyRqgD3mTt55jDsCqv3Wc2kbgUWuwv5?filename=1-MTB.json";
+let token_uri = localStorage.getItem('ipfsURL');
 
 let selectedAccount;
 
@@ -51,7 +52,7 @@ export const init = async () => {
 };
 
         // Function to be called from App.js
-export const mintToken = async () => {
+export const mintToken = async () =>  {
     if (!isInitialized) {
         await init();
     }   // We pass the NFT link (token_uri), going to need to make a request to get that link from API.

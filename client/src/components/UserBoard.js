@@ -34,7 +34,6 @@ export default class BoardUser extends Component {
     this.setState({
       currentExperiences: currentExperiences,
     });
-
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -77,46 +76,90 @@ export default class BoardUser extends Component {
         });
       }
     );
+    // console.log(this.state.experiences[3].experienceSurvey);
+    // const listSurveys = this.state.experiences.map((surveys) => (
+    //   JSON.stringify(surveys.experienceSurvey)
+    // ))
+    // console.log(listSurveys);
   }
-    async onChangeFile(e) {
-      const file = e.target.files[0];
-      try {
-        const added = await client.add(file);
-        const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-        this.setState({
-          ipfsUrl: url,
-        });
-        console.log(this.state.ipfsUrl);
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-      }
+  async onChangeFile(e) {
+    const file = e.target.files[0];
+    try {
+      const added = await client.add(file);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      this.setState({
+        ipfsUrl: url,
+      });
+      console.log(this.state.ipfsUrl);
+    } catch (error) {
+      console.log("Error uploading file: ", error);
     }
-  render() {
-    // Mint Token Function Called
-    const createCollectible = () => {
+  }
+  async createCollectible(index) {
+    try {
+      const listSurveys = this.state.experiences.map(
+        (surveys) => (
+          console.log(JSON.stringify(surveys.experienceSurvey)),
+          JSON.stringify(surveys.experienceSurvey)
+        )
+      );
+      const added = await client.add(listSurveys[index]);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      this.setState({
+        ipfsUrlJSON: url,
+      });
+      console.log(this.state.ipfsUrlJSON);
+      localStorage.setItem("ipfsURL", this.state.ipfsUrlJSON);
       mintToken()
         .then((tx) => {
           console.log(tx);
           this.setState({
             minted: true,
           });
+          localStorage.removeItem("ipfsURL");
         })
         .catch((err) => {
           console.log(err);
         });
-    };
-    const listItems = this.state.experiences.map((item) => (
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  }
+
+  render() {
+    // Mint Token Function Called
+    // const createCollectible = () => {
+    //   mintToken()
+    //     .then((tx) => {
+    //       console.log(tx);
+    //       this.setState({
+    //         minted: true,
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // };
+    const listItems = this.state.experiences.map((item, index) => (
       <tr>
         <td>{item.date}</td>
         <td>{item.statusId}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
         <td>
-        {!this.state.minted ?(
-        <button className="btn-primary btn" onClick={() => createCollectible()}> Mint Experience NFT</button>
-        ) : (
-          <p>NFT Minted Succesfully!</p>
-        ) }
+          {!this.state.minted ? (
+            <button
+              tabindex={index}
+              value={index}
+              className="btn-primary btn"
+              onClick={() => this.createCollectible(index)}
+            >
+              {" "}
+              Mint Experience NFT
+            </button>
+          ) : (
+            <p>NFT Minted Succesfully!</p>
+          )}
         </td>
       </tr>
     ));
