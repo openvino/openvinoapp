@@ -123,8 +123,8 @@ class NewExperience extends React.Component {
     ).then(
       (response) => {
         // *** comento para que no me refresque pa pàgina y pueda ver la consola ***
-        //this.props.history.push("/app/user");
-        //window.location.reload();
+        this.props.history.push("/app/user");
+        window.location.reload();
         console.log(response);
         //valido el status de la respuesta para saber si la experiencia se grabó correctamente
         if (response.data.status) {
