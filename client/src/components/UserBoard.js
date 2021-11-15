@@ -95,11 +95,13 @@ export default class BoardUser extends Component {
       console.log("Error uploading file: ", error);
     }
   }
+  // Mint Function
   async createCollectible(index) {
     try {
       const listSurveys = this.state.experiences.map(
         (surveys) => (
           console.log(JSON.stringify(surveys.experienceSurvey)),
+          // Create JSON file based on experience information
           JSON.stringify(surveys.experienceSurvey)
         )
       );
@@ -109,6 +111,7 @@ export default class BoardUser extends Component {
         ipfsUrlJSON: url,
       });
       console.log(this.state.ipfsUrlJSON);
+      // Added IPFS URL to LocalStorage.
       localStorage.setItem("ipfsURL", this.state.ipfsUrlJSON);
       mintToken()
         .then((tx) => {
@@ -116,6 +119,7 @@ export default class BoardUser extends Component {
           this.setState({
             minted: true,
           });
+          // Removed IPFS from LocalStorage after success minting
           localStorage.removeItem("ipfsURL");
         })
         .catch((err) => {
@@ -152,6 +156,7 @@ export default class BoardUser extends Component {
               tabindex={index}
               value={index}
               className="btn-primary btn"
+              // onClick with index of the experience for create JSON file and upload to IPFS
               onClick={() => this.createCollectible(index)}
             >
               {" "}
