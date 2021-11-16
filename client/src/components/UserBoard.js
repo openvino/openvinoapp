@@ -151,7 +151,7 @@ export default class BoardUser extends Component {
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
         <td>
-          {!this.state.minted ? (
+          {/* {!this.state.minted ? (
             <button
               tabindex={index}
               value={index}
@@ -164,7 +164,7 @@ export default class BoardUser extends Component {
             </button>
           ) : (
             <p>NFT Minted Succesfully!</p>
-          )}
+          )} */}
         </td>
       </tr>
     ));
