@@ -21,6 +21,9 @@ export default class BoardUser extends Component {
       experiences: [],
       currentExperiences: [],
       minted: false,
+      nftGenerated: false,
+      experienceId: "",
+      ipfsUrl:""
     };
   }
 
@@ -30,7 +33,6 @@ export default class BoardUser extends Component {
     const currentExperiences = await ExperienceService.getExperiences(
       currentUser.id
     );
-
     this.setState({
       currentExperiences: currentExperiences,
     });
@@ -53,7 +55,15 @@ export default class BoardUser extends Component {
         });
       }
     );
-
+    await ExperienceService.updateExperience(11).then(
+     
+      (response) => {
+        
+      },
+      (error) => {
+        
+      }
+    );
     await ExperienceService.getExperiences(currentUser.id).then(
       (response) => {
         this.setState({
@@ -76,6 +86,7 @@ export default class BoardUser extends Component {
         });
       }
     );
+    console.log(this.state.experiences[0].id);
     // console.log(this.state.experiences[3].experienceSurvey);
     // const listSurveys = this.state.experiences.map((surveys) => (
     //   JSON.stringify(surveys.experienceSurvey)
@@ -109,6 +120,8 @@ export default class BoardUser extends Component {
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       this.setState({
         ipfsUrlJSON: url,
+        nftGenerated: true,
+        experienceId: this.state.experiences[index].id,
       });
       console.log(this.state.ipfsUrlJSON);
       // Added IPFS URL to LocalStorage.
@@ -121,6 +134,12 @@ export default class BoardUser extends Component {
           });
           // Removed IPFS from LocalStorage after success minting
           localStorage.removeItem("ipfsURL");
+          ExperienceService.updateExperience(this.state.experienceId)(
+            this.state.nftGenerated,
+            this.state.ipfsUrl,
+            this.state.nftURL
+          ).then((response)=> {
+          })
         })
         .catch((err) => {
           console.log(err);
@@ -145,15 +164,15 @@ export default class BoardUser extends Component {
     //     });
     // };
     const listItems = this.state.experiences.map((item, index) => (
-      <tr>
+      <tr key={item.id}>
         <td>{item.date}</td>
         <td>{item.statusId}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
         <td>
-          {/* {!this.state.minted ? (
+          {!this.state.minted ? (
             <button
-              tabindex={index}
+              tabIndex={index}
               value={index}
               className="btn-primary btn"
               // onClick with index of the experience for create JSON file and upload to IPFS
@@ -164,7 +183,7 @@ export default class BoardUser extends Component {
             </button>
           ) : (
             <p>NFT Minted Succesfully!</p>
-          )} */}
+          )}
         </td>
       </tr>
     ));

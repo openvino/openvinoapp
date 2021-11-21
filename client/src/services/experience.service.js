@@ -44,6 +44,22 @@ class ExperienceService {
     return response;
   }
 
+ async updateExperience(experienceId, nftGenerated) {
+    const response = axios.patch(
+      API_URL + "/experiences/" + experienceId,
+      {
+        nftGenerated: true,
+        experienceId: experienceId,
+      },
+      {
+        headers: authHeader(),
+      }
+    );
+
+    return response;
+  }
+
+
   // returns an array only with the active questions
   async getQuestions() {
     const response = await axios.get(API_URL + "/survey-questions", {
