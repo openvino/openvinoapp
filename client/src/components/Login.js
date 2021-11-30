@@ -83,13 +83,15 @@ class Login extends Component {
           const resMessage =
             (error.response &&
               error.response.data &&
-              error.response.data.message) ||
+              error.response.data.error.message) ||
             error.message ||
             error.toString();
 
+
+
           this.setState({
             loading: false,
-            message: resMessage,
+            message: resMessage ,
           });
         }
       );
