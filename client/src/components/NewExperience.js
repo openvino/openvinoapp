@@ -119,7 +119,6 @@ class NewExperience extends React.Component {
       this.state.location,
       this.state.qrValue,
       this.state.ipfsUrl,
-      this.state.nftGenerated
     ).then(
       (response) => {
         // *** comento para que no me refresque pa pàgina y pueda ver la consola ***
@@ -132,7 +131,6 @@ class NewExperience extends React.Component {
           this.setState({
             message: response.data.message,
             experienceId: response.data.experienceId,
-            nftGenerated: true,
             successful: true,
           });
           // grabar respuestas
