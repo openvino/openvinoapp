@@ -21,7 +21,6 @@ export default class BoardUser extends Component {
       experiences: [],
       currentExperiences: [],
       minted: false,
-      nftGenerated: false,
       experienceId: "",
       ipfsUrl:""
     };
@@ -53,15 +52,6 @@ export default class BoardUser extends Component {
             error.message ||
             error.toString(),
         });
-      }
-    );
-    await ExperienceService.updateExperience(11).then(
-     
-      (response) => {
-        
-      },
-      (error) => {
-        
       }
     );
     await ExperienceService.getExperiences(currentUser.id).then(
@@ -169,8 +159,9 @@ export default class BoardUser extends Component {
         <td>{item.statusId}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
-        <td>
-          {!this.state.minted ? (
+        <td><b>Minting Coming Soon</b></td>
+        {/* <td>
+          {!item.nftGenerated ? (
             <button
               tabIndex={index}
               value={index}
@@ -184,10 +175,9 @@ export default class BoardUser extends Component {
           ) : (
             <p>NFT Minted Succesfully!</p>
           )}
-        </td>
+        </td> */}
       </tr>
     ));
-
     return (
       <div className="container">
         <header className="jumbotron">

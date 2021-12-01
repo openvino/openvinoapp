@@ -48,8 +48,8 @@ class ExperienceService {
     const response = axios.patch(
       API_URL + "/experiences/" + experienceId,
       {
-        nftGenerated: true,
         experienceId: experienceId,
+        nftGenerated: nftGenerated
       },
       {
         headers: authHeader(),
