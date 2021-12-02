@@ -10,7 +10,7 @@ port: 3000
 
 image:
   repository: luisvid/ydiyoi-front
-  tag: 7
+  tag: 14
   pullPolicy: IfNotPresent
 
 service:

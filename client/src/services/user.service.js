@@ -2,7 +2,7 @@ import axios from 'axios';
 import authHeader from './auth-header';
 
 // Dev
-//const API_URL = "http://104.248.49.119:3000";  
+// const API_URL = "http://104.248.49.119:3000";  
 const API_URL = "https://api.openvino.org";  
 
 class UserService {
