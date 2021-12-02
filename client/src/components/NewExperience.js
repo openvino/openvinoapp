@@ -60,11 +60,11 @@ class NewExperience extends React.Component {
     this.setState({ currentToken: currentToken, userReady: true });
     this.setState({ qrValue: qrCode });
     this.setState({ qRCodeClaim: qRCodeClaim });
-    //this.setState({ userId: currentUser.id });
+    this.setState({ userId: currentUser.id });
     this.setState({ date: new Date() });
     this.setState({ location: "Mendoza" });
     //console.log(currentToken);
-    console.log(currentUser);
+    //console.log(currentUser);
     //console.log(currentUser.id);
     //console.log(qrCode);
     //console.log(questions);
