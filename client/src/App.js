@@ -31,12 +31,10 @@ class App extends Component {
 
 
   componentDidMount() {
-    const test = window.location.pathname;
     const user = AuthService.getCurrentUser();
     if (user) {
       this.setState({
         currentUser: user,
-        test: test
         //showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
         //showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });

@@ -76,7 +76,7 @@ export default class BoardUser extends Component {
         });
       }
     );
-    console.log(this.state.experiences[0].id);
+    //console.log(this.state.experiences[0].id);
     // console.log(this.state.experiences[3].experienceSurvey);
     // const listSurveys = this.state.experiences.map((surveys) => (
     //   JSON.stringify(surveys.experienceSurvey)

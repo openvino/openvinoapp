@@ -4,7 +4,6 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import qrService from "../services/qr.service";
-
 import AuthService from "../services/auth.service";
 
 const required = (value) => {
@@ -168,12 +167,15 @@ export default class Register extends Component {
         this.state.qrValue
       ).then(
         (response) => {
-          this.props.history.push("/app/add-experience");
+          this.props.history.push("/app/login");
           window.location.reload();
           this.setState({
             message: response.data.message,
             successful: true,
           });
+          console.log(response);
+          console.log(response.data);
+          console.log(response.data.message);
         },
         (error) => {
           const resMessage =

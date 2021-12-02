@@ -3,8 +3,6 @@ import ExperienceService from "../services/experience.service";
 import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
 import { withRouter } from "react-router-dom";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
 import { create } from "ipfs-http-client";
 
 /* Create an instance of the client */
@@ -62,11 +60,11 @@ class NewExperience extends React.Component {
     this.setState({ currentToken: currentToken, userReady: true });
     this.setState({ qrValue: qrCode });
     this.setState({ qRCodeClaim: qRCodeClaim });
-    this.setState({ userId: currentUser.id });
+    //this.setState({ userId: currentUser.id });
     this.setState({ date: new Date() });
     this.setState({ location: "Mendoza" });
     //console.log(currentToken);
-    //console.log(currentUser);
+    console.log(currentUser);
     //console.log(currentUser.id);
     //console.log(qrCode);
     //console.log(questions);
