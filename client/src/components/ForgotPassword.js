@@ -18,15 +18,13 @@ const required = (value) => {
 
 
 
-class Login extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
     this.state = {
       email: "",
-      password: "",
       loading: false,
       message: "",
       currentUser: { email: "" },
@@ -34,22 +32,9 @@ class Login extends Component {
     };
   }
 
-  async componentDidMount() {
-    //const qrValid = await qrService.checkQR(this.props.match.params.id);
-    //qrService.checkQR(this.props.match.params.id);
-    //console.log(qrValid);
-    //console.log(qrService.getallowClaim());
-    //console.log(qrService.getQRClaimed());
-    qrService.getallowClaim();
-    qrService.getQRClaimed();
-    //this.setState({ qrValue: qrValid});
-    const currentUser = AuthService.getCurrentUser();
-    const currentToken = AuthService.getToken();
-    if (!currentUser)
-    this.setState({ currentUser: currentUser, userReady: true });
-    this.setState({ currentToken: currentToken, userReady: true });
+//   async componentDidMount() {
     
-  }
+//   }
 
   onChangeEmail(e) {
     this.setState({
@@ -57,11 +42,6 @@ class Login extends Component {
     });
   }
 
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value,
-    });
-  }
 
   handleLogin(e) {
     e.preventDefault();
@@ -74,10 +54,12 @@ class Login extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.email, this.state.password).then(
+      AuthService.resetPassword(this.state.email).then(
         () => {
-          this.props.history.push("/app/add-experience");
-          window.location.reload();
+            this.setState({
+                message: "Success",
+                loading: true,
+              });
         },
         (error) => {
           const resMessage =
@@ -108,9 +90,9 @@ class Login extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-            Welcome,
+            Reset your password,
             <br />
-            <span className="subh1">Sign in to continue!</span>
+            <span className="subh1">You will receive an email with instructions</span>
           </h1>
 
           <Form
@@ -130,19 +112,6 @@ class Login extends Component {
                 validations={[required]}
               />
             </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                value={this.state.password}
-                onChange={this.onChangePassword}
-                validations={[required]}
-              />
-            </div>
-            <a href="/app/forgot-password" style={{ color:"#FE1F92"}}>Forgot password?</a>
             <div className="form-group"><div className="form-group"></div>
               <button
                 className="btn btn-primary btn-block"
@@ -151,7 +120,7 @@ class Login extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Login</span>
+                <span>Reset Password</span>
               </button>
             </div>
 
@@ -175,4 +144,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default withRouter(ForgotPassword);

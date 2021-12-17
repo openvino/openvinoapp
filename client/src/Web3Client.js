@@ -1,9 +1,10 @@
 import Web3 from 'web3';
 
-import NFTContractBuild from '../src/contract/SimpleCollectible.json'
+import NFTContractBuild from '../src/contract/SimpleCollectible.json';
 
 // GET Request for this parameter.
-// let token_uri = "https://ipfs.io/ipfs/QmWxzMCE1EWWJ3vtyRqgD3mTt55jDsCqv3Wc2kbgUWuwv5?filename=1-MTB.json";
+//let token_uri = "https://ipfs.io/ipfs/QmWxzMCE1EWWJ3vtyRqgD3mTt55jDsCqv3Wc2kbgUWuwv5?filename=1-MTB.json";
+
 let token_uri = localStorage.getItem('ipfsURL');
 
 let selectedAccount;
@@ -44,7 +45,7 @@ export const init = async () => {
     // Smart contract declare + contract address 
     SimpleCollectible = new web3.eth.Contract(
         NFTContractBuild.abi, 
-        [networkId].addressCon = '0xB8a85332a751D2A6eDc210e4A784018EE168c696'
+        [networkId].addressCon = '0xa43e358a8f6553152272813641b74bd1d9919557'
     );
 
     isInitialized = true;
@@ -52,7 +53,7 @@ export const init = async () => {
 };
 
         // Function to be called from App.js
-export const mintToken = async () =>  {
+export const mintToken = async () => {
     if (!isInitialized) {
         await init();
     }   // We pass the NFT link (token_uri), going to need to make a request to get that link from API.

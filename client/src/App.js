@@ -15,6 +15,9 @@ import BoardAdmin from "./components/AdminBoard";
 import NewExperience from "./components/NewExperience";
 import EditProfile from "./components/EditProfile";
 import SingleExperience from "./components/SingleExperience";
+import ForgotPassword from "./components/ForgotPassword";
+import UpdatePassword from "./components/UpdatePassword";
+
 
 class App extends Component {
   constructor(props) {
@@ -131,6 +134,8 @@ class App extends Component {
             <Route path="/app/add-experience" component={NewExperience} />
             <Route path="/app/edit-profile" component={EditProfile} />
             <Route path="/app/single-experience" component={SingleExperience} />
+            <Route path="/app/forgot-password" component={ForgotPassword} />
+            <Route exact path="/app/update-password" component={UpdatePassword} />
             </Switch>
         </div>
       </div>
