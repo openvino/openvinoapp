@@ -4,6 +4,7 @@ import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
 import { withRouter } from "react-router-dom";
 import { create } from "ipfs-http-client";
+import { Redirect } from "react-router-dom";
 
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
@@ -46,6 +47,9 @@ class NewExperience extends React.Component {
       experienceId: "",
       qRCodeClaim: "",
       nftGenerated: false,
+      redirect: null,
+      userReady: false,
+      currentUser: { email: "" }
     };
   }
 
@@ -55,12 +59,15 @@ class NewExperience extends React.Component {
     const currentToken = AuthService.getToken();
     const qrCode = qrService.getQRClaimed();
     const qRCodeClaim = qrService.getallowClaim();
-    if (!currentUser) this.setState({ redirect: "/" });
+    if (!currentUser) {
+      this.setState({ redirect: "/" });
+    } else {
+      this.setState({ userId: currentUser.id });
+    }
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     this.setState({ qrValue: qrCode });
     this.setState({ qRCodeClaim: qRCodeClaim });
-    this.setState({ userId: currentUser.id });
     this.setState({ date: new Date() });
     this.setState({ location: "Mendoza" });
     //console.log(currentToken);
@@ -210,7 +217,9 @@ class NewExperience extends React.Component {
   };
 
   render() {
-    
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
     if (this.state.qRCodeClaim == true) {
       return (
         <form onSubmit={this.handleSubmit}>

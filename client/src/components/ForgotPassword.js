@@ -28,7 +28,8 @@ class ForgotPassword extends Component {
       loading: false,
       message: "",
       currentUser: { email: "" },
-      userReady: false
+      userReady: false,
+      successful: false
     };
   }
 
@@ -55,11 +56,11 @@ class ForgotPassword extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.resetPassword(this.state.email).then(
-        () => {
-            this.setState({
-                message: "Success",
-                loading: true,
-              });
+        response => {
+          this.setState({
+            message: response.data.message,
+            successful: true
+          });
         },
         (error) => {
           const resMessage =
@@ -73,13 +74,15 @@ class ForgotPassword extends Component {
 
           this.setState({
             loading: false,
-            message: resMessage ,
+            message: resMessage,
+            successful: false
           });
         }
       );
     } else {
       this.setState({
         loading: false,
+        successful: false
       });
     }
   }
@@ -101,29 +104,29 @@ class ForgotPassword extends Component {
               this.form = c;
             }}
           >
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="email"
-                value={this.state.email}
-                onChange={this.onChangeEmail}
-                validations={[required]}
-              />
-            </div>
-            <div className="form-group"><div className="form-group"></div>
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Reset Password</span>
-              </button>
-            </div>
+          {!this.state.successful && (
+            <><div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <Input
+                                type="text"
+                                className="form-control"
+                                name="email"
+                                value={this.state.email}
+                                onChange={this.onChangeEmail}
+                                validations={[required]} />
+                        </div><div className="form-group"><div className="form-group"></div>
+                                <button
+                                    className="btn btn-primary btn-block"
+                                    disabled={this.state.loading}
+                                >
 
+                                    {this.state.loading && (
+                                        <span className="spinner-border spinner-border-sm"></span>
+                                    )}
+                                    <span>Reset Password</span>
+                                </button>
+                            </div></>
+          )}
             {this.state.message && (
               <div className="form-group">
                 <div className="alert alert-danger" role="alert">

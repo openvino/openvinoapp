@@ -53,7 +53,7 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar navbar-expand">
-          <Link to={"/"} className="navbar-brand">
+          <Link className="navbar-brand">
             <img className="logo-header" src={logo} />
           </Link>
           <div className="navbar-nav mr-auto">

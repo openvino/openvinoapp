@@ -5,6 +5,7 @@ import UserService from "../services/user.service";
 import ExperienceService from "../services/experience.service";
 import { init, mintToken } from "../Web3Client";
 import { create } from "ipfs-http-client";
+import { Redirect } from "react-router-dom";
 
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
@@ -22,19 +23,26 @@ export default class BoardUser extends Component {
       currentExperiences: [],
       minted: false,
       experienceId: "",
-      ipfsUrl:""
+      ipfsUrl:"",
+      redirect: null,
     };
   }
 
   async componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
-    const currentExperiences = await ExperienceService.getExperiences(
-      currentUser.id
-    );
-    this.setState({
-      currentExperiences: currentExperiences,
-    });
+    if (!currentUser) {
+      this.setState({ redirect: "/" });
+    } else {
+      this.setState({ userId: currentUser.id });
+      const currentExperiences = await ExperienceService.getExperiences(
+        currentUser.id
+      );
+      this.setState({
+        currentExperiences: currentExperiences,
+      });
+    }
+   
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -140,6 +148,9 @@ export default class BoardUser extends Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
     // Mint Token Function Called
     // const createCollectible = () => {
     //   mintToken()
