@@ -18,7 +18,7 @@ export default class BoardUser extends Component {
       content: "",
       userReady: false,
       currentUser: { email: "" },
-      experiencesCount: "",
+      // experiencesCount: "",
       experiences: [],
       currentExperiences: [],
       minted: false,
@@ -67,11 +67,11 @@ export default class BoardUser extends Component {
         this.setState({
           experiences: response.data,
         });
-        for (let i = 0; i < response.data.length; i++) {
-          this.setState({
-            experiencesCount: response.data.length,
-          });
-        }
+        // for (let i = 0; i < response.data.length; i++) {
+        //   this.setState({
+        //     experiencesCount: response.data.length,
+        //   });
+        // }
       },
       (error) => {
         this.setState({
@@ -169,8 +169,7 @@ export default class BoardUser extends Component {
         <td>{item.statusId}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
-        <td><b>Minting Coming Soon</b></td>
-        {/* <td>
+        <td>
           {!item.nftGenerated ? (
             <button
               tabIndex={index}
@@ -185,7 +184,7 @@ export default class BoardUser extends Component {
           ) : (
             <p>NFT Minted Succesfully!</p>
           )}
-        </td> */}
+        </td>
       </tr>
     ));
     return (

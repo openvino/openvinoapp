@@ -58,14 +58,14 @@ body {
   background-color:#FE1F92;
 }
 .btn-primary:hover {
-  border:1px solid #e63590;
+  border:1px solid #e63590 !important;
   background:transparent;
-  color:#FE1F92;
+  color:#FE1F92 !important;
 }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
   border:1px solid #e63590;
   background-color: transparent;
-  color:#FE1F92;
+  color:#FFF;
 }
 
 .btn-secondary {
