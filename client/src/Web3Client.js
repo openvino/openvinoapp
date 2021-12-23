@@ -57,7 +57,5 @@ export const mintToken = async () => {
     if (!isInitialized) {
         await init();
     }   // We pass the NFT link (token_uri), going to need to make a request to get that link from API.
-    return SimpleCollectible.methods
-    .createCollectible(token_uri).
-    send({ from: selectedAccount});
+    return SimpleCollectible.methods.createCollectible(token_uri).send({ from: selectedAccount});
 };

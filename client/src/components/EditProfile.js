@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
-import { Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -25,7 +25,7 @@ export default class EditProfile extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-    const currentToken = AuthService.getToken();
+    // const currentToken = AuthService.getToken();
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
   }
@@ -116,7 +116,7 @@ export default class EditProfile extends Component {
 
   render() {
     const { currentUser } = this.state;
-    const { currentToken } = this.state;
+    // const { currentToken } = this.state;
     console.log(currentUser);
 
     if (this.state.redirect) {

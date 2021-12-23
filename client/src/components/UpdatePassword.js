@@ -5,7 +5,6 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
 import { withRouter } from "react-router-dom";
-import { useSearchParams } from 'react';
 
 
 const required = (value) => {

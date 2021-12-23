@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { history } from "react-dom";
 import UserService from "../services/user.service";
 import qrService from "../services/qr.service";
 import Login from "./Login";
 import AuthService from "../services/auth.service";
-import BoardUser from "./UserBoard";
 
 export default class Home extends Component {
   constructor(props) {

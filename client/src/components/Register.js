@@ -26,18 +26,18 @@ const email = (value) => {
   }
 };
 
-const vusername = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        The username must be between 3 and 20 characters.
-      </div>
-    );
-  }
-};
+// const vusername = (value) => {
+//   if (value.length < 3 || value.length > 20) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         The username must be between 3 and 20 characters.
+//       </div>
+//     );
+//   }
+// };
 
 const qrCode = (value) => {
-  if (value == false) {
+  if (value === false) {
     return (
       <div className="alert alert-danger" role="alert">
         Invalid QR Code.

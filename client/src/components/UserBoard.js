@@ -1,9 +1,9 @@
-import React, { Component, useEffect, useState } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
 import ExperienceService from "../services/experience.service";
-import { init, mintToken } from "../Web3Client";
+import { mintToken } from "../Web3Client";
 import { create } from "ipfs-http-client";
 import { Redirect } from "react-router-dom";
 
@@ -109,7 +109,6 @@ export default class BoardUser extends Component {
     try {
       const listSurveys = this.state.experiences.map(
         (surveys) => (
-          console.log(JSON.stringify(surveys.experienceSurvey)),
           // Create JSON file based on experience information
           JSON.stringify(surveys.experienceSurvey)
         )

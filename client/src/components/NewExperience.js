@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import ExperienceService from "../services/experience.service";
 import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
@@ -9,25 +9,25 @@ import { Redirect } from "react-router-dom";
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
+// const required = (value) => {
+//   if (!value) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         This field is required!
+//       </div>
+//     );
+//   }
+// };
 
-const qrCode = (value) => {
-  if (value == false) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        Invalid QR Code.
-      </div>
-    );
-  }
-};
+// const qrCode = (value) => {
+//   if (value === false) {
+//     return (
+//       <div className="alert alert-danger" role="alert">
+//         Invalid QR Code.
+//       </div>
+//     );
+//   }
+// };
 
 class NewExperience extends React.Component {
   constructor(props) {
@@ -220,7 +220,7 @@ class NewExperience extends React.Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
-    if (this.state.qRCodeClaim == true) {
+    if (this.state.qRCodeClaim === true) {
       return (
         <form onSubmit={this.handleSubmit}>
           <div className="col-md-12">
@@ -236,7 +236,7 @@ class NewExperience extends React.Component {
                   />
                 </label>
                 {this.state.ipfsUrl && (
-                  <img src={this.state.ipfsUrl} width="370px" />
+                  <img alt="ipfs-url" src={this.state.ipfsUrl} width="370px" />
                 )}
               </div>
               <div className="form-group">

@@ -49,12 +49,12 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard, test } = this.state;
+    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
       <div>
         <nav className="navbar navbar-expand">
           <Link className="navbar-brand">
-            <img className="logo-header" src={logo} />
+            <img alt="logo" className="logo-header" src={logo} />
           </Link>
           <div className="navbar-nav mr-auto">
             {/* <li className="nav-item">
