@@ -166,7 +166,6 @@ export default class BoardUser extends Component {
     const listItems = this.state.experiences.map((item, index) => (
       <tr key={item.id}>
         <td>{item.date}</td>
-        <td>{item.statusId}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
         <td>
@@ -179,7 +178,7 @@ export default class BoardUser extends Component {
               onClick={() => this.createCollectible(index)}
             >
               {" "}
-              Mint Experience NFT
+              Mint NFT
             </button>
           ) : (
             <p>NFT Minted Succesfully!</p>
@@ -192,12 +191,12 @@ export default class BoardUser extends Component {
         <header className="jumbotron">
           <div className="row">
             <div className="col-md">
-              <h3>Experiences</h3>
+              <h3>Tastings</h3>
             </div>
             <div className="col-md">
-              <Link to={"/app/add-experience"} className="nav-link">
+              <Link to={"/app/add-tasting"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
-                  New Experience
+                  New Tasting
                 </button>
               </Link>
             </div>
@@ -209,7 +208,6 @@ export default class BoardUser extends Component {
               <thead>
                 <tr>
                   <th scope="col">Date</th>
-                  <th scope="col">Status</th>
                   <th scope="col">Token</th>
                   <th scope="col">Token ID</th>
                   <th scope="col">Actions</th>

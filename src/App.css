@@ -7,7 +7,9 @@ label {
   max-width: 450px !important;
   padding: 40px 40px;
 }
-
+body {
+  background:#f1ede2;
+}
 .card {
   background-color: #fff;
   padding: 20px 25px 30px;
@@ -39,7 +41,7 @@ body {
   width:200px;
 }
 .navbar {
-  background-color:#FFF !important;
+  background-color:#f1ede2 !important;
   padding-left: 80px;
   padding-right: 80px;
   box-shadow:1px 1px 10px rgb(42 26 93 / 10%);
@@ -53,28 +55,28 @@ body {
   color:#000;
 }
 .btn-primary {
-  background-image: linear-gradient(#FE1F92, #8A1644);
-  border:1px solid #e63590;
-  background-color:#FE1F92;
+  background-image: #840c4a;
+  border:1px solid #840c4a;
+  background-color:#840c4a;
 }
 .btn-primary:hover {
-  border:1px solid #e63590 !important;
+  border:1px solid #840c4a !important;
   background:transparent;
-  color:#FE1F92 !important;
+  color:#840c4a !important;
 }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
-  border:1px solid #e63590;
+  border:1px solid #840c4a;
   background-color: transparent;
   color:#FFF;
 }
 
 .btn-secondary {
-  background: #FFF;
+  background: #f1ede2;
   border:1px solid #000;
   color:#000;
 }
 .btn-primary.focus, .btn-primary:focus, .btn-primary.active, .btn-primary:active {
-  color: #fff;
+  color: #f1ede2;
   background-color:transparent;
   border-color: transparent;
   box-shadow: none;
@@ -84,6 +86,8 @@ body {
 }
 .login-form h1 {
   line-height: 30px;
+  font-size:28px;
+  font-weight: bold;
 }
 .login-form .subh1 {
   font-size:17px;
@@ -100,7 +104,7 @@ body {
   margin-top:80px;
   padding: 2rem 2rem;
   margin-bottom: 0px;
-  background-image: linear-gradient(#FE1F92, #8A1644);
+  background: #840c4a;
   border-radius: 8px 8px 0px 0px;
   color: #FFF;
   
@@ -112,9 +116,9 @@ label.cameraButton {
   display: inline-block;
     margin: 1em 0;
     padding: 0.5em;
-    border: 1px solid #e63590;
+    border: 1px solid #840c4a;
     background-color: #FFF;
-    color: #e63590;
+    color: #840c4a;
     width: 100%;
     text-align: center;
     padding-top: 10px;

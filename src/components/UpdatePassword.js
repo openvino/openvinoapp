@@ -120,7 +120,7 @@ class UpdatePassword extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-            Reset your password,
+            Reset your password
             <br />
             <span className="subh1">Update and confirm your new password</span>
           </h1>

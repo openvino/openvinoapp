@@ -92,9 +92,8 @@ class ForgotPassword extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-            Reset your password,
-            <br />
-            <span className="subh1">You will receive an email with instructions</span>
+            Reset your password
+            {/* <span className="subh1">You will receive an email with instructions</span> */}
           </h1>
 
           <Form

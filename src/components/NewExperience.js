@@ -318,7 +318,7 @@ class NewExperience extends React.Component {
                 style={{
                   fontSize: "35px",
                   fontWeight: "bold",
-                  color: "#B0195C",
+                  color: "#840c4a",
                   lineHeight: "33px",
                 }}
               >

@@ -82,7 +82,7 @@ class App extends Component {
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/app/user"} className="nav-link">
-                  Experiences
+                  Tastings
                 </Link>
               </li>
             )}
@@ -131,9 +131,9 @@ class App extends Component {
             <Route path="/app/user" component={BoardUser} />
             <Route path="/app/mod" component={BoardModerator} />
             <Route path="/app/admin" component={BoardAdmin} />
-            <Route path="/app/add-experience" component={NewExperience} />
+            <Route path="/app/add-tasting" component={NewExperience} />
             <Route path="/app/edit-profile" component={EditProfile} />
-            <Route path="/app/single-experience" component={SingleExperience} />
+            <Route path="/app/single-tasting" component={SingleExperience} />
             <Route path="/app/forgot-password" component={ForgotPassword} />
             <Route exact path="/app/update-password" component={UpdatePassword} />
             </Switch>

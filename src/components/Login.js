@@ -76,7 +76,7 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.email, this.state.password).then(
         () => {
-          this.props.history.push("/app/add-experience");
+          this.props.history.push("/app/add-tasting");
           window.location.reload();
         },
         (error) => {
@@ -108,9 +108,10 @@ class Login extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-            Welcome,
-            <br />
-            <span className="subh1">Sign in to continue!</span>
+          You Drink it, You Own it!
+          
+            {/* <br />
+            <span className="subh1">Sign in to continue!</span> */}
           </h1>
 
           <Form
@@ -142,7 +143,7 @@ class Login extends Component {
                 validations={[required]}
               />
             </div>
-            <a href="/app/forgot-password" style={{ color:"#FE1F92"}}>Forgot password?</a>
+            <a href="/app/forgot-password" style={{ color:"#840c4a"}}>Forgot password?</a>
             <div className="form-group"><div className="form-group"></div>
               <button
                 className="btn btn-primary btn-block"
