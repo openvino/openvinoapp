@@ -59,7 +59,7 @@ body {
   border:1px solid #840c4a;
   background-color:#840c4a;
 }
-.btn-primary:hover {
+.btn-primary:hover, .btn-primary:focus {
   border:1px solid #840c4a !important;
   background:transparent;
   color:#840c4a !important;
@@ -67,7 +67,7 @@ body {
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
   border:1px solid #840c4a;
   background-color: transparent;
-  color:#FFF;
+  color:#840c4a;
 }
 
 .btn-secondary {

@@ -20,7 +20,7 @@ class ExperienceService {
     userId,
     location,
     qrValue,
-    ipfsUrl
+    photoFileName
   ) {
     const response = await axios.post(
       API_URL + "/experiences",
@@ -29,7 +29,7 @@ class ExperienceService {
         location: location,
         statusId: statusId,
         qrValue: qrValue,
-        ipfsUrl: ipfsUrl, //"https://ipfs.io/ipfs/QmbcKQTe44AYBrfhUypuUapCaQUQAHbWiqGufhR7eoCpwU"
+        photoFileName: photoFileName, //"https://ipfs.io/ipfs/QmbcKQTe44AYBrfhUypuUapCaQUQAHbWiqGufhR7eoCpwU"
         nftGenerated: false,
         userId: userId,
       },
@@ -43,19 +43,26 @@ class ExperienceService {
     return response;
   }
 
- async updateExperience(experienceId, nftGenerated) {
-    const response = axios.patch(
+ async updateExperience(experienceId, nftGenerated, userId ) {
+    const response = await axios.patch(
       API_URL + "/experiences/" + experienceId,
       {
-        experienceId: experienceId,
-        nftGenerated: nftGenerated
+        id: experienceId,
+        nftGenerated: JSON.parse(nftGenerated),
+        userId: userId
       },
       {
         headers: authHeader(),
       }
-    );
+    ).then(
+      (response) => {
+        console.log(response);
 
-    return response;
+      }
+    ).catch((error) => {
+      console.log(error);
+    });
+    // return response;
   }
 
 

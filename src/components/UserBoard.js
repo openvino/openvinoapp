@@ -23,7 +23,7 @@ export default class BoardUser extends Component {
       currentExperiences: [],
       minted: false,
       experienceId: "",
-      ipfsUrl:"",
+      ipfsUrl: "",
       redirect: null,
     };
   }
@@ -42,7 +42,7 @@ export default class BoardUser extends Component {
         currentExperiences: currentExperiences,
       });
     }
-   
+
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -67,11 +67,11 @@ export default class BoardUser extends Component {
         this.setState({
           experiences: response.data,
         });
-        // for (let i = 0; i < response.data.length; i++) {
-        //   this.setState({
-        //     experiencesCount: response.data.length,
-        //   });
-        // }
+        for (let i = 0; i < response.data.length; i++) {
+          this.setState({
+            experiencesCount: response.data.length,
+          });
+        }
       },
       (error) => {
         this.setState({
@@ -84,65 +84,78 @@ export default class BoardUser extends Component {
         });
       }
     );
-    //console.log(this.state.experiences[0].id);
-    // console.log(this.state.experiences[3].experienceSurvey);
-    // const listSurveys = this.state.experiences.map((surveys) => (
-    //   JSON.stringify(surveys.experienceSurvey)
-    // ))
-    // console.log(listSurveys);
+
+    console.log(this.state.experiences);
+    // console.log(this.state.experiencesCount);
   }
-  async onChangeFile(e) {
-    const file = e.target.files[0];
-    try {
-      const added = await client.add(file);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-      this.setState({
-        ipfsUrl: url,
-      });
-      console.log(this.state.ipfsUrl);
-    } catch (error) {
-      console.log("Error uploading file: ", error);
-    }
-  }
+  // async onChangeFile(e) {
+  //   const file = e.target.files[0];
+  //   try {
+  //     const added = await client.add(file);
+  //     const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+  //     this.setState({
+  //       ipfsUrl: url,
+  //     });
+  //     console.log(this.state.ipfsUrl);
+  //   } catch (error) {
+  //     console.log("Error uploading file: ", error);
+  //   }
+  // }
   // Mint Function
+
   async createCollectible(index) {
+    const listSurveys = await this.state.experiences.map((surveys) =>
+      // Create JSON file based on experience information
+      console.log(surveys)
+      // JSON.stringify(surveys.experienceSurvey)
+    );
+      console.log(listSurveys);
+
     try {
-      const listSurveys = this.state.experiences.map(
-        (surveys) => (
-          // Create JSON file based on experience information
-          JSON.stringify(surveys.experienceSurvey)
-        )
-      );
-      const added = await client.add(listSurveys[index]);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const added = (await client.add(listSurveys[index])) || 0;
+      const url = `https://ipfs.infura.io/ipfs/${added.path}` || 0;
+      const finalURL = await url;
       this.setState({
-        ipfsUrlJSON: url,
+        ipfsUrlJSON: finalURL,
         nftGenerated: true,
         experienceId: this.state.experiences[index].id,
       });
-      console.log(this.state.ipfsUrlJSON);
       // Added IPFS URL to LocalStorage.
       localStorage.setItem("ipfsURL", this.state.ipfsUrlJSON);
-      mintToken()
+      // console.log(this.state.ipfsUrlJSON);
+      // console.log(this.state.nftGenerated);
+
+      await mintToken()
         .then((tx) => {
           console.log(tx);
           this.setState({
             minted: true,
           });
           // Removed IPFS from LocalStorage after success minting
-          localStorage.removeItem("ipfsURL");
-          ExperienceService.updateExperience(this.state.experienceId)(
+          ExperienceService.updateExperience(
+            this.state.experienceId,
+            // this.state.ipfsUrlJSON,
             this.state.nftGenerated,
-            this.state.ipfsUrl,
-            this.state.nftURL
-          ).then((response)=> {
-          })
+            this.state.currentUser.id
+          ).then(() => {
+            window.location.reload();
+          });
+          // console.log(this.state.nftGenerated);
+          //localStorage.removeItem("ipfsURL");
         })
         .catch((err) => {
+          // const url = "";
+          // const added = ""
           console.log(err);
+          // console.log(url);
+          // console.log(added);
+          // localStorage.removeItem("ipfsURL");
         });
     } catch (error) {
       console.log("Error uploading file: ", error);
+      localStorage.removeItem("ipfsURL");
+      const finalURL = "";
+      const added = "";
     }
   }
 
