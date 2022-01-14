@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
 import ExperienceService from "../services/experience.service";
-import { mintToken } from "../Web3Client";
+import { mintToken, switchNetwork } from "../Web3Client";
 import { create } from "ipfs-http-client";
 import { Redirect } from "react-router-dom";
 
@@ -42,7 +42,7 @@ export default class BoardUser extends Component {
         currentExperiences: currentExperiences,
       });
     }
-
+    switchNetwork();
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -106,8 +106,8 @@ export default class BoardUser extends Component {
   async createCollectible(index) {
     const listSurveys = await this.state.experiences.map((surveys) =>
       // Create JSON file based on experience information
-      console.log(surveys)
-      // JSON.stringify(surveys.experienceSurvey)
+      //console.log(surveys)
+      JSON.stringify(surveys.experienceSurvey)
     );
       console.log(listSurveys);
 

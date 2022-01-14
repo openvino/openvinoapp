@@ -42,6 +42,8 @@ export const init = async () => {
 
     const networkId = await web3.eth.net.getId();
 
+   
+
     // Smart contract declare + contract address 
     SimpleCollectible = new web3.eth.Contract(
         NFTContractBuild.abi, 
@@ -59,3 +61,16 @@ export const mintToken = async () => {
     }   // We pass the NFT link (token_uri), going to need to make a request to get that link from API.
     return SimpleCollectible.methods.createCollectible(token_uri).send({ from: selectedAccount});
 };
+
+ // targets Rinkeby chain, id 4
+ const targetNetworkId = '0x4';
+
+ // switches network to the one provided
+ export const switchNetwork = async () => {
+   await window.ethereum.request({
+     method: 'wallet_switchEthereumChain',
+     params: [{ chainId: targetNetworkId }],
+   });
+   // refresh
+  //  window.location.reload();
+ };
