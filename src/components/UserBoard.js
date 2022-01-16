@@ -109,7 +109,7 @@ export default class BoardUser extends Component {
       //console.log(surveys)
       JSON.stringify(surveys.experienceSurvey)
     );
-      console.log(listSurveys);
+    console.log(listSurveys);
 
     try {
       const added = (await client.add(listSurveys[index])) || 0;
@@ -201,7 +201,12 @@ export default class BoardUser extends Component {
     ));
     return (
       <div className="container">
-        <header className="jumbotron">
+        <div className="row info-message">
+          <div className="col-md">
+            <p><i className="fas fa-exclamation-triangle"></i> Minting is currently available only on ETH Mainnet. Check your Network on Metamask</p>
+          </div>
+        </div>
+        <header className="jumbotron" id="jumbotron-userboard">
           <div className="row">
             <div className="col-md">
               <h3>Tastings</h3>
