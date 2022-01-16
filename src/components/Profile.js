@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { Link } from "react-router-dom";
+import i18next from "i18next";
 
 export default class Profile extends Component {
   constructor(props) {
@@ -36,13 +37,13 @@ export default class Profile extends Component {
           <div className="row">
             <div className="col-md">
               <h3>
-                <strong>{currentUser.email}</strong> Profile
+                <strong>{currentUser.email}</strong>
               </h3>
             </div>
             <div className="col-md">
               <Link to={"/app/edit-profile"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
-                  Edit Profile
+                  {i18next.t("Edit Profile")}
                 </button>
               </Link>
             </div>
@@ -50,44 +51,44 @@ export default class Profile extends Component {
         </header>
         {this.state.userReady ? (
           <div className="container profile-card">
-            <p>
+            {/* <p>
               <strong>Token:</strong> {currentToken.substring(0, 20)}{" "}
               ...{" "}
               {currentToken.substr(
                 currentToken.length - 20
               )}
+            </p> */}
+            <p>
+              <strong>{i18next.t("Id")}:</strong> {currentUser.id}
             </p>
             <p>
-              <strong>Id:</strong> {currentUser.id}
+              <strong>{i18next.t("Email")}:</strong> {currentUser.email}
             </p>
             <p>
-              <strong>Email:</strong> {currentUser.email}
+              <strong>{i18next.t("First Name")}:</strong> {currentUser.firstName}
             </p>
             <p>
-              <strong>First Name:</strong> {currentUser.firstName}
+              <strong>{i18next.t("Last Name")}:</strong> {currentUser.lastName}
             </p>
             <p>
-              <strong>Last Name:</strong> {currentUser.lastName}
+              <strong>{i18next.t("Mailing Address")}:</strong> {currentUser.address_1}
             </p>
             <p>
-              <strong>Address:</strong> {currentUser.address_1}
+              <strong>{i18next.t("Birthdate")}:</strong> {currentUser.birthDate}
             </p>
             <p>
-              <strong>Birthdate:</strong> {currentUser.birthDate}
+              <strong>{i18next.t("Telegram ID")}:</strong> {currentUser.telegramId}
             </p>
             <p>
-              <strong>Telegram ID:</strong> {currentUser.telegramId}
+              <strong>{i18next.t("DNI/Passport")}:</strong> {currentUser.walletAddress}
             </p>
-            <p>
-              <strong>Wallet Address:</strong> {currentUser.walletAddress}
-            </p>
-            <strong>Authorities:</strong>
+            {/* <strong>Authorities:</strong>
             <ul>
               {currentUser.roles &&
                 currentUser.roles.map((role, index) => (
                   <li key={index}>{role}</li>
                 ))}
-            </ul>
+            </ul> */}
           </div>
         ) : null}
       </div>

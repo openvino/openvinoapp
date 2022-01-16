@@ -6,12 +6,14 @@ import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import qrService from "../services/qr.service";
 import AuthService from "../services/auth.service";
+import i18next from "i18next";
+
 
 const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+         {i18next.t("This field is required!")}
       </div>
     );
   }
@@ -21,7 +23,7 @@ const email = (value) => {
   if (!isEmail(value)) {
     return (
       <div className="alert alert-danger" role="alert">
-        This is not a valid email.
+        {i18next.t("This is not a valid email.")}       
       </div>
     );
   }
@@ -41,7 +43,7 @@ const qrCode = (value) => {
   if (value === false) {
     return (
       <div className="alert alert-danger" role="alert">
-        Invalid QR Code.
+        {i18next.t("Invalid QR Code.")}
       </div>
     );
   }
@@ -51,7 +53,7 @@ const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
     return (
       <div className="alert alert-danger" role="alert">
-        The password must be between 6 and 40 characters.
+        {i18next.t("The password must be between 6 and 40 characters.")}
       </div>
     );
   }
@@ -200,7 +202,7 @@ export default class Register extends Component {
           <h1>
             You Drink it, You Own it!
             <br />
-            <span className="subh1">Register to continue!</span>
+            <span className="subh1">{i18next.t("Register to continue!")}</span>
             <br />
           </h1>
 
@@ -222,7 +224,7 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="firstName">First Name</label>
+                  <label htmlFor="firstName">{i18next.t("First Name")}</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -232,7 +234,7 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="lastName">Last Name</label>
+                  <label htmlFor="lastName">{i18next.t("Last Name")}</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -242,7 +244,7 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="address">Mailing Address</label>
+                  <label htmlFor="address">{i18next.t("Mailing Address")}</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -252,7 +254,7 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="birthDate">Birthdate</label>
+                  <label htmlFor="birthDate">{i18next.t("Birthdate")}</label>
                   <Input
                     type="date"
                     className="form-control"
@@ -262,7 +264,7 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="telegramId">Telegram ID</label>
+                  <label htmlFor="telegramId">{i18next.t("Telegram ID")}</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -272,7 +274,7 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="walletAddress">DNI/Passport</label>
+                  <label htmlFor="walletAddress">{i18next.t("DNI/Passport")}</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -282,12 +284,12 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="nationality">Nationality</label>
+                  <label htmlFor="nationality">{i18next.t("Nationality")}</label>
                   <Select name="city" value="" className="form-control">
                     <option value="  " selected>
-                      Select a country
+                    {i18next.t("Select a country")}
                     </option>
-                    <option value="--">Not Specified</option>
+                    <option value="--">{i18next.t("Not Specified")}</option>
                     <option value="AF">Afghanistan</option>
                     <option value="AL">Albania</option>
                     <option value="DZ">Algeria</option>
@@ -540,7 +542,7 @@ export default class Register extends Component {
                   </Select>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="email">{i18next.t("Email")}</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -551,7 +553,7 @@ export default class Register extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password">{i18next.t("Password")}</label>
                   <Input
                     type="password"
                     className="form-control"
@@ -564,7 +566,7 @@ export default class Register extends Component {
 
                 <div className="form-group">
                   <button className="btn btn-primary btn-block">
-                    Register
+                  {i18next.t("Register")}
                   </button>
                 </div>
               </div>

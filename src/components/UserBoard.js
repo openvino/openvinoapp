@@ -6,6 +6,7 @@ import ExperienceService from "../services/experience.service";
 import { mintToken, switchNetwork } from "../Web3Client";
 import { create } from "ipfs-http-client";
 import { Redirect } from "react-router-dom";
+import i18next from "i18next";
 
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
@@ -191,10 +192,10 @@ export default class BoardUser extends Component {
               onClick={() => this.createCollectible(index)}
             >
               {" "}
-              Mint NFT
+              {i18next.t("Mint NFT")}
             </button>
           ) : (
-            <p>NFT Minted Succesfully!</p>
+            <p>{i18next.t("NFT Minted Succesfully!")}</p>
           )}
         </td>
       </tr>
@@ -203,18 +204,18 @@ export default class BoardUser extends Component {
       <div className="container">
         <div className="row info-message">
           <div className="col-md">
-            <p><i className="fas fa-exclamation-triangle"></i> Minting is currently available only on ETH Mainnet. Check your Network on Metamask</p>
+            <p><i className="fas fa-exclamation-triangle"></i> {i18next.t("Minting is currently available only on ETH Mainnet. Check your Network on Metamask")}</p>
           </div>
         </div>
         <header className="jumbotron" id="jumbotron-userboard">
           <div className="row">
             <div className="col-md">
-              <h3>Tastings</h3>
+              <h3>{i18next.t("Tastings")}</h3>
             </div>
             <div className="col-md">
               <Link to={"/app/add-tasting"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
-                  New Tasting
+                {i18next.t("New Tasting")}
                 </button>
               </Link>
             </div>
@@ -225,10 +226,10 @@ export default class BoardUser extends Component {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Date</th>
-                  <th scope="col">Token</th>
-                  <th scope="col">Token ID</th>
-                  <th scope="col">Actions</th>
+                  <th scope="col">{i18next.t("Date")}</th>
+                  <th scope="col">{i18next.t("Token")}</th>
+                  <th scope="col">{i18next.t("Token ID")}</th>
+                  <th scope="col">{i18next.t("Actions")}</th>
                 </tr>
               </thead>
               <tbody>{listItems}</tbody>

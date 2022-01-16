@@ -9,6 +9,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import TextArea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
+import i18next from "i18next";
 
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
@@ -17,7 +18,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+         {i18next.t("This field is required!")}
       </div>
     );
   }
@@ -238,10 +239,10 @@ class NewExperience extends React.Component {
         >
           <div className="col-md-12">
             <div className="card card-container login-form">
-              <h1>Add New Experience</h1>
+              <h1>{i18next.t("Add New Tasting")}</h1>
               <div className="form-group">
                 <label className="cameraButton">
-                  <i className="fas fa-camera-retro"></i> Take a picture
+                  <i className="fas fa-camera-retro"></i> {i18next.t("Take a picture")}
                   <Input
                     type="file"
                     onChange={this.onChangeFile}
@@ -259,7 +260,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  Are you sharing this bottle with other people? How many?
+                {i18next.t("Are you sharing this bottle with other people? How many?")}
                 </label>
                 <TextArea
                   type="text"
@@ -272,8 +273,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  Did you buy this bottle with crypto? or in a shop or
-                  restaurant? was it a gift?
+                  {i18next.t("Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?")}
                 </label>
                 <TextArea
                   type="text"
@@ -286,7 +286,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  Are you drinking this wine with food? What are you eating?
+                {i18next.t("Are you drinking this wine with food? What are you eating?")}
                 </label>
                 <TextArea
                   type="text"
@@ -299,7 +299,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  Do you like this wine? How would you rank it?
+                {i18next.t("Do you like this wine? How would you rank it?")}
                 </label>
                 <TextArea
                   type="text"
@@ -312,7 +312,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  Do you think we should build a colony on Mars?
+                {i18next.t("Do you think we should build a colony on Mars?")}
                 </label>
                 <TextArea
                   type="text"
@@ -332,7 +332,7 @@ class NewExperience extends React.Component {
                   {this.state.loading && (
                     <span className="spinner-border spinner-border-sm"></span>
                   )}
-                  <span>Register Experience</span>
+                  <span>{i18next.t("Register Tasting")}</span>
                 </button>
               </div>
 
@@ -366,15 +366,14 @@ class NewExperience extends React.Component {
                   lineHeight: "33px",
                 }}
               >
-                SCAN YOUR QR CODE
+                {i18next.t("SCAN YOUR QR CODE")}
               </h1>
               <p
                 style={{
                   marginTop: "20px",
                 }}
               >
-                First, you have to scan the QR Code that is in the reverse of
-                your wine bottle.
+                {i18next.t("First, you have to scan the QR Code that is in the reverse of your wine bottle.")}
               </p>
             </div>
           </div>

@@ -18,6 +18,10 @@ import SingleExperience from "./components/SingleExperience";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdatePassword from "./components/UpdatePassword";
 import i18next from "i18next";
+import i18n from "./i18n";
+import { withTranslation } from "react-i18next";
+import Select from "react-validation/build/select";
+
 
 class App extends Component {
   constructor(props) {
@@ -58,6 +62,9 @@ class App extends Component {
 
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+    };
     return (
       <div>
         <nav className="navbar navbar-expand">
@@ -65,12 +72,27 @@ class App extends Component {
             <img alt="logo" className="logo-header" src={logo} />
           </Link>
           <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+              <button className="item" onClick={() => changeLanguage("es")}>
+                es
+              </button></li>
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("en")}>
+                en
+              </button></li>
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("fr")}>
+                fr
+              </button></li>
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("cat")}>
+                cat
+              </button></li>
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("pr")}>
+                pr
+              </button></li>
             {/* <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
               </Link>
             </li> */}
-
             {showModeratorBoard && (
               <li className="nav-item">
                 <Link to={"/app/mod"} className="nav-link">
@@ -90,12 +112,11 @@ class App extends Component {
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/app/user"} className="nav-link">
-                  Tastings
+                  {i18next.t("Tastings")}
                 </Link>
               </li>
             )}
           </div>
-
           {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
@@ -152,10 +173,9 @@ class App extends Component {
             />
           </Switch>
         </div>
-        
       </div>
     );
   }
 }
 
-export default withRouter(App);
+export default withRouter(withTranslation()(App));

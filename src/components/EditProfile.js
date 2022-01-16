@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import i18next from "i18next";
+
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -128,13 +130,13 @@ export default class EditProfile extends Component {
           <div className="row">
             <div className="col-md">
               <h3>
-                <strong>{currentUser.email}</strong> Edit Profile
+                <strong>{currentUser.email}</strong> {i18next.t("Edit Profile")}
               </h3>
             </div>
             <div className="col-md">
-              <Link to={"/profile"} className="nav-link">
+              <Link to={"/app/profile"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
-                  Back to Profile
+                {i18next.t("Back to Profile")}
                 </button>
               </Link>
             </div>
@@ -151,7 +153,7 @@ export default class EditProfile extends Component {
               {!this.state.successful && (
                 <div>
                   <div className="form-group">
-                    <label htmlFor="firstName">First Name</label>
+                    <label htmlFor="firstName">{i18next.t("First Name")}</label>
                     <Input
                       type="text"
                       className="form-control"
@@ -162,7 +164,7 @@ export default class EditProfile extends Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="lastName">Last Name</label>
+                    <label htmlFor="lastName">{i18next.t("Last Name")}</label>
                     <Input
                       type="text"
                       className="form-control"
@@ -173,7 +175,7 @@ export default class EditProfile extends Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="address">Address</label>
+                    <label htmlFor="address">{i18next.t("Mailing Address")}</label>
                     <Input
                       type="text"
                       className="form-control"
@@ -184,7 +186,7 @@ export default class EditProfile extends Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="birthDate">Birthdate</label>
+                    <label htmlFor="birthDate">{i18next.t("Birthdate")}</label>
                     <Input
                       type="date"
                       className="form-control"
@@ -195,7 +197,7 @@ export default class EditProfile extends Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="telegramId">Telegram ID</label>
+                    <label htmlFor="telegramId">{i18next.t("Telegram ID")}</label>
                     <Input
                       type="text"
                       className="form-control"
@@ -206,7 +208,7 @@ export default class EditProfile extends Component {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="walletAddress">Wallet Address</label>
+                    <label htmlFor="walletAddress">{i18next.t("DNI/Passport")}</label>
                     <Input
                       type="text"
                       className="form-control"
@@ -218,7 +220,7 @@ export default class EditProfile extends Component {
                   </div>
                   <div className="form-group">
                     <button className="btn btn-primary btn-block">
-                      Update
+                    {i18next.t("Update")}
                     </button>
                   </div>
                 </div>
