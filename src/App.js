@@ -17,7 +17,7 @@ import EditProfile from "./components/EditProfile";
 import SingleExperience from "./components/SingleExperience";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdatePassword from "./components/UpdatePassword";
-
+import i18next from "i18next";
 
 class App extends Component {
   constructor(props) {
@@ -28,10 +28,10 @@ class App extends Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
-      test:'',
+      test: "",
+      value: "en",
     };
   }
-
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
@@ -47,6 +47,14 @@ class App extends Component {
   logOut() {
     AuthService.logout();
   }
+
+  handleChange = (event) => {
+    console.log("selected val is ", event.target.value);
+    let newlang = event.target.value;
+    this.setState((prevState) => ({ value: newlang }));
+    console.log("state value is", newlang);
+    this.props.i18n.changeLanguage(newlang);
+  };
 
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
@@ -105,14 +113,16 @@ class App extends Component {
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/app/login"} className="nav-link">
-                  <button className="btn btn-primary btn-block">Login</button>
+                  <button className="btn btn-primary btn-block">
+                    {i18next.t("Login")}
+                  </button>
                 </Link>
               </li>
 
               <li className="nav-item">
                 <Link to={"/app/register"} className="nav-link">
                   <button className="btn btn-secondary btn-block">
-                    Register
+                    {i18next.t("Register")}
                   </button>
                 </Link>
               </li>
@@ -135,9 +145,14 @@ class App extends Component {
             <Route path="/app/edit-profile" component={EditProfile} />
             <Route path="/app/single-tasting" component={SingleExperience} />
             <Route path="/app/forgot-password" component={ForgotPassword} />
-            <Route exact path="/app/update-password" component={UpdatePassword} />
-            </Switch>
+            <Route
+              exact
+              path="/app/update-password"
+              component={UpdatePassword}
+            />
+          </Switch>
         </div>
+        
       </div>
     );
   }

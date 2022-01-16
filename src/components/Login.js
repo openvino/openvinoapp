@@ -5,12 +5,13 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
 import { withRouter } from "react-router-dom";
+import i18next from "i18next";
 
 const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        {i18next.t("This field is required!")}
       </div>
     );
   }
@@ -108,8 +109,8 @@ class Login extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-          You Drink it, You Own it!
-          
+          {i18next.t("You Drink it, You Own it!")}
+
             {/* <br />
             <span className="subh1">Sign in to continue!</span> */}
           </h1>
@@ -121,7 +122,7 @@ class Login extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{i18next.t("Email")}</label>
               <Input
                 type="text"
                 className="form-control"
@@ -133,7 +134,7 @@ class Login extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{i18next.t("Password")}</label>
               <Input
                 type="password"
                 className="form-control"
@@ -143,7 +144,7 @@ class Login extends Component {
                 validations={[required]}
               />
             </div>
-            <a href="/app/forgot-password" style={{ color:"#840c4a"}}>Forgot password?</a>
+            <a href="/app/forgot-password" style={{ color:"#840c4a"}}>{i18next.t("Forgot Password?")}</a>
             <div className="form-group"><div className="form-group"></div>
               <button
                 className="btn btn-primary btn-block"
@@ -152,7 +153,7 @@ class Login extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Login</span>
+                <span>{i18next.t("Login")}</span>
               </button>
             </div>
 
