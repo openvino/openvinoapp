@@ -6,6 +6,7 @@ i18n.use(LanguageDetector).init({
   resources: {
     en: {
       translations: {
+        "Coming Soon": "Coming Soon",
         Login: "Login",
         Register: "Register",
         "You Drink it, You Own it!": "You Drink it, You Own it!",
@@ -60,6 +61,7 @@ i18n.use(LanguageDetector).init({
     },
     es: {
       translations: {
+        "Coming Soon": "Proximamente",
         Login: "Iniciar Sesión",
         Register: "Registro",
         "You Drink it, You Own it!": "You Drink it, You Own it!",
@@ -113,6 +115,7 @@ i18n.use(LanguageDetector).init({
     },
     fr: {
         translations: {
+          "Coming Soon": "À venir",
           Login: "Iniciar Sesión",
           Register: "Registre",
           "You Drink it, You Own it!": "You Drink it, You Own it!",
@@ -164,6 +167,7 @@ i18n.use(LanguageDetector).init({
       },
       cat: {
         translations: {
+          "Coming Soon": "Aviat",
           Login: "Connexió",
           Register: "Registrar",
           "You Drink it, You Own it!": "You Drink it, You Own it!",
@@ -215,6 +219,7 @@ i18n.use(LanguageDetector).init({
       },
       pr: {
         translations: {
+          "Coming Soon": "Brevemente",
           Login: "Entrar",
           Register: "Registe-se",
           "You Drink it, You Own it!": "You Drink it, You Own it!",

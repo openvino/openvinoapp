@@ -182,7 +182,8 @@ export default class BoardUser extends Component {
         <td>{item.date}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
-        <td>
+        <td>{i18next.t("Coming Soon")}</td>
+        {/* <td>
           {!item.nftGenerated ? (
             <button
               tabIndex={index}
@@ -197,7 +198,7 @@ export default class BoardUser extends Component {
           ) : (
             <p>{i18next.t("NFT Minted Succesfully!")}</p>
           )}
-        </td>
+        </td> */}
       </tr>
     ));
     return (
