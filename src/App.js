@@ -94,11 +94,11 @@ class App extends Component {
               </button></li>
         </div>
         </nav>
-        <nav className="navbar navbar-expand">
+        <nav className="navbar navbar-expand" id="header">
           <Link to={"#"} className="navbar-brand">
             <img alt="logo" className="logo-header" src={logo} />
           </Link>
-          <div className="navbar-nav mr-auto">
+          <div className="navbar-nav mr-auto mobile-nav">
             {/* <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
@@ -129,7 +129,7 @@ class App extends Component {
             )}
           </div>
           {currentUser ? (
-            <div className="navbar-nav ml-auto">
+            <div className="navbar-nav ml-auto mobile-nav">
               <li className="nav-item">
                 <Link to={"/app/profile"} className="nav-link">
                   <i className="far fa-user-circle"></i> {currentUser.username}

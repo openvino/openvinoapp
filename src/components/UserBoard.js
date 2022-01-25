@@ -221,7 +221,7 @@ export default class BoardUser extends Component {
             </div>
           </div>
         </header>
-        <div className="container profile-card">
+        <div className="container tastings-card">
           <div className="table-responsive-sm">
             <table className="table">
               <thead>

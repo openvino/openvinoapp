@@ -105,6 +105,12 @@ body {
   margin-top: 0px;
   border-radius: 0px 0px 8px 8px;
 }
+.tastings-card {
+  box-shadow: 1px 1px 10px rgb(42 26 93 / 10%);
+  padding: 60px;
+  margin-top: 0px;
+  border-radius: 0px 0px 8px 8px;
+}
 .jumbotron {
   margin-top: 80px;
   padding: 2rem 2rem;
@@ -161,7 +167,7 @@ label.cameraButton input[accept*="camera"] {
 .language-selector li {
   display: inline-block;
   list-style: none;
-  color:white;
+  color: white;
 }
 .language-selector button {
   border: 0px;
@@ -175,7 +181,168 @@ label.cameraButton input[accept*="camera"] {
   background: #840c4a !important;
 }
 .language-selector button:focus {
-  outline:none;
+  outline: none;
+}
+/* 
+    Generic Styling, for Desktops/Laptops 
+    */
+    
+    /* 
+  Max width before this PARTICULAR table gets nasty
+  This query will take effect for any screen smaller than 760px
+  and also iPads specifically.
+  */
+    @media only screen and (max-width: 760px),
+      (min-device-width: 768px) and (max-device-width: 1024px) {
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+          background: #f9f5e7;
+        }
+        th {
+          background: #002e54;
+          color: white;
+          font-weight: 600;
+          font-family: 'sofia-pro', Sans-serif;
+        }
+        td,
+        th {
+          padding: 6px;
+          border: 1px solid #eee;
+          text-align: left;
+          font-size:14px;
+        }
+      /* Force table to not be like tables anymore */
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+  
+      /* Hide table headers (but not display: none;, for accessibility) */
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+  
+      tr {
+      }
+      .tastings-card {
+        background:transparent !important;
+        padding:0px !important;
+      }
+      td {
+        /* Behave  like a "row" */
+        border: none;
+        position: relative;
+        padding-left: 50% !important;
+      }
+  
+      td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        color: #333;
+        font-weight: bold;
+      }
+  
+      /*
+      Label the data
+      */
+      td:nth-of-type(1):before {
+        content: "Date";
+        top:12px;
+      }
+      td:nth-of-type(2):before {
+        content: "Token";
+        top:12px;
+
+      }
+      td:nth-of-type(3):before {
+        content: "Token ID";
+        top:12px;
+
+      }
+      td:nth-of-type(4):before {
+        content: "Actions";
+        top:12px;
+
+      }
+
+    }
+@media (max-width: 1024px) {
+  #header {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  #header .navbar-brand {
+    margin-right: 0px;
+  }
+  #top-header .language-selector {
+    text-align: center;
+  }
+  .card-container.card {
+    margin-top: 50px;
+  }
+  #header .mobile-nav {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+  #jumbotron-userboard {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  #jumbotron-userboard .row {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+  .jumbotron {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .jumbotron .row {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+  .new-experience-button {
+    float: none;
+  }
 }
 @media (max-width: 475px) {
   .logo-header {
