@@ -154,7 +154,29 @@ label.cameraButton:active {
 label.cameraButton input[accept*="camera"] {
   display: none;
 }
-
+.language-selector {
+  width: 100%;
+  text-align: right;
+}
+.language-selector li {
+  display: inline-block;
+  list-style: none;
+  color:white;
+}
+.language-selector button {
+  border: 0px;
+  background: transparent;
+  color: white;
+  font-size: 14px;
+}
+#top-header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #840c4a !important;
+}
+.language-selector button:focus {
+  outline:none;
+}
 @media (max-width: 475px) {
   .logo-header {
     width: 150px;

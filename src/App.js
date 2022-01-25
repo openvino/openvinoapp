@@ -67,27 +67,38 @@ class App extends Component {
     };
     return (
       <div>
+        <nav className="navbar navbar-expand" id="top-header">
+        <div className="language-selector">
+        <li className="nav-item">
+              <button className="item" onClick={() => changeLanguage("es")}>
+                ES
+              </button></li>
+              <li className="nav-item">|</li>
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("en")}>
+                EN
+              </button></li>
+              <li className="nav-item">|</li>
+
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("fr")}>
+                FR
+              </button></li>
+              <li className="nav-item">|</li>
+
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("cat")}>
+                CAT
+              </button></li>
+              <li className="nav-item">|</li>
+
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("pr")}>
+                PR
+              </button></li>
+        </div>
+        </nav>
         <nav className="navbar navbar-expand">
           <Link to={"#"} className="navbar-brand">
             <img alt="logo" className="logo-header" src={logo} />
           </Link>
           <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-              <button className="item" onClick={() => changeLanguage("es")}>
-                es
-              </button></li>
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("en")}>
-                en
-              </button></li>
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("fr")}>
-                fr
-              </button></li>
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("cat")}>
-                cat
-              </button></li>
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("pr")}>
-                pr
-              </button></li>
             {/* <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
