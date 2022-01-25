@@ -8,9 +8,13 @@ maxUnavailable: 40%
 
 port: 3000
 
+envs:
+  - name: APPLICATION_URL
+    value: "https://nft.openvino.org"
+
 image:
   repository: luisvid/ydiyoi-front
-  tag: 14
+  tag: 20
   pullPolicy: IfNotPresent
 
 service:
@@ -62,7 +66,7 @@ resources:
  
 # Horizontal Pod Autoscaler
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 3
   maxReplicas: 9
   cpu:
