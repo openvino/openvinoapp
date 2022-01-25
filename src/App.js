@@ -17,6 +17,10 @@ import EditProfile from "./components/EditProfile";
 import SingleExperience from "./components/SingleExperience";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdatePassword from "./components/UpdatePassword";
+import i18next from "i18next";
+import i18n from "./i18n";
+import { withTranslation } from "react-i18next";
+import Select from "react-validation/build/select";
 
 
 class App extends Component {
@@ -28,10 +32,10 @@ class App extends Component {
       showModeratorBoard: false,
       showAdminBoard: false,
       currentUser: undefined,
-      test:'',
+      test: "",
+      value: "en",
     };
   }
-
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
@@ -48,21 +52,58 @@ class App extends Component {
     AuthService.logout();
   }
 
+  handleChange = (event) => {
+    console.log("selected val is ", event.target.value);
+    let newlang = event.target.value;
+    this.setState((prevState) => ({ value: newlang }));
+    console.log("state value is", newlang);
+    this.props.i18n.changeLanguage(newlang);
+  };
+
   render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+    };
     return (
       <div>
-        <nav className="navbar navbar-expand">
+        <nav className="navbar navbar-expand" id="top-header">
+        <div className="language-selector">
+        <li className="nav-item">
+              <button className="item" onClick={() => changeLanguage("es")}>
+                ES
+              </button></li>
+              <li className="nav-item">|</li>
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("en")}>
+                EN
+              </button></li>
+              <li className="nav-item">|</li>
+
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("fr")}>
+                FR
+              </button></li>
+              <li className="nav-item">|</li>
+
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("cat")}>
+                CAT
+              </button></li>
+              <li className="nav-item">|</li>
+
+              <li className="nav-item"><button className="item" onClick={() => changeLanguage("pr")}>
+                PR
+              </button></li>
+        </div>
+        </nav>
+        <nav className="navbar navbar-expand" id="header">
           <Link to={"#"} className="navbar-brand">
             <img alt="logo" className="logo-header" src={logo} />
           </Link>
-          <div className="navbar-nav mr-auto">
+          <div className="navbar-nav mr-auto mobile-nav">
             {/* <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
               </Link>
             </li> */}
-
             {showModeratorBoard && (
               <li className="nav-item">
                 <Link to={"/app/mod"} className="nav-link">
@@ -82,14 +123,13 @@ class App extends Component {
             {currentUser && (
               <li className="nav-item">
                 <Link to={"/app/user"} className="nav-link">
-                  Experiences
+                  {i18next.t("Tastings")}
                 </Link>
               </li>
             )}
           </div>
-
           {currentUser ? (
-            <div className="navbar-nav ml-auto">
+            <div className="navbar-nav ml-auto mobile-nav">
               <li className="nav-item">
                 <Link to={"/app/profile"} className="nav-link">
                   <i className="far fa-user-circle"></i> {currentUser.username}
@@ -105,14 +145,16 @@ class App extends Component {
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/app/login"} className="nav-link">
-                  <button className="btn btn-primary btn-block">Login</button>
+                  <button className="btn btn-primary btn-block">
+                    {i18next.t("Login")}
+                  </button>
                 </Link>
               </li>
 
               <li className="nav-item">
                 <Link to={"/app/register"} className="nav-link">
                   <button className="btn btn-secondary btn-block">
-                    Register
+                    {i18next.t("Register")}
                   </button>
                 </Link>
               </li>
@@ -131,16 +173,20 @@ class App extends Component {
             <Route path="/app/user" component={BoardUser} />
             <Route path="/app/mod" component={BoardModerator} />
             <Route path="/app/admin" component={BoardAdmin} />
-            <Route path="/app/add-experience" component={NewExperience} />
+            <Route path="/app/add-tasting" component={NewExperience} />
             <Route path="/app/edit-profile" component={EditProfile} />
-            <Route path="/app/single-experience" component={SingleExperience} />
+            <Route path="/app/single-tasting" component={SingleExperience} />
             <Route path="/app/forgot-password" component={ForgotPassword} />
-            <Route exact path="/app/update-password" component={UpdatePassword} />
-            </Switch>
+            <Route
+              exact
+              path="/app/update-password"
+              component={UpdatePassword}
+            />
+          </Switch>
         </div>
       </div>
     );
   }
 }
 
-export default withRouter(App);
+export default withRouter(withTranslation()(App));

@@ -5,13 +5,13 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
 import { withRouter } from "react-router-dom";
-
+import i18next from "i18next";
 
 const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        {i18next.t("This field is required!")}
       </div>
     );
   }
@@ -19,20 +19,19 @@ const required = (value) => {
 
 
 
-class UpdatePassword extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
-    this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
     this.state = {
       email: "",
       password: "",
-      confirmPassword: "",
       loading: false,
       message: "",
-      userReady: false,
-      resetkey: ""
+      currentUser: { email: "" },
+      userReady: false
     };
   }
 
@@ -44,10 +43,6 @@ class UpdatePassword extends Component {
     //console.log(qrService.getQRClaimed());
     qrService.getallowClaim();
     qrService.getQRClaimed();
-    const searchParams = window.location.search;
-    const params = new URLSearchParams(searchParams)
-    const reset = params.get('resetKey')
-    this.setState({ resetkey: reset})
     //this.setState({ qrValue: qrValid});
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
@@ -69,12 +64,6 @@ class UpdatePassword extends Component {
     });
   }
 
-  onChangeConfirmPassword(e) {
-    this.setState({
-      confirmPassword: e.target.value,
-    });
-  }
-
   handleLogin(e) {
     e.preventDefault();
 
@@ -86,9 +75,9 @@ class UpdatePassword extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.updatePassword(this.state.resetkey, this.state.password, this.state.confirmPassword).then(
+      AuthService.login(this.state.email, this.state.password).then(
         () => {
-          this.props.history.push("/app/add-experience");
+          this.props.history.push("/app/add-tasting");
           window.location.reload();
         },
         (error) => {
@@ -120,9 +109,10 @@ class UpdatePassword extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-            Reset your password,
-            <br />
-            <span className="subh1">Update and confirm your new password</span>
+          {i18next.t("You Drink it, You Own it!")}
+
+            {/* <br />
+            <span className="subh1">Sign in to continue!</span> */}
           </h1>
 
           <Form
@@ -132,7 +122,19 @@ class UpdatePassword extends Component {
             }}
           >
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="email">{i18next.t("Email")}</label>
+              <Input
+                type="text"
+                className="form-control"
+                name="email"
+                value={this.state.email}
+                onChange={this.onChangeEmail}
+                validations={[required]}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">{i18next.t("Password")}</label>
               <Input
                 type="password"
                 className="form-control"
@@ -142,17 +144,7 @@ class UpdatePassword extends Component {
                 validations={[required]}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Confirm Password</label>
-              <Input
-                type="password"
-                className="form-control"
-                name="password"
-                value={this.state.confirmPassword}
-                onChange={this.onChangeConfirmPassword}
-                validations={[required]}
-              />
-            </div>
+            <a href="/app/forgot-password" style={{ color:"#840c4a"}}>{i18next.t("Forgot Password?")}</a>
             <div className="form-group"><div className="form-group"></div>
               <button
                 className="btn btn-primary btn-block"
@@ -161,7 +153,7 @@ class UpdatePassword extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Update Password</span>
+                <span>{i18next.t("Login")}</span>
               </button>
             </div>
 
@@ -185,4 +177,4 @@ class UpdatePassword extends Component {
   }
 }
 
-export default withRouter(UpdatePassword);
+export default withRouter(Login);

@@ -6,6 +6,7 @@ import AuthService from "../services/auth.service";
 import qrService from "../services/qr.service";
 import { withRouter } from "react-router-dom";
 
+
 const required = (value) => {
   if (!value) {
     return (
@@ -18,19 +19,20 @@ const required = (value) => {
 
 
 
-class Login extends Component {
+class UpdatePassword extends Component {
   constructor(props) {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
     this.state = {
       email: "",
       password: "",
+      confirmPassword: "",
       loading: false,
       message: "",
-      currentUser: { email: "" },
-      userReady: false
+      userReady: false,
+      resetkey: ""
     };
   }
 
@@ -42,6 +44,10 @@ class Login extends Component {
     //console.log(qrService.getQRClaimed());
     qrService.getallowClaim();
     qrService.getQRClaimed();
+    const searchParams = window.location.search;
+    const params = new URLSearchParams(searchParams)
+    const reset = params.get('resetKey')
+    this.setState({ resetkey: reset})
     //this.setState({ qrValue: qrValid});
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
@@ -63,6 +69,12 @@ class Login extends Component {
     });
   }
 
+  onChangeConfirmPassword(e) {
+    this.setState({
+      confirmPassword: e.target.value,
+    });
+  }
+
   handleLogin(e) {
     e.preventDefault();
 
@@ -74,7 +86,7 @@ class Login extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.email, this.state.password).then(
+      AuthService.updatePassword(this.state.resetkey, this.state.password, this.state.confirmPassword).then(
         () => {
           this.props.history.push("/app/add-experience");
           window.location.reload();
@@ -108,9 +120,9 @@ class Login extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-            Welcome,
+            Reset your password
             <br />
-            <span className="subh1">Sign in to continue!</span>
+            <span className="subh1">Update and confirm your new password</span>
           </h1>
 
           <Form
@@ -119,18 +131,6 @@ class Login extends Component {
               this.form = c;
             }}
           >
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <Input
-                type="text"
-                className="form-control"
-                name="email"
-                value={this.state.email}
-                onChange={this.onChangeEmail}
-                validations={[required]}
-              />
-            </div>
-
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <Input
@@ -142,7 +142,17 @@ class Login extends Component {
                 validations={[required]}
               />
             </div>
-            <a href="/app/forgot-password" style={{ color:"#FE1F92"}}>Forgot password?</a>
+            <div className="form-group">
+              <label htmlFor="password">Confirm Password</label>
+              <Input
+                type="password"
+                className="form-control"
+                name="password"
+                value={this.state.confirmPassword}
+                onChange={this.onChangeConfirmPassword}
+                validations={[required]}
+              />
+            </div>
             <div className="form-group"><div className="form-group"></div>
               <button
                 className="btn btn-primary btn-block"
@@ -151,7 +161,7 @@ class Login extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Login</span>
+                <span>Update Password</span>
               </button>
             </div>
 
@@ -175,4 +185,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default withRouter(UpdatePassword);
