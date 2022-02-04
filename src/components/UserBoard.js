@@ -112,6 +112,27 @@ export default class BoardUser extends Component {
     );
     console.log(listSurveys);
 
+    let state = {
+                name: "MTB18",
+                 description: [
+                "Are you sharing this bottle with other people? How many? " + `${this.state.answer1}`,
+                "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " + `${this.state.answer2}`,
+                "Are you drinking this wine with food? What are you eating? " + `${this.state.answer3}`,
+                "Do you like this wine? How would you rank it? " + `${this.state.answer4}`,
+                "Do you think we should build a colony on Mars? " + `${this.state.answer5}`,
+                ],
+                 image:
+                "https://ipfs.io/ipfs/QmPbZo9n82xw8owUqT1hLSjvn3oYDpkLpt9yRMSpivtgZS",
+                 attributes: [
+                 {
+                trait_type: "Rating",
+                 value: 80,
+                },
+                 ],
+                };
+    console.log(state);
+    console.log(JSON.stringify(state))
+
     try {
       const added = (await client.add(listSurveys[index])) || 0;
       const url = `https://ipfs.infura.io/ipfs/${added.path}` || 0;
@@ -154,7 +175,7 @@ export default class BoardUser extends Component {
         });
     } catch (error) {
       console.log("Error uploading file: ", error);
-      localStorage.removeItem("ipfsURL");
+      //localStorage.removeItem("ipfsURL");
       const finalURL = "";
       const added = "";
     }
@@ -182,8 +203,8 @@ export default class BoardUser extends Component {
         <td>{item.date}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue}</td>
-        <td>{i18next.t("Coming Soon")}</td>
-        {/* <td>
+        {/* <td>{i18next.t("Coming Soon")}</td> */}
+        <td>
           {!item.nftGenerated ? (
             <button
               tabIndex={index}
@@ -198,7 +219,7 @@ export default class BoardUser extends Component {
           ) : (
             <p>{i18next.t("NFT Minted Succesfully!")}</p>
           )}
-        </td> */}
+        </td>
       </tr>
     ));
     return (
