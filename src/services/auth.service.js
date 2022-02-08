@@ -3,6 +3,7 @@ import axios from "axios";
 const API_URL = "http://143.198.152.77" 
  
 
+
 class AuthService {
   async login(email, password) {
     const response = await axios
