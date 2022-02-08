@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://143.198.152.77" 
+// const API_URL = "http://143.198.152.77" 
+const API_URL = process.env.APPLICATION_URL;
 
 class QrService {
 
