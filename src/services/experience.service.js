@@ -20,7 +20,8 @@ class ExperienceService {
     userId,
     location,
     qrValue,
-    photoFileName
+    photoFileName,
+    ipfsUrl
   ) {
     const response = await axios.post(
       API_URL + "/experiences",
@@ -32,6 +33,7 @@ class ExperienceService {
         photoFileName: photoFileName, //"https://ipfs.io/ipfs/QmbcKQTe44AYBrfhUypuUapCaQUQAHbWiqGufhR7eoCpwU"
         nftGenerated: false,
         userId: userId,
+        ipfsUrl: ipfsUrl
       },
       {
         headers: authHeader(),

@@ -39,7 +39,6 @@ class NewExperience extends React.Component {
     super(props);
     this.onChangeFile = this.onChangeFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.onChange = this.onChange.bind(this);
 
     this.state = {
       ipfsUrl: "",
@@ -131,9 +130,10 @@ class NewExperience extends React.Component {
         this.state.userId,
         this.state.location,
         this.state.qrValue,
-        this.state.photoFileName
+        this.state.photoFileName,
+        this.state.ipfsUrl
       ).then(
-        (response) => {
+        async (response) => {
           //this.props.history.push("/app/user");
           //window.location.reload();
           //valido el status de la respuesta para saber si la experiencia se grabó correctamente
@@ -150,7 +150,7 @@ class NewExperience extends React.Component {
             // la grabación esta dentro de la búsqueda solo para que se realicen en ese orden sincrónico
             let arrQuestions = [];
             ExperienceService.getQuestions().then(
-              (response) => {
+              async (response) => {
                 // transformo el json a un array
                 arrQuestions.push(response.data[0].question1);
                 arrQuestions.push(response.data[0].question2);
@@ -209,7 +209,7 @@ class NewExperience extends React.Component {
                   this.setState({
                     ipfsUrlJson: url,
                   });
-                  console.log(this.state.photoFileName);
+                  console.log(this.state.ipfsUrlJson);
                 } catch (error) {
                   console.log("Error uploading file: ", error);
                 }
@@ -251,7 +251,7 @@ class NewExperience extends React.Component {
     if (this.state.qRCodeClaim === true) {
       return (
         <Form
-          onSubmit={(this.handleSubmit, this.onChangeIPFS)}
+          onSubmit={(this.handleSubmit)}
           ref={(c) => {
             this.form = c;
           }}

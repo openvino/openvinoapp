@@ -65,7 +65,6 @@ export default class BoardUser extends Component {
     );
     await ExperienceService.getExperiences(currentUser.id).then(
       (response) => {
-        console.log(response.data[0].experienceSurvey);
         this.setState({
           experiences: response.data,
         });
