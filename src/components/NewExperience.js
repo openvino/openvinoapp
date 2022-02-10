@@ -18,7 +18,7 @@ const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-         {i18next.t("This field is required!")}
+        {i18next.t("This field is required!")}
       </div>
     );
   }
@@ -39,9 +39,11 @@ class NewExperience extends React.Component {
     super(props);
     this.onChangeFile = this.onChangeFile.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onChange = this.onChange.bind(this);
 
     this.state = {
       ipfsUrl: "",
+      ipfsUrlJson: "",
       qrValue: "",
       photoFileName: "",
       statusId: 5,
@@ -132,10 +134,8 @@ class NewExperience extends React.Component {
         this.state.photoFileName
       ).then(
         (response) => {
-          // *** comento para que no me refresque pa pàgina y pueda ver la consola ***
-          this.props.history.push("/app/user");
-          window.location.reload();
-          console.log(response);
+          //this.props.history.push("/app/user");
+          //window.location.reload();
           //valido el status de la respuesta para saber si la experiencia se grabó correctamente
           if (response.data.status) {
             // la experiencia se grabó exitosamente
@@ -174,26 +174,45 @@ class NewExperience extends React.Component {
                 );
                 localStorage.removeItem("qrCodeT");
                 localStorage.removeItem("allowClaim");
-                // let state = {
-                //   name: "MTB18",
-                //   description: [
-                //     "Are you sharing this bottle with other people? How many? " + `${this.state.answer1}`,
-                //     "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " + `${this.state.answer2}`,
-                //     "Are you drinking this wine with food? What are you eating? " + `${this.state.answer3}`,
-                //     "Do you like this wine? How would you rank it? " + `${this.state.answer4}`,
-                //     "Do you think we should build a colony on Mars? " + `${this.state.answer5}`,
-                //   ],
-                //   image:
-                //     "https://ipfs.io/ipfs/QmPbZo9n82xw8owUqT1hLSjvn3oYDpkLpt9yRMSpivtgZS",
-                //   attributes: [
-                //     {
-                //       trait_type: "Rating",
-                //       value: 80,
-                //     },
-                //   ],
-                // };
-                // console.log(state);
-                // console.log(JSON.stringify(state))
+                let state = {
+                  name: "MTB18",
+                  description: [
+                    "Are you sharing this bottle with other people? How many? " +
+                      `${this.state.answer1}`,
+                    "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " +
+                      `${this.state.answer2}`,
+                    "Are you drinking this wine with food? What are you eating? " +
+                      `${this.state.answer3}`,
+                    "Do you like this wine? How would you rank it? " +
+                      `${this.state.answer4}`,
+                    "Do you think we should build a colony on Mars? " +
+                      `${this.state.answer5}`,
+                  ],
+                  image: this.state.photoFileName,
+                  attributes: [
+                    {
+                      trait_type: "Rating",
+                      value: 80,
+                    },
+                  ],
+                };
+                console.log(state);
+                const toIPFS = JSON.stringify(state);
+                this.setState({
+                  ipfsUrl: toIPFS,
+                });
+                console.log(this.state.ipfsUrl);
+                const file = this.state.ipfsUrl
+                try {
+                  const added = await client.add(file);
+                  const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+                  this.setState({
+                    ipfsUrlJson: url,
+                  });
+                  console.log(this.state.photoFileName);
+                } catch (error) {
+                  console.log("Error uploading file: ", error);
+                }
               },
               (error) => {
                 console.log(error.toString());
@@ -232,7 +251,7 @@ class NewExperience extends React.Component {
     if (this.state.qRCodeClaim === true) {
       return (
         <Form
-          onSubmit={this.handleSubmit}
+          onSubmit={(this.handleSubmit, this.onChangeIPFS)}
           ref={(c) => {
             this.form = c;
           }}
@@ -242,7 +261,8 @@ class NewExperience extends React.Component {
               <h1>{i18next.t("Add New Tasting")}</h1>
               <div className="form-group">
                 <label className="cameraButton">
-                  <i className="fas fa-camera-retro"></i> {i18next.t("Take a picture")}
+                  <i className="fas fa-camera-retro"></i>{" "}
+                  {i18next.t("Take a picture")}
                   <Input
                     type="file"
                     onChange={this.onChangeFile}
@@ -260,7 +280,9 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                {i18next.t("Are you sharing this bottle with other people? How many?")}
+                  {i18next.t(
+                    "Are you sharing this bottle with other people? How many?"
+                  )}
                 </label>
                 <TextArea
                   type="text"
@@ -273,7 +295,9 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  {i18next.t("Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?")}
+                  {i18next.t(
+                    "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?"
+                  )}
                 </label>
                 <TextArea
                   type="text"
@@ -286,7 +310,9 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                {i18next.t("Are you drinking this wine with food? What are you eating?")}
+                  {i18next.t(
+                    "Are you drinking this wine with food? What are you eating?"
+                  )}
                 </label>
                 <TextArea
                   type="text"
@@ -299,7 +325,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                {i18next.t("Do you like this wine? How would you rank it?")}
+                  {i18next.t("Do you like this wine? How would you rank it?")}
                 </label>
                 <TextArea
                   type="text"
@@ -312,7 +338,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                {i18next.t("Do you think we should build a colony on Mars?")}
+                  {i18next.t("Do you think we should build a colony on Mars?")}
                 </label>
                 <TextArea
                   type="text"
@@ -373,7 +399,9 @@ class NewExperience extends React.Component {
                   marginTop: "20px",
                 }}
               >
-                {i18next.t("First, you have to scan the QR Code that is in the reverse of your wine bottle.")}
+                {i18next.t(
+                  "First, you have to scan the QR Code that is in the reverse of your wine bottle."
+                )}
               </p>
             </div>
           </div>
