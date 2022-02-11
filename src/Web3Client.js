@@ -77,19 +77,4 @@ export const switchNetwork = async () => {
     method: "wallet_switchEthereumChain",
     params: [{ chainId: targetNetworkId }],
   });
-  if (window.localStorage) {
-    // If there is no item as 'reload'
-    // in localstorage then create one &
-    // reload the page
-    if (!localStorage.getItem("reload")) {
-      localStorage["reload"] = true;
-      clearCacheData();
-      window.location.reload();
-    } else {
-      // If there exists a 'reload' item
-      // then clear the 'reload' item in
-      // local storage
-      localStorage.removeItem("reload");
-    }
-  }
 };

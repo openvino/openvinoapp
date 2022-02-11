@@ -14,6 +14,27 @@ class ExperienceService {
     return response;
   }
 
+  async updateJSON(experienceId, ipfsUrl ) {
+    const response = await axios.patch(
+      API_URL + "/experiences/" + experienceId,
+      {
+        id: experienceId,
+        ipfsUrl: ipfsUrl
+      },
+      {
+        headers: authHeader(),
+      }
+    ).then(
+      (response) => {
+        console.log(response);
+
+      }
+    ).catch((error) => {
+      console.log(error);
+    });
+    // return response;
+  }
+
   async addExperience(
     statusId,
     date,
@@ -21,7 +42,6 @@ class ExperienceService {
     location,
     qrValue,
     photoFileName,
-    ipfsUrl
   ) {
     const response = await axios.post(
       API_URL + "/experiences",
@@ -32,8 +52,7 @@ class ExperienceService {
         qrValue: qrValue,
         photoFileName: photoFileName, //"https://ipfs.io/ipfs/QmbcKQTe44AYBrfhUypuUapCaQUQAHbWiqGufhR7eoCpwU"
         nftGenerated: false,
-        userId: userId,
-        ipfsUrl: ipfsUrl
+        userId: userId
       },
       {
         headers: authHeader(),

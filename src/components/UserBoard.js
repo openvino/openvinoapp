@@ -86,8 +86,7 @@ export default class BoardUser extends Component {
       }
     );
 
-    console.log(this.state.experiences);
-    console.log(this.state.experiences.experienceSurvey);
+    console.log(this.state.experiences[3].ipfsUrl);
     // console.log(this.state.experiencesCount);
   }
   // async onChangeFile(e) {
@@ -106,49 +105,18 @@ export default class BoardUser extends Component {
   // Mint Function
 
   async createCollectible(index) {
-    const listSurveys = await this.state.experiences.map((surveys) =>
-      // Create JSON file based on experience information
-      //console.log(surveys)
-      JSON.stringify(surveys.experienceSurvey)
-    );
-    
-    console.log(listSurveys);
-
-    // let state = {
-    //             name: "MTB18",
-    //              description: [
-    //             "Are you sharing this bottle with other people? How many? " + `${this.state.answer1}`,
-    //             "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " + `${this.state.answer2}`,
-    //             "Are you drinking this wine with food? What are you eating? " + `${this.state.answer3}`,
-    //             "Do you like this wine? How would you rank it? " + `${this.state.answer4}`,
-    //             "Do you think we should build a colony on Mars? " + `${this.state.answer5}`,
-    //             ],
-    //              image:
-    //             "https://ipfs.io/ipfs/QmPbZo9n82xw8owUqT1hLSjvn3oYDpkLpt9yRMSpivtgZS",
-    //              attributes: [
-    //              {
-    //             trait_type: "Rating",
-    //              value: 80,
-    //             },
-    //              ],
-    //             };
-    //console.log(state);
-    //console.log(JSON.stringify(state))
-
+    console.log(this.state.experiences[index].ipfsUrl);
     try {
-      const added = (await client.add(listSurveys[index])) || 0;
-      const url = `https://ipfs.infura.io/ipfs/${added.path}` || 0;
+      const url = this.state.experiences[index].ipfsUrl;
       const finalURL = await url;
       this.setState({
-        ipfsUrlJSON: finalURL,
         nftGenerated: true,
         experienceId: this.state.experiences[index].id,
       });
       // Added IPFS URL to LocalStorage.
-      localStorage.setItem("ipfsURL", this.state.ipfsUrlJSON);
+      localStorage.setItem("ipfsURL", this.state.experiences[index].ipfsUrl);
       // console.log(this.state.ipfsUrlJSON);
       // console.log(this.state.nftGenerated);
-
       await mintToken()
         .then((tx) => {
           console.log(tx);
@@ -158,7 +126,6 @@ export default class BoardUser extends Component {
           // Removed IPFS from LocalStorage after success minting
           ExperienceService.updateExperience(
             this.state.experienceId,
-            // this.state.ipfsUrlJSON,
             this.state.nftGenerated,
             this.state.currentUser.id
           ).then(() => {
