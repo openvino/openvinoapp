@@ -134,8 +134,6 @@ class NewExperience extends React.Component {
         this.state.ipfsUrl
       ).then(
         async (response) => {
-          this.props.history.push("/app/user");
-          window.location.reload();
           //valido el status de la respuesta para saber si la experiencia se grabó correctamente
           if (response.data.status) {
             // la experiencia se grabó exitosamente
@@ -214,6 +212,8 @@ class NewExperience extends React.Component {
                     this.state.experienceId,
                     this.state.ipfsUrlJson
                   )
+                  this.props.history.push("/app/user");
+                  window.location.reload();
                 } catch (error) {
                   console.log("Error uploading file: ", error);
                 }

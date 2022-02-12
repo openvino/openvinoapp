@@ -86,7 +86,7 @@ export default class BoardUser extends Component {
       }
     );
 
-    console.log(this.state.experiences[3].ipfsUrl);
+    console.log(this.state.experiences);
     // console.log(this.state.experiencesCount);
   }
   // async onChangeFile(e) {
@@ -108,7 +108,8 @@ export default class BoardUser extends Component {
     console.log(this.state.experiences[index].ipfsUrl);
     try {
       const url = this.state.experiences[index].ipfsUrl;
-      const finalURL = await url;
+      const finalURL =  await url.replace("ipfs.infura.io", "ipfs.io");
+      console.log(finalURL);
       this.setState({
         nftGenerated: true,
         experienceId: this.state.experiences[index].id,
