@@ -173,26 +173,26 @@ class NewExperience extends React.Component {
                 localStorage.removeItem("qrCodeT");
                 localStorage.removeItem("allowClaim");
                 let state = {
-                  name: "MTB18",
+                  name: this.state.qrValue,
                   description: [
                     "Are you sharing this bottle with other people? How many? " +
-                      `${this.state.answer1}`,
+                      `${this.state.answer1}`, "<br />",  
                     "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " +
-                      `${this.state.answer2}`,
+                      `${this.state.answer2}`, "<br />",
                     "Are you drinking this wine with food? What are you eating? " +
-                      `${this.state.answer3}`,
+                      `${this.state.answer3}`, "<br />",
                     "Do you like this wine? How would you rank it? " +
-                      `${this.state.answer4}`,
+                      `${this.state.answer4}`, "<br />",
                     "Do you think we should build a colony on Mars? " +
-                      `${this.state.answer5}`,
-                  ],
+                      `${this.state.answer5}`, 
+                    ],
                   image: this.state.photoFileName,
-                  attributes: [
-                    {
-                      trait_type: "Rating",
-                      value: 80,
-                    },
-                  ],
+                  // attributes: [
+                  //   {
+                  //     trait_type: "Rating",
+                  //     value: 80,
+                  //   },
+                  // ],
                 };
                 console.log(state);
                 const toIPFS = JSON.stringify(state);
@@ -212,8 +212,8 @@ class NewExperience extends React.Component {
                     this.state.experienceId,
                     this.state.ipfsUrlJson
                   )
-                  this.props.history.push("/app/user");
-                  window.location.reload();
+                  ///this.props.history.push("/app/user");
+                  //window.location.reload();
                 } catch (error) {
                   console.log("Error uploading file: ", error);
                 }

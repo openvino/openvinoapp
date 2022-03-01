@@ -68,11 +68,6 @@ export default class BoardUser extends Component {
         this.setState({
           experiences: response.data,
         });
-        for (let i = 0; i < response.data.length; i++) {
-          this.setState({
-            experiencesCount: response.data.length,
-          });
-        }
       },
       (error) => {
         this.setState({
@@ -87,21 +82,8 @@ export default class BoardUser extends Component {
     );
 
     console.log(this.state.experiences);
-    // console.log(this.state.experiencesCount);
   }
-  // async onChangeFile(e) {
-  //   const file = e.target.files[0];
-  //   try {
-  //     const added = await client.add(file);
-  //     const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-  //     this.setState({
-  //       ipfsUrl: url,
-  //     });
-  //     console.log(this.state.ipfsUrl);
-  //   } catch (error) {
-  //     console.log("Error uploading file: ", error);
-  //   }
-  // }
+ 
   // Mint Function
 
   async createCollectible(index) {
@@ -155,19 +137,7 @@ export default class BoardUser extends Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
-    // Mint Token Function Called
-    // const createCollectible = () => {
-    //   mintToken()
-    //     .then((tx) => {
-    //       console.log(tx);
-    //       this.setState({
-    //         minted: true,
-    //       });
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
+  
     const listItems = this.state.experiences.map((item, index) => (
       <tr key={item.id}>
         <td>{item.date}</td>
