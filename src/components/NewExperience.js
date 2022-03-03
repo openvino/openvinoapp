@@ -172,20 +172,36 @@ class NewExperience extends React.Component {
                 );
                 localStorage.removeItem("qrCodeT");
                 localStorage.removeItem("allowClaim");
+                
+                let uno = (
+                  "Are you sharing this bottle with other people? How many? " + '\n'+
+                      `${this.state.answer1} `
+                );
+                let dos = (
+                  "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " + '\n'+
+                  `${this.state.answer2} ` 
+                );
+                let tres = (
+                  
+                  "Are you drinking this wine with food? What are you eating? " + '\n'+
+                  `${this.state.answer3} `
+                );
+                let cuatro = (
+                  
+                  "Do you like this wine? How would you rank it? " + '\n'+
+                  `${this.state.answer4} `  
+                  );
+                let cinco = (
+                  
+                  "Do you think we should build a colony on Mars? " + '\n'+
+                      `${this.state.answer5} `
+                );
+              
                 let state = {
                   name: this.state.qrValue,
-                  description: [
-                    "Are you sharing this bottle with other people? How many? " +
-                      `${this.state.answer1}`, "<br />",  
-                    "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " +
-                      `${this.state.answer2}`, "<br />",
-                    "Are you drinking this wine with food? What are you eating? " +
-                      `${this.state.answer3}`, "<br />",
-                    "Do you like this wine? How would you rank it? " +
-                      `${this.state.answer4}`, "<br />",
-                    "Do you think we should build a colony on Mars? " +
-                      `${this.state.answer5}`, 
-                    ],
+                  description: (
+                      uno + "<br />" + dos + "<br />" + tres + "<br />" + cuatro + "<br />" + cinco
+                  ),
                   image: this.state.photoFileName,
                   // attributes: [
                   //   {
