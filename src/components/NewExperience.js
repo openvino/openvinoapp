@@ -11,6 +11,7 @@ import TextArea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
 import i18next from "i18next";
 
+
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -174,41 +175,44 @@ class NewExperience extends React.Component {
                 localStorage.removeItem("allowClaim");
                 
                 let uno = (
-                  "Are you sharing this bottle with other people? How many? " + '\n'+
-                      `${this.state.answer1} `
+                  "-" + 
+                  "**Are you sharing this bottle with other people? How many?** " + 
+                  `${this.state.answer1} `
                 );
                 let dos = (
-                  "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift? " + '\n'+
+                  "-" + 
+                  "**Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?** " + 
                   `${this.state.answer2} ` 
                 );
                 let tres = (
-                  
-                  "Are you drinking this wine with food? What are you eating? " + '\n'+
-                  `${this.state.answer3} `
+                  "-" + 
+                  "**Are you drinking this wine with food? What are you eating?** " + 
+                  `${this.state.answer3} ` 
                 );
                 let cuatro = (
-                  
-                  "Do you like this wine? How would you rank it? " + '\n'+
+                  "-" + 
+                  "**Do you like this wine? How would you rank it?** " + 
                   `${this.state.answer4} `  
                   );
                 let cinco = (
-                  
-                  "Do you think we should build a colony on Mars? " + '\n'+
-                      `${this.state.answer5} `
+                  "-" + 
+                  "**Do you think we should build a colony on Mars?** " + 
+                  `${this.state.answer5} `
                 );
-              
+
                 let state = {
                   name: this.state.qrValue,
-                  description: (
-                      uno + "<br />" + dos + "<br />" + tres + "<br />" + cuatro + "<br />" + cinco
+                  description:  (
+                    "<p>" +
+                    uno + "<br>" + "\n" + "<br>" + "\n" +
+                    dos + "<br>" + "\n" + "<br>" + "\n" + 
+                    tres + "<br>" + "\n" + "<br>" + "\n" +
+                    cuatro + "<br>" + "\n" + "<br>" + "\n" + 
+                    cinco +
+                    "</p>"
                   ),
                   image: this.state.photoFileName,
-                  // attributes: [
-                  //   {
-                  //     trait_type: "Rating",
-                  //     value: 80,
-                  //   },
-                  // ],
+                  
                 };
                 console.log(state);
                 const toIPFS = JSON.stringify(state);
