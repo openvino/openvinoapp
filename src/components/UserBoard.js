@@ -115,7 +115,8 @@ export default class BoardUser extends Component {
             window.location.reload();
           });
           // console.log(this.state.nftGenerated);
-          //localStorage.removeItem("ipfsURL");
+          // The following line fixes experiencie not matching minting bug
+          localStorage.removeItem("ipfsURL");
         })
         .catch((err) => {
           // const url = "";
