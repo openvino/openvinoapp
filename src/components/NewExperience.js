@@ -199,9 +199,9 @@ class NewExperience extends React.Component {
                   "**Do you think we should build a colony on Mars?** " + 
                   `${this.state.answer5} `
                 );
-
+                let str  = this.state.qrValue;
                 let state = {
-                  name: this.state.qrValue,
+                  name: str.slice(0,str.length-6),
                   description:  (
                     "<p>" +
                     uno + "<br>" + "\n" + "<br>" + "\n" +
