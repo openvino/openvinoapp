@@ -43,7 +43,7 @@ export const init = async () => {
   // Smart contract declare + contract address
   SimpleCollectible = new web3.eth.Contract(
     NFTContractBuild.abi,
-    ([networkId].addressCon = "0x2bFC61358ce8B722C426503d36c3d9c6961587Db")
+    ([networkId].addressCon = "0x91fA0582307134C5f24A1738d76774C6d820a276")
   );
 
   isInitialized = true;
