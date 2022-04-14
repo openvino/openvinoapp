@@ -13,8 +13,8 @@ envs:
     value: "https://nft.openvino.org"
 
 image:
-  repository: luisvid/ydiyoi-front
-  tag: 20
+  repository: fpiantoni/ydiyoi-front
+  tag: 1
   pullPolicy: IfNotPresent
 
 service:
