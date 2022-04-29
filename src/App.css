@@ -2,13 +2,32 @@ label {
   display: block;
   margin-top: 10px;
 }
-
+.form-group img {
+  width:100%;
+}
 .card-container.card {
   max-width: 450px !important;
   padding: 40px 40px;
 }
 body {
   background: #f1ede2;
+}
+.tasting {
+  border-radius: 5px;
+  padding: 0px 14px;
+}
+.tasting:hover {
+  background:#840c4a;
+  color:white;
+}
+.tasting a:hover {
+  color:white;
+}
+.tasting a {
+  border-radius: 2px;
+}
+.tasting a:hover {
+
 }
 .card {
   background-color: #fff;

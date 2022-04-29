@@ -121,7 +121,7 @@ class App extends Component {
             )}
 
             {currentUser && (
-              <li className="nav-item">
+              <li className="nav-item btn-secondary tasting">
                 <Link to={"/app/user"} className="nav-link">
                   {i18next.t("Tastings")}
                 </Link>
