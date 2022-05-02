@@ -143,7 +143,7 @@ export default class BoardUser extends Component {
       <tr key={item.id}>
         <td>{item.date}</td>
         <td>{item.wine.name}</td>
-        <td>{item.wine.qrValue}</td>
+        <td>{item.wine.qrValue.slice(0,item.wine.qrValue.length-6)}</td>
         {/* <td>{i18next.t("Coming Soon")}</td> */}
         <td>
           {!item.nftGenerated ? (
