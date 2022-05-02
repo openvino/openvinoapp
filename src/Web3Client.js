@@ -65,8 +65,8 @@ const clearCacheData = () => {
   });
   // alert('Complete Cache Cleared')
 };
-// targets Rinkeby chain, id 4
-const targetNetworkId = "0x4";
+// targets Mainnet chain, id 1
+const targetNetworkId = "0x1";
 
 // switches network to the one provided
 export const switchNetwork = async () => {
