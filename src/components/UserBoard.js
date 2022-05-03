@@ -81,7 +81,7 @@ export default class BoardUser extends Component {
       }
     );
 
-    console.log(this.state.experiences);
+    // console.log(this.state.experiences);
   }
  
   // Mint Function
