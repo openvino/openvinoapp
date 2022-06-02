@@ -109,7 +109,7 @@ class Login extends Component {
       <div className="col-md-12">
         <div className="card card-container login-form">
           <h1>
-          {i18next.t("You Drink it, You Own it!")}
+          {i18next.t("You Drink it, You Own it staging!")}
 
             {/* <br />
             <span className="subh1">Sign in to continue!</span> */}

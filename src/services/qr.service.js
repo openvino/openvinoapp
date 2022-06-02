@@ -2,7 +2,7 @@ import axios from "axios";
 
 //const API_URL = "http://143.198.152.77:4000" 
 //const API_URL = "http://159.203.169.184:3000"
-const API_URL = "https://nft.openvino.org:3000"
+const API_URL = "http://64.225.10.229:3001"
 
 class QrService {
 
