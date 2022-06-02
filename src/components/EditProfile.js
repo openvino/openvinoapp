@@ -22,6 +22,13 @@ export default class EditProfile extends Component {
       redirect: null,
       userReady: false,
       currentUser: { email: "" },
+      userId: '',
+      firstName: '',
+      lastName: '',
+      telegramId: '',
+      birthDate: '',
+      address: '',
+      walletAddress: ''
     };
   }
 
@@ -30,6 +37,13 @@ export default class EditProfile extends Component {
     // const currentToken = AuthService.getToken();
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({ currentUser: currentUser, userReady: true });
+    this.setState({ userId: currentUser.id });
+    this.setState({ firstName: currentUser.firstName})
+    this.setState({ lastName: currentUser.lastName})
+    this.setState({ telegramId: currentUser.telegramId})
+    this.setState({ birthDate: currentUser.birthDate})
+    this.setState({ address: currentUser.address})
+    this.setState({ walletAddress: currentUser.walletAddress})
   }
 
   onChangeFirstName(e) {
@@ -78,23 +92,23 @@ export default class EditProfile extends Component {
 
     this.form.validateAll();
 
+
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.register(
-        this.state.email,
-        this.state.password,
+      AuthService.update(
+        this.state.userId,
         this.state.firstName,
         this.state.lastName,
-        this.state.address,
-        this.state.birthDate,
         this.state.telegramId,
+        this.state.birthDate,
+        this.state.address,
         this.state.walletAddress,
-        this.state.qrValue
       ).then(
         (response) => {
-          this.props.history.push("/login");
-          window.location.reload();
+          //this.props.history.push("/app/edit-profile");
+          //window.location.reload();
+          console.log(response);
           this.setState({
-            message: response.data.message,
+            message: response,
             successful: true,
           });
         },
@@ -105,6 +119,7 @@ export default class EditProfile extends Component {
               error.response.data.message) ||
             error.message ||
             error.toString();
+
 
           this.setState({
             successful: false,
@@ -119,7 +134,8 @@ export default class EditProfile extends Component {
   render() {
     const { currentUser } = this.state;
     // const { currentToken } = this.state;
-    console.log(currentUser);
+    //console.log(this.state.firstName);
+  
 
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
@@ -159,7 +175,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="firstName"
                       value={this.state.firstName}
-                      placeholder={currentUser.firstName}
+                      placeholder={this.state.firstName}
                       onChange={this.onChangeFirstName}
                     />
                   </div>
@@ -170,7 +186,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="lastName"
                       value={this.state.lastName}
-                      placeholder={currentUser.lastName}
+                      placeholder={this.state.lastName}
                       onChange={this.onChangeLastName}
                     />
                   </div>
@@ -181,7 +197,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="address"
                       value={this.state.address}
-                      placeholder={currentUser.address_1}
+                      placeholder={this.state.address_1}
                       onChange={this.onChangeAddress}
                     />
                   </div>
@@ -192,7 +208,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="birthDate"
                       value={this.state.birthDate}
-                      placeholder={currentUser.birthDate}
+                      placeholder={this.state.birthDate}
                       onChange={this.onChangeBirthday}
                     />
                   </div>
@@ -203,7 +219,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="telegramId"
                       value={this.state.telegramId}
-                      placeholder={currentUser.telegramId}
+                      placeholder={this.state.telegramId}
                       onChange={this.onChangeTelegram}
                     />
                   </div>
@@ -214,7 +230,7 @@ export default class EditProfile extends Component {
                       className="form-control"
                       name="walletAddress"
                       value={this.state.walletAddress}
-                      placeholder={currentUser.walletAddress}
+                      placeholder={this.state.walletAddress}
                       onChange={this.onChangeWalletAddress}
                     />
                   </div>

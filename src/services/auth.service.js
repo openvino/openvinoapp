@@ -1,4 +1,6 @@
 import axios from "axios";
+import authHeader from "./auth-header";
+
 
 //const API_URL = "http://143.198.152.77:4000" 
 //const API_URL = "http://159.203.169.184:3000"
@@ -23,25 +25,51 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  update(email, password, firstName, lastName, address, birthDate, telegramId, walletAddress, userId) {
-
+  async update(userId, firstName, lastName, address, birthDate, telegramId, walletAddress ) {
     let birthday = new Date(birthDate);
+    const response = await axios.patch(
+      API_URL + "/users/" + userId,
+      {
+        "id": userId,
+        "firstName": firstName,
+        "lastName": lastName,
+        "telegramId": telegramId,
+        "birthDate": birthday,
+        "address_1": address,
+        "walletAddress": walletAddress,
+      },
+      {
+        headers: authHeader(),
+      }
+    ).then(
+      (response) => {
+        console.log(response);
 
-    return axios.patch(API_URL + "/users" + userId, {
-      "firstName": firstName,
-      "lastName": lastName,
-      "telegramId": telegramId,
-      "birthDate": birthday,
-      "email": email,
-      "address_1": address,
-      "address_2": "",
-      "password": password,
-      "walletAddress": walletAddress,
-      "roleId": 1,
-      "statusId": 3,
-      "resetKey": "string"
+      }
+    ).catch((error) => {
+      console.log(error);
     });
+     //return response;
   }
+
+  // update(firstName, lastName, address, birthDate, telegramId, walletAddress, userId) {
+
+  //   let birthday = new Date(birthDate);
+
+  //   return axios.patch(API_URL + "/users/" + userId, {
+  //     "firstName": firstName,
+  //     "lastName": lastName,
+  //     "telegramId": telegramId,
+  //     "birthDate": birthday,
+  //     "address_1": address,
+  //     "walletAddress": walletAddress,
+  //     "roleId": 1,
+  //     "statusId": 3,
+  //     "resetKey": "string"
+  //   }, {
+  //     headers: authHeader(),
+  //   });
+  // }
 
   resetPassword(email) {
     return axios.post(API_URL + "/reset-password/init", {
