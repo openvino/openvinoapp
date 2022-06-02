@@ -10,6 +10,8 @@ import Input from "react-validation/build/input";
 import TextArea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
 import i18next from "i18next";
+import loading from "../assets/images/loading.gif"
+
 
 
 /* Create an instance of the client */
@@ -93,6 +95,9 @@ class NewExperience extends React.Component {
 
   async onChangeFile(e) {
     const file = e.target.files[0];
+    this.setState({
+      photoFileName: loading,
+    });
     try {
       const added = await client.add(file);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
