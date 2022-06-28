@@ -208,13 +208,11 @@ class NewExperience extends React.Component {
                 let state = {
                   name: str.slice(0,str.length-6),
                   description:  (
-                    "<p>" +
-                    uno + "<br>" + "\n" + "<br>" + "\n" +
-                    dos + "<br>" + "\n" + "<br>" + "\n" + 
-                    tres + "<br>" + "\n" + "<br>" + "\n" +
-                    cuatro + "<br>" + "\n" + "<br>" + "\n" + 
-                    cinco +
-                    "</p>"
+                    uno + `\n\n` +
+                    dos + `\n\n` + 
+                    tres + `\n\n` +
+                    cuatro + `\n\n` + 
+                    cinco 
                   ),
                   image: this.state.photoFileName,
                   
