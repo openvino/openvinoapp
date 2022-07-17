@@ -112,6 +112,11 @@ class NewExperience extends React.Component {
         console.log("Trying IPFS upload...")
         if ( url === 'https://ipfs.infura.io/ipfs/Users') {
           console.warn("Error uploading to IPFS.")
+          alert("Failed to uplaod to IPFS, try again!!")
+          window.location.reload()
+          // this.setState({
+          //   photoFileName: null
+          // });
         } else {
           console.log("Success uploading to IPFS!!")
           this.setState({
