@@ -12,7 +12,8 @@ import CheckButton from "react-validation/build/button";
 import i18next from "i18next";
 import loading from "../assets/images/loading.gif"
 
-
+// Accepted Images file types
+const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
@@ -98,15 +99,36 @@ class NewExperience extends React.Component {
     this.setState({
       photoFileName: loading,
     });
-    try {
-      const added = await client.add(file);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-      this.setState({
-        photoFileName: url,
-      });
-      console.log(this.state.photoFileName);
-    } catch (error) {
-      console.log("Error uploading file: ", error);
+    let imageType = file.name.toString();
+    var fileType = imageType.split('.').pop();
+    console.log("Image extension", `"${fileType}"`);
+
+    if (JSON.stringify(acceptedImagesFormat).includes(`"${fileType}"`)) {
+      console.log("Image type supported!!")
+      // Do some Shit.
+      try {
+        const added = await client.add(file);
+        const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+        console.log("Trying IPFS upload...")
+        if ( url === 'https://ipfs.infura.io/ipfs/Users') {
+          console.warn("Error uploading to IPFS.")
+        } else {
+          console.log("Success uploading to IPFS!!")
+          this.setState({
+            photoFileName: url,
+          });
+          console.log(this.state.photoFileName);
+        }
+      } catch (error) {
+        console.log("Error uploading file: ", error);
+      }
+    } else {
+        // Break the instance, alert user that image/type is not supported. 
+        console.warn("Image type not supported...")
+        alert("Image type not supported.")
+        this.setState({
+          photoFileName : null,
+        });
     }
   }
 
@@ -380,7 +402,7 @@ class NewExperience extends React.Component {
                 <div className="form-group"></div>
                 <button
                   className="btn btn-primary btn-block"
-                  disabled={this.state.loading}
+                  disabled={this.state.photoFileName === loading || this.state.loading}
                 >
                   {this.state.loading && (
                     <span className="spinner-border spinner-border-sm"></span>
