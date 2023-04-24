@@ -39,6 +39,7 @@ const email = (value) => {
 //   }
 // };
 
+
 const qrCode = (value) => {
   if (value === false) {
     return (
@@ -46,8 +47,15 @@ const qrCode = (value) => {
         {i18next.t("Invalid QR Code.")}
       </div>
     );
+  } else if (value === null) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        {i18next.t("Kindly scan the QR code on the bottle in order to complete your registration process.")}
+      </div>
+    );
   }
 };
+
 
 const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
@@ -87,6 +95,7 @@ export default class Register extends Component {
       message: "",
     };
   }
+  
 
   async componentDidMount() {
     //const qrValid = await qrService.checkQR(this.props.match.params.id);
