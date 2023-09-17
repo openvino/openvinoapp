@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { createInstance } from "./forwader";
 
 import { signMetaTxRequest } from "./signer";
-
 async function gasLessMint(contract, provider, signer, uri) {
   const url = process.env.REACT_APP_WEBHOOK_URL;
   if (!url) throw new Error(`Missing relayer url`);
