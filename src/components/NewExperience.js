@@ -77,6 +77,7 @@ class NewExperience extends React.Component {
       redirect: null,
       userReady: false,
       currentUser: { email: "" },
+      imgPlaceHolder: null,
     };
   }
 
@@ -138,7 +139,11 @@ class NewExperience extends React.Component {
         } else {
           console.log("Success uploading to IPFS!!");
           this.setState({
-            photoFileName: placeHolderImg,
+            photoFileName: url,
+          });
+
+          this.setState({
+            imgPlaceHolder: placeHolderImg,
           });
         }
       } catch (error) {
@@ -340,10 +345,10 @@ class NewExperience extends React.Component {
                     validations={[required]}
                   />
                 </label>
-                {this.state.photoFileName && (
+                {this.state.imgPlaceHolder && (
                   <img
                     alt="ipfs-url"
-                    src={this.state.photoFileName}
+                    src={this.state.imgPlaceHolder}
                     width="370px"
                   />
                 )}
