@@ -55,7 +55,6 @@ i18n.use(LanguageDetector).init({
         "Do you think we should build a colony on Mars?": "Do you think we should build a colony on Mars?",
         "Register Tasting": "Register Tasting",
         "Minting is currently available only on ETH Mainnet. Check your Network on Metamask": "Minting is currently available only on ETH Mainnet. Check your Network on Metamask",
-
         
       },
     },
@@ -109,7 +108,8 @@ i18n.use(LanguageDetector).init({
         "Do you like this wine? How would you rank it?": "¿Le gusta este vino? ¿Cómo lo calificaría?",
         "Do you think we should build a colony on Mars?": "¿Cree que deberíamos construir una colonia en Marte?",
         "Register Tasting": "Registrar Degustación",
-        "Minting is currently available only on ETH Mainnet. Check your Network on Metamask": "El minting está actualmente disponible sólo en la red principal de ETH. Compruebe su red en Metamask"
+        "Minting is currently available only on ETH Mainnet. Check your Network on Metamask": "El minting está actualmente disponible sólo en la red principal de ETH. Compruebe su red en Metamask",
+        "No wallet" : "No se encuentra una billetera"
 
       },
     },

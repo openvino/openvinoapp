@@ -38,8 +38,20 @@ export async function registerMint(contract, provider, data) {
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const userNetwork = await userProvider.getNetwork();
 
-    if (userNetwork.chainId !== Number(chainId))
-      throw new Error(`Please switch to Mumbai for signing`);
+    if (userNetwork.chainId !== Number(chainId)) {
+      const switchNetworkResult = await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
+      });
+
+      if (switchNetworkResult) {
+        // La red se ha cambiado exitosamente.
+        // Puedes continuar con el proceso.
+      } else {
+        // El usuario canceló o hubo un error al cambiar de red.
+        throw new Error("Network switch canceled or failed.");
+      }
+    }
 
     const signer = userProvider.getSigner();
     const from = await signer.getAddress();
@@ -47,7 +59,8 @@ export async function registerMint(contract, provider, data) {
 
     const response = await gasLessMint(contract, provider, signer, data);
   } catch (error) {
-    throw new Error("Error");
     console.log(error);
+
+    throw new Error("Error");
   }
 }

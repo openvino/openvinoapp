@@ -21,7 +21,10 @@ const acceptedImagesFormat = ["jpeg", "png", "heic", "jpg"];
 
 /* Create an instance of the client */
 const auth =
-  "Basic " + Buffer.from(REACT_APP_API_KEY + ":" + REACT_APP_API_KEY_SECRET).toString("base64");
+  "Basic " +
+  Buffer.from(REACT_APP_API_KEY + ":" + REACT_APP_API_KEY_SECRET).toString(
+    "base64"
+  );
 const client = create({
   host: "ipfs.infura.io",
   port: 5001,
@@ -108,6 +111,7 @@ class NewExperience extends React.Component {
   }
 
   async onChangeFile(e) {
+    console.log(e.target.files[0]);
     const file = e.target.files[0];
     this.setState({
       photoFileName: loading,
@@ -122,6 +126,7 @@ class NewExperience extends React.Component {
       try {
         const added = await client.add(file);
         const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+        const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
         console.log("Trying IPFS upload...");
         if (url === "https://ipfs.infura.io/ipfs/Users") {
           console.warn("Error uploading to IPFS.");
@@ -133,9 +138,8 @@ class NewExperience extends React.Component {
         } else {
           console.log("Success uploading to IPFS!!");
           this.setState({
-            photoFileName: url,
+            photoFileName: placeHolderImg,
           });
-          console.log(this.state.photoFileName);
         }
       } catch (error) {
         console.log("Error uploading file: ", error);

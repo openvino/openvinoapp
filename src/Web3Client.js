@@ -64,8 +64,9 @@ export const mintToken = async () => {
   try {
     return await registerMint(contract, provider2, token_uri);
   } catch (error) {
-    throw new Error("Error");
     console.log(error);
+
+    throw new Error("Error");
   }
 
   // if (!isInitialized) {
@@ -90,10 +91,14 @@ export const mintToken = async () => {
 
 // switches network to the one provided
 export const switchNetwork = async () => {
-  const targetNetworkId = "0x13881"; // ID de la red de pruebas Mumbai de Polygon (reemplaza si es necesario)
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
+    });
+  } catch (error) {
+    console.log(error);
 
-  await window.ethereum.request({
-    method: "wallet_switchEthereumChain",
-    params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
-  });
+    return "NoWallet";
+  }
 };

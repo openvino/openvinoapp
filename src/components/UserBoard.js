@@ -5,9 +5,7 @@ import UserService from "../services/user.service";
 import ExperienceService from "../services/experience.service";
 import { mintToken, switchNetwork } from "../Web3Client";
 import { create } from "ipfs-http-client";
-import { Redirect } from "react-router-dom";
 import i18next from "i18next";
-import { registerMint } from "../eth/mintNFT";
 import { createInstance } from "../eth/Ydiyoi";
 import { createProvider } from "../eth/provider";
 
@@ -29,6 +27,7 @@ export default class BoardUser extends Component {
       experienceId: "",
       ipfsUrl: "",
       redirect: null,
+      alert: null,
     };
   }
 
@@ -46,7 +45,13 @@ export default class BoardUser extends Component {
         currentExperiences: currentExperiences,
       });
     }
-    switchNetwork();
+
+    if (window.ethereum === undefined) {
+      this.setState({
+        alert: i18next.t("No wallet"),
+      });
+    }
+
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -175,6 +180,11 @@ export default class BoardUser extends Component {
     ));
     return (
       <div className="container">
+        {this.state.alert && (
+          <div className="center alert danger">
+            <p className=""> {this.state.alert}</p>
+          </div>
+        )}
         <div className="row info-message">
           <div className="col-md">
             <p>
