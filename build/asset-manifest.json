@@ -14,6 +14,7 @@
     "static/css/2.de424728.chunk.css.map": "/static/css/2.de424728.chunk.css.map",
     "static/css/main.227d41fb.chunk.css.map": "/static/css/main.227d41fb.chunk.css.map",
     "static/js/2.570b9666.chunk.js.LICENSE.txt": "/static/js/2.570b9666.chunk.js.LICENSE.txt",
+
     "static/media/loading.gif": "/static/media/loading.f4404720.gif",
     "static/media/website-logo.png": "/static/media/website-logo.3e59f293.png"
   },
@@ -23,5 +24,6 @@
     "static/js/2.570b9666.chunk.js",
     "static/css/main.227d41fb.chunk.css",
     "static/js/main.2584b275.chunk.js"
+
   ]
 }
