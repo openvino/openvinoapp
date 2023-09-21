@@ -22,7 +22,6 @@ import i18n from "./i18n";
 import { withTranslation } from "react-i18next";
 import Select from "react-validation/build/select";
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -61,6 +60,7 @@ class App extends Component {
   };
 
   render() {
+    console.log("Polygon Version");
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     const changeLanguage = (lng) => {
       i18n.changeLanguage(lng);
@@ -68,31 +68,40 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar navbar-expand" id="top-header">
-        <div className="language-selector">
-        <li className="nav-item">
+          <div className="language-selector">
+            <li className="nav-item">
               <button className="item" onClick={() => changeLanguage("es")}>
                 ES
-              </button></li>
-              <li className="nav-item">|</li>
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("en")}>
+              </button>
+            </li>
+            <li className="nav-item">|</li>
+            <li className="nav-item">
+              <button className="item" onClick={() => changeLanguage("en")}>
                 EN
-              </button></li>
-              <li className="nav-item">|</li>
+              </button>
+            </li>
+            <li className="nav-item">|</li>
 
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("fr")}>
+            <li className="nav-item">
+              <button className="item" onClick={() => changeLanguage("fr")}>
                 FR
-              </button></li>
-              <li className="nav-item">|</li>
+              </button>
+            </li>
+            <li className="nav-item">|</li>
 
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("cat")}>
+            <li className="nav-item">
+              <button className="item" onClick={() => changeLanguage("cat")}>
                 CAT
-              </button></li>
-              <li className="nav-item">|</li>
+              </button>
+            </li>
+            <li className="nav-item">|</li>
 
-              <li className="nav-item"><button className="item" onClick={() => changeLanguage("pr")}>
+            <li className="nav-item">
+              <button className="item" onClick={() => changeLanguage("pr")}>
                 PR
-              </button></li>
-        </div>
+              </button>
+            </li>
+          </div>
         </nav>
         <nav className="navbar navbar-expand" id="header">
           <Link to={"#"} className="navbar-brand">

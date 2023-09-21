@@ -10,13 +10,29 @@ import Input from "react-validation/build/input";
 import TextArea from "react-validation/build/textarea";
 import CheckButton from "react-validation/build/button";
 import i18next from "i18next";
-import loading from "../assets/images/loading.gif"
+import loading from "../assets/images/loading.gif";
+import dotenv from "dotenv";
+dotenv.config();
+
+const { REACT_APP_API_KEY_SECRET, REACT_APP_API_KEY } = process.env;
 
 // Accepted Images file types
-const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
+const acceptedImagesFormat = ["jpeg", "png", "heic", "jpg"];
 
 /* Create an instance of the client */
-const client = create("https://ipfs.infura.io:5001/api/v0");
+const auth =
+  "Basic " +
+  Buffer.from(REACT_APP_API_KEY + ":" + REACT_APP_API_KEY_SECRET).toString(
+    "base64"
+  );
+const client = create({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+  headers: {
+    authorization: auth,
+  },
+});
 
 const required = (value) => {
   if (!value) {
@@ -61,6 +77,7 @@ class NewExperience extends React.Component {
       redirect: null,
       userReady: false,
       currentUser: { email: "" },
+      imgPlaceHolder: null,
     };
   }
 
@@ -95,45 +112,50 @@ class NewExperience extends React.Component {
   }
 
   async onChangeFile(e) {
+    console.log(e.target.files[0]);
     const file = e.target.files[0];
     this.setState({
       photoFileName: loading,
     });
     let imageType = file.name.toString();
-    var fileType = imageType.split('.').pop();
+    var fileType = imageType.split(".").pop();
     console.log("Image extension", `"${fileType}"`);
 
     if (JSON.stringify(acceptedImagesFormat).includes(`"${fileType}"`)) {
-      console.log("Image type supported!!")
+      console.log("Image type supported!!");
       // Do some Shit.
       try {
         const added = await client.add(file);
         const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-        console.log("Trying IPFS upload...")
-        if ( url === 'https://ipfs.infura.io/ipfs/Users') {
-          console.warn("Error uploading to IPFS.")
-          alert("Failed to uplaod to IPFS, try again!!")
-          window.location.reload()
+        const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
+        console.log("Trying IPFS upload...");
+        if (url === "https://ipfs.infura.io/ipfs/Users") {
+          console.warn("Error uploading to IPFS.");
+          alert("Failed to uplaod to IPFS, try again!!");
+          window.location.reload();
           // this.setState({
           //   photoFileName: null
           // });
         } else {
-          console.log("Success uploading to IPFS!!")
+          console.log("Success uploading to IPFS!!");
           this.setState({
             photoFileName: url,
           });
-          console.log(this.state.photoFileName);
+
+          this.setState({
+            imgPlaceHolder: placeHolderImg,
+          });
         }
       } catch (error) {
         console.log("Error uploading file: ", error);
       }
     } else {
-        // Break the instance, alert user that image/type is not supported. 
-        console.warn("Image type not supported...")
-        alert("Image type not supported.")
-        this.setState({
-          photoFileName : null,
-        });
+      // Break the instance, alert user that image/type is not supported.
+      console.warn("Image type not supported...");
+      alert("Image type not supported.");
+      this.setState({
+        photoFileName: null,
+      });
     }
   }
 
@@ -146,7 +168,7 @@ class NewExperience extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(this.state.ipfsUrl);
     this.setState({
       message: "",
       successful: false,
@@ -205,44 +227,41 @@ class NewExperience extends React.Component {
                 );
                 localStorage.removeItem("qrCodeT");
                 localStorage.removeItem("allowClaim");
-                
-                let uno = (
-                  "-" + 
-                  "**Are you sharing this bottle with other people? How many?** " + 
-                  `${this.state.answer1} `
-                );
-                let dos = (
-                  "-" + 
-                  "**Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?** " + 
-                  `${this.state.answer2} ` 
-                );
-                let tres = (
-                  "-" + 
-                  "**Are you drinking this wine with food? What are you eating?** " + 
-                  `${this.state.answer3} ` 
-                );
-                let cuatro = (
-                  "-" + 
-                  "**Do you like this wine? How would you rank it?** " + 
-                  `${this.state.answer4} `  
-                  );
-                let cinco = (
-                  "-" + 
-                  "**Do you think we should build a colony on Mars?** " + 
-                  `${this.state.answer5} `
-                );
-                let str  = this.state.qrValue;
+
+                let uno =
+                  "-" +
+                  "**Are you sharing this bottle with other people? How many?** " +
+                  `${this.state.answer1} `;
+                let dos =
+                  "-" +
+                  "**Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?** " +
+                  `${this.state.answer2} `;
+                let tres =
+                  "-" +
+                  "**Are you drinking this wine with food? What are you eating?** " +
+                  `${this.state.answer3} `;
+                let cuatro =
+                  "-" +
+                  "**Do you like this wine? How would you rank it?** " +
+                  `${this.state.answer4} `;
+                let cinco =
+                  "-" +
+                  "**Do you think we should build a colony on Mars?** " +
+                  `${this.state.answer5} `;
+                let str = this.state.qrValue;
                 let state = {
-                  name: str.slice(0,str.length-6),
-                  description:  (
-                    uno + `\n\n` +
-                    dos + `\n\n` + 
-                    tres + `\n\n` +
-                    cuatro + `\n\n` + 
-                    cinco 
-                  ),
+                  name: str.slice(0, str.length - 6),
+                  description:
+                    uno +
+                    `\n\n` +
+                    dos +
+                    `\n\n` +
+                    tres +
+                    `\n\n` +
+                    cuatro +
+                    `\n\n` +
+                    cinco,
                   image: this.state.photoFileName,
-                  
                 };
                 console.log(state);
                 const toIPFS = JSON.stringify(state);
@@ -250,7 +269,7 @@ class NewExperience extends React.Component {
                   ipfsUrl: toIPFS,
                 });
                 console.log(this.state.ipfsUrl);
-                const file = this.state.ipfsUrl
+                const file = this.state.ipfsUrl;
                 try {
                   const added = await client.add(file);
                   const url = `https://ipfs.infura.io/ipfs/${added.path}`;
@@ -258,19 +277,21 @@ class NewExperience extends React.Component {
                     ipfsUrlJson: url,
                   });
                   console.log(this.state.ipfsUrlJson);
-                  ExperienceService.updateJSON (
+                  ExperienceService.updateJSON(
                     this.state.experienceId,
                     this.state.ipfsUrlJson
-                  )
-                  ///this.props.history.push("/app/user");
-                  //window.location.reload();
+                  );
+                  this.props.history.push("/app/user");
+                  window.location("/app/user");
+
+                  window.location.reload();
                 } catch (error) {
                   console.log("Error uploading file: ", error);
                 }
               },
               (error) => {
                 console.log(error.toString());
-              },
+              }
             );
           } else {
             // *** la experiencia no se grabó, no avanzar en la ejecución  ***
@@ -294,7 +315,7 @@ class NewExperience extends React.Component {
             message: resMessage,
           });
         }
-      )
+      );
     }
   };
 
@@ -305,7 +326,7 @@ class NewExperience extends React.Component {
     if (this.state.qRCodeClaim === true) {
       return (
         <Form
-          onSubmit={(this.handleSubmit)}
+          onSubmit={this.handleSubmit}
           ref={(c) => {
             this.form = c;
           }}
@@ -324,10 +345,10 @@ class NewExperience extends React.Component {
                     validations={[required]}
                   />
                 </label>
-                {this.state.photoFileName && (
+                {this.state.imgPlaceHolder && (
                   <img
                     alt="ipfs-url"
-                    src={this.state.photoFileName}
+                    src={this.state.imgPlaceHolder}
                     width="370px"
                   />
                 )}
@@ -407,7 +428,9 @@ class NewExperience extends React.Component {
                 <div className="form-group"></div>
                 <button
                   className="btn btn-primary btn-block"
-                  disabled={this.state.photoFileName === loading || this.state.loading}
+                  disabled={
+                    this.state.photoFileName === loading || this.state.loading
+                  }
                 >
                   {this.state.loading && (
                     <span className="spinner-border spinner-border-sm"></span>

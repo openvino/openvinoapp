@@ -5,8 +5,9 @@ import UserService from "../services/user.service";
 import ExperienceService from "../services/experience.service";
 import { mintToken, switchNetwork } from "../Web3Client";
 import { create } from "ipfs-http-client";
-import { Redirect } from "react-router-dom";
 import i18next from "i18next";
+import { createInstance } from "../eth/Ydiyoi";
+import { createProvider } from "../eth/provider";
 
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
@@ -26,6 +27,7 @@ export default class BoardUser extends Component {
       experienceId: "",
       ipfsUrl: "",
       redirect: null,
+      alert: null,
     };
   }
 
@@ -43,7 +45,13 @@ export default class BoardUser extends Component {
         currentExperiences: currentExperiences,
       });
     }
-    switchNetwork();
+
+    if (window.ethereum === undefined) {
+      this.setState({
+        alert: i18next.t("No wallet"),
+      });
+    }
+
     this.setState({ currentUser: currentUser, userReady: true });
     this.setState({ currentToken: currentToken, userReady: true });
     UserService.getUserBoard().then(
@@ -83,14 +91,14 @@ export default class BoardUser extends Component {
 
     // console.log(this.state.experiences);
   }
- 
+
   // Mint Function
 
   async createCollectible(index) {
     console.log(this.state.experiences[index].ipfsUrl);
     try {
       const url = this.state.experiences[index].ipfsUrl;
-      const finalURL =  await url.replace("ipfs.infura.io", "ipfs.io");
+      const finalURL = await url.replace("ipfs.infura.io", "ipfs.io");
       console.log(finalURL);
       this.setState({
         nftGenerated: true,
@@ -100,32 +108,39 @@ export default class BoardUser extends Component {
       localStorage.setItem("ipfsURL", this.state.experiences[index].ipfsUrl);
       // console.log(this.state.ipfsUrlJSON);
       // console.log(this.state.nftGenerated);
-      await mintToken()
-        .then((tx) => {
-          console.log(tx);
-          this.setState({
-            minted: true,
+      const provider = createProvider();
+      const contract = createInstance(provider);
+
+      try {
+        await mintToken(contract, provider, finalURL)
+          .then((tx) => {
+            console.log(tx);
+            this.setState({
+              minted: true,
+            });
+            //  Removed IPFS from LocalStorage after success minting
+            ExperienceService.updateExperience(
+              this.state.experienceId,
+              this.state.nftGenerated,
+              this.state.currentUser.id
+            ).then(() => {
+              window.location.reload();
+            });
+            // console.log(this.state.nftGenerated);
+            // The following line fixes experiencie not matching minting bug
+            localStorage.removeItem("ipfsURL");
+          })
+          .catch((err) => {
+            // const url = "";
+            // const added = ""
+            console.log(err);
+            // console.log(url);
+            // console.log(added);
+            // localStorage.removeItem("ipfsURL");
           });
-          // Removed IPFS from LocalStorage after success minting
-          ExperienceService.updateExperience(
-            this.state.experienceId,
-            this.state.nftGenerated,
-            this.state.currentUser.id
-          ).then(() => {
-            window.location.reload();
-          });
-          // console.log(this.state.nftGenerated);
-          // The following line fixes experiencie not matching minting bug
-          localStorage.removeItem("ipfsURL");
-        })
-        .catch((err) => {
-          // const url = "";
-          // const added = ""
-          console.log(err);
-          // console.log(url);
-          // console.log(added);
-          // localStorage.removeItem("ipfsURL");
-        });
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.log("Error uploading file: ", error);
       //localStorage.removeItem("ipfsURL");
@@ -136,14 +151,14 @@ export default class BoardUser extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />;
+      // return <Redirect to={this.state.redirect} />;
     }
-  
+
     const listItems = this.state.experiences.map((item, index) => (
       <tr key={item.id}>
         <td>{item.date}</td>
         <td>{item.wine.name}</td>
-        <td>{item.wine.qrValue.slice(0,item.wine.qrValue.length-6)}</td>
+        <td>{item.wine.qrValue.slice(0, item.wine.qrValue.length - 6)}</td>
         {/* <td>{i18next.t("Coming Soon")}</td> */}
         <td>
           {!item.nftGenerated ? (
@@ -165,9 +180,19 @@ export default class BoardUser extends Component {
     ));
     return (
       <div className="container">
+        {this.state.alert && (
+          <div className="center alert danger">
+            <p className=""> {this.state.alert}</p>
+          </div>
+        )}
         <div className="row info-message">
           <div className="col-md">
-            <p><i className="fas fa-exclamation-triangle"></i> {i18next.t("Minting is currently available only on ETH Mainnet. Check your Network on Metamask")}</p>
+            <p>
+              <i className="fas fa-exclamation-triangle"></i>{" "}
+              {i18next.t(
+                "Minting is currently available only on ETH Mainnet. Check your Network on Metamask"
+              )}
+            </p>
           </div>
         </div>
         <header className="jumbotron" id="jumbotron-userboard">
@@ -178,7 +203,7 @@ export default class BoardUser extends Component {
             <div className="col-md">
               <Link to={"/app/add-tasting"} className="nav-link">
                 <button className="btn btn-secondary new-experience-button">
-                {i18next.t("New Tasting")}
+                  {i18next.t("New Tasting")}
                 </button>
               </Link>
             </div>

@@ -1,38 +1,41 @@
 import axios from "axios";
 import authHeader from "./auth-header";
+import dotenv from "dotenv";
+dotenv.config();
 
-//const API_URL = "http://143.198.152.77:4000" 
-//const API_URL = "http://159.203.169.184:3000"
-const API_URL = "https://nft.openvino.org:3000"
+const { REACT_APP_API_URL: API_URL } = process.env;
+
 
 class ExperienceService {
-
   // /users/{id}/experiencesdetail
   async getExperiences(pUserId) {
-    const response = await axios.get(API_URL + "/users/" + pUserId + "/experiencesdetail", {
-      headers: authHeader(),
-    }); 
-    return response;
-  }
-
-  async updateJSON(experienceId, ipfsUrl ) {
-    const response = await axios.patch(
-      API_URL + "/experiences/" + experienceId,
-      {
-        id: experienceId,
-        ipfsUrl: ipfsUrl
-      },
+    const response = await axios.get(
+      API_URL + "/users/" + pUserId + "/experiencesdetail",
       {
         headers: authHeader(),
       }
-    ).then(
-      (response) => {
-        console.log(response);
+    );
+    return response;
+  }
 
-      }
-    ).catch((error) => {
-      console.log(error);
-    });
+  async updateJSON(experienceId, ipfsUrl) {
+    const response = await axios
+      .patch(
+        API_URL + "/experiences/" + experienceId,
+        {
+          id: experienceId,
+          ipfsUrl: ipfsUrl,
+        },
+        {
+          headers: authHeader(),
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // return response;
   }
 
@@ -42,7 +45,7 @@ class ExperienceService {
     userId,
     location,
     qrValue,
-    photoFileName,
+    photoFileName
   ) {
     const response = await axios.post(
       API_URL + "/experiences",
@@ -53,7 +56,7 @@ class ExperienceService {
         qrValue: qrValue,
         photoFileName: photoFileName, //"https://ipfs.io/ipfs/QmbcKQTe44AYBrfhUypuUapCaQUQAHbWiqGufhR7eoCpwU"
         nftGenerated: false,
-        userId: userId
+        userId: userId,
       },
       {
         headers: authHeader(),
@@ -65,28 +68,27 @@ class ExperienceService {
     return response;
   }
 
- async updateExperience(experienceId, nftGenerated, userId ) {
-    const response = await axios.patch(
-      API_URL + "/experiences/" + experienceId,
-      {
-        id: experienceId,
-        nftGenerated: JSON.parse(nftGenerated),
-        userId: userId
-      },
-      {
-        headers: authHeader(),
-      }
-    ).then(
-      (response) => {
+  async updateExperience(experienceId, nftGenerated, userId) {
+    const response = await axios
+      .patch(
+        API_URL + "/experiences/" + experienceId,
+        {
+          id: experienceId,
+          nftGenerated: JSON.parse(nftGenerated),
+          userId: userId,
+        },
+        {
+          headers: authHeader(),
+        }
+      )
+      .then((response) => {
         console.log(response);
-
-      }
-    ).catch((error) => {
-      console.log(error);
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // return response;
   }
-
 
   // returns an array only with the active questions
   async getQuestions() {

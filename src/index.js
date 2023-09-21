@@ -6,7 +6,8 @@ import i18next from "i18next";
 import i18n from "./i18n";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-
+import dotenv from "dotenv";
+dotenv.config();
 ReactDOM.render(
   <BrowserRouter>
     <I18nextProvider i18n={i18n}>

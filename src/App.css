@@ -3,7 +3,7 @@ label {
   margin-top: 10px;
 }
 .form-group img {
-  width:100%;
+  width: 100%;
 }
 .card-container.card {
   max-width: 450px !important;
@@ -17,17 +17,16 @@ body {
   padding: 0px 14px;
 }
 .tasting:hover {
-  background:#840c4a;
-  color:white;
+  background: #840c4a;
+  color: white;
 }
 .tasting a:hover {
-  color:white;
+  color: white;
 }
 .tasting a {
   border-radius: 2px;
 }
 .tasting a:hover {
-
 }
 .card {
   background-color: #fff;
@@ -205,102 +204,98 @@ label.cameraButton input[accept*="camera"] {
 /* 
     Generic Styling, for Desktops/Laptops 
     */
-    
-    /* 
+
+/* 
   Max width before this PARTICULAR table gets nasty
   This query will take effect for any screen smaller than 760px
   and also iPads specifically.
   */
-    @media only screen and (max-width: 760px),
-      (min-device-width: 768px) and (max-device-width: 1024px) {
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        /* Zebra striping */
-        tr:nth-of-type(odd) {
-          background: #f9f5e7;
-        }
-        th {
-          background: #002e54;
-          color: white;
-          font-weight: 600;
-          font-family: 'sofia-pro', Sans-serif;
-        }
-        td,
-        th {
-          padding: 6px;
-          border: 1px solid #eee;
-          text-align: left;
-          font-size:14px;
-        }
-      /* Force table to not be like tables anymore */
-      table,
-      thead,
-      tbody,
-      th,
-      td,
-      tr {
-        display: block;
-      }
-  
-      /* Hide table headers (but not display: none;, for accessibility) */
-      thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }
-  
-      tr {
-      }
-      .tastings-card {
-        background:transparent !important;
-        padding:0px !important;
-      }
-      td {
-        /* Behave  like a "row" */
-        border: none;
-        position: relative;
-        padding-left: 50% !important;
-      }
-  
-      td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        color: #333;
-        font-weight: bold;
-      }
-  
-      /*
+@media only screen and (max-width: 760px),
+  (min-device-width: 768px) and (max-device-width: 1024px) {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  /* Zebra striping */
+  tr:nth-of-type(odd) {
+    background: #f9f5e7;
+  }
+  th {
+    background: #002e54;
+    color: white;
+    font-weight: 600;
+    font-family: "sofia-pro", Sans-serif;
+  }
+  td,
+  th {
+    padding: 6px;
+    border: 1px solid #eee;
+    text-align: left;
+    font-size: 14px;
+  }
+  /* Force table to not be like tables anymore */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+  }
+  .tastings-card {
+    background: transparent !important;
+    padding: 0px !important;
+  }
+  td {
+    /* Behave  like a "row" */
+    border: none;
+    position: relative;
+    padding-left: 50% !important;
+  }
+
+  td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    color: #333;
+    font-weight: bold;
+  }
+
+  /*
       Label the data
       */
-      td:nth-of-type(1):before {
-        content: "Date";
-        top:12px;
-      }
-      td:nth-of-type(2):before {
-        content: "Token";
-        top:12px;
-
-      }
-      td:nth-of-type(3):before {
-        content: "Token ID";
-        top:12px;
-
-      }
-      td:nth-of-type(4):before {
-        content: "Actions";
-        top:12px;
-
-      }
-
-    }
+  td:nth-of-type(1):before {
+    content: "Date";
+    top: 12px;
+  }
+  td:nth-of-type(2):before {
+    content: "Token";
+    top: 12px;
+  }
+  td:nth-of-type(3):before {
+    content: "Token ID";
+    top: 12px;
+  }
+  td:nth-of-type(4):before {
+    content: "Actions";
+    top: 12px;
+  }
+}
 @media (max-width: 1024px) {
   #header {
     display: flex;
@@ -387,4 +382,8 @@ label.cameraButton input[accept*="camera"] {
   .logo-header {
     width: 100px;
   }
+}
+
+.center {
+  text-align: center;
 }
