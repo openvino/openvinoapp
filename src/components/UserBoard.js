@@ -8,7 +8,7 @@ import { create } from "ipfs-http-client";
 import i18next from "i18next";
 import { createInstance } from "../eth/Ydiyoi";
 import { createProvider } from "../eth/provider";
-
+import { addNetwork } from "../eth/mintNFT";
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -28,6 +28,7 @@ export default class BoardUser extends Component {
       ipfsUrl: "",
       redirect: null,
       alert: null,
+      errorMessage: null,
     };
   }
 
@@ -133,7 +134,13 @@ export default class BoardUser extends Component {
           .catch((err) => {
             // const url = "";
             // const added = ""
-            console.log(err);
+            console.log(err.message);
+
+            this.setState({
+              errorMessage:
+                err.message + "Please try again later or refresh this page",
+            });
+
             // console.log(url);
             // console.log(added);
             // localStorage.removeItem("ipfsURL");
@@ -169,7 +176,6 @@ export default class BoardUser extends Component {
               // onClick with index of the experience for create JSON file and upload to IPFS
               onClick={() => this.createCollectible(index)}
             >
-              {" "}
               {i18next.t("Mint NFT")}
             </button>
           ) : (
@@ -181,10 +187,11 @@ export default class BoardUser extends Component {
     return (
       <div className="container">
         {this.state.alert && (
-          <div className="center alert danger">
+          <div className="center alert-danger">
             <p className=""> {this.state.alert}</p>
           </div>
         )}
+
         <div className="row info-message">
           <div className="col-md">
             <p>
@@ -211,6 +218,11 @@ export default class BoardUser extends Component {
         </header>
         <div className="container tastings-card">
           <div className="table-responsive-sm">
+            {this.state.errorMessage && (
+              <div className="center alert-danger">
+                <p className="">{this.state.errorMessage}</p>
+              </div>
+            )}
             <table className="table">
               <thead>
                 <tr>
