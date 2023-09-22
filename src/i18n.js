@@ -109,7 +109,7 @@ i18n.use(LanguageDetector).init({
         "Do you think we should build a colony on Mars?": "¿Cree que deberíamos construir una colonia en Marte?",
         "Register Tasting": "Registrar Degustación",
         "Minting is currently available only on ETH Mainnet. Check your Network on Metamask": "El minting está actualmente disponible sólo en la red principal de ETH. Compruebe su red en Metamask",
-        "No wallet" : "No se encuentra una billetera"
+        "No wallet" : "No se encuentra ninguna billetera. Por favor instala una billetera para poder realizar el Mint"
 
       },
     },

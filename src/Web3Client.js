@@ -61,13 +61,7 @@ export const mintToken = async () => {
   const provider2 = createProvider();
   const contract = createInstance(provider2);
 
-  try {
-    return await registerMint(contract, provider2, token_uri);
-  } catch (error) {
-    console.log(error);
-
-    throw new Error("Error");
-  }
+  return await registerMint(contract, provider2, token_uri);
 
   // if (!isInitialized) {
   //   await init();

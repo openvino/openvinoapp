@@ -34,23 +34,20 @@ export async function registerMint(contract, provider, data) {
   try {
     if (!data) throw new Error(`Name cannot be empty`);
     if (!window.ethereum) throw new Error(`User wallet not found`);
-    await window.ethereum.enable();
+
+    // Verificar si el usuario ya ha dado permiso
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    if (accounts.length === 0) {
+      // El usuario no ha dado permiso, esperar confirmación
+      await requestPermissionAndRetry();
+    }
+
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const userNetwork = await userProvider.getNetwork();
 
     if (userNetwork.chainId !== Number(chainId)) {
-      const switchNetworkResult = await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
-      });
-
-      if (switchNetworkResult) {
-        // La red se ha cambiado exitosamente.
-        // Puedes continuar con el proceso.
-      } else {
-        // El usuario canceló o hubo un error al cambiar de red.
-        throw new Error("Network switch canceled or failed.");
-      }
+      // El usuario no está en la red correcta, esperar cambio de red
+      await switchToCorrectNetwork();
     }
 
     const signer = userProvider.getSigner();
@@ -61,6 +58,56 @@ export async function registerMint(contract, provider, data) {
   } catch (error) {
     console.log(error);
 
-    throw new Error("Error");
+    throw new Error(error.message);
+  }
+}
+async function requestPermissionAndRetry() {
+  try {
+    // Intentar habilitar Ethereum y esperar la confirmación del usuario
+    await window.ethereum.enable();
+  } catch (error) {
+    // Manejar el error si el usuario no otorga permiso
+    console.error("User denied permission:", error);
+    throw new Error("denied");
+    // Puedes decidir cómo manejar esta situación, por ejemplo, mostrar un mensaje al usuario y volver a intentar después de un tiempo
+  }
+}
+async function switchToCorrectNetwork() {
+  try {
+    const switchNetworkResult = await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
+    });
+
+    if (switchNetworkResult) {
+      // La red se ha cambiado exitosamente.
+      // Puedes continuar con el proceso.
+    } else {
+      // El usuario canceló o hubo un error al cambiar de red.
+      throw new Error("Network switch canceled or failed.");
+    }
+  } catch (error) {
+    addNetwork();
+
+    // handle "add" error
+    console.log("Error switching network:", error);
+    // Puedes decidir cómo manejar esta situación, por ejemplo, mostrar un mensaje al usuario y volver a intentar después de un tiempo
+  }
+}
+
+export async function addNetwork() {
+  try {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: process.env.REACT_APP_NETWORK_TARGET_ID,
+          chainName: process.env.REACT_APP_NETWORK_NAME,
+          rpcUrls: [process.env.REACT_APP_NETWORK_RPC] /* ... */,
+        },
+      ],
+    });
+  } catch (error) {
+    console.log(error);
   }
 }
