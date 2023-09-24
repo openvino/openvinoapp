@@ -282,9 +282,6 @@ class NewExperience extends React.Component {
                     this.state.ipfsUrlJson
                   );
                   this.props.history.push("/app/user");
-                  window.location("/app/user");
-
-                  window.location.reload();
                 } catch (error) {
                   console.log("Error uploading file: ", error);
                 }
