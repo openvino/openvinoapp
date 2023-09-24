@@ -33,6 +33,10 @@ export default class BoardUser extends Component {
   }
 
   async componentDidMount() {
+    if (!localStorage.getItem("pageReloaded")) {
+      localStorage.setItem("pageReloaded", "true");
+      window.location.reload();
+    }
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
     if (!currentUser) {
