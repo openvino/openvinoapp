@@ -32,7 +32,7 @@ export async function registerMint(contract, provider, data) {
   const chainId = process.env.REACT_APP_CHAIN_ID;
 
   try {
-    if (!data) throw new Error(`Name cannot be empty`);
+    if (!data) throw new Error(`Data cannot be empty`);
     if (!window.ethereum) throw new Error(`User wallet not found`);
 
     // Verificar si el usuario ya ha dado permiso
