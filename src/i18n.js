@@ -54,7 +54,8 @@ i18n.use(LanguageDetector).init({
         "Do you like this wine? How would you rank it?": "Do you like this wine? How would you rank it?",
         "Do you think we should build a colony on Mars?": "Do you think we should build a colony on Mars?",
         "Register Tasting": "Register Tasting",
-        "Minting is currently available only on ETH Mainnet. Check your Network on Metamask": "Minting is currently available only on ETH Mainnet. Check your Network on Metamask",
+        "Minting is currently available only on Polygon testnet (Mumbai). Check your Network on your wallet": "Minting is currently available only on Polygon testnet (Mumbai). Check your Network on your wallet",
+        "No wallet" : "There is no wallet available here. Please install one (ie: Metamask) to Mint your NFT "
         
       },
     },
@@ -108,7 +109,7 @@ i18n.use(LanguageDetector).init({
         "Do you like this wine? How would you rank it?": "¿Le gusta este vino? ¿Cómo lo calificaría?",
         "Do you think we should build a colony on Mars?": "¿Cree que deberíamos construir una colonia en Marte?",
         "Register Tasting": "Registrar Degustación",
-        "Minting is currently available only on ETH Mainnet. Check your Network on Metamask": "El minting está actualmente disponible sólo en la red principal de ETH. Compruebe su red en Metamask",
+        "Minting is currently available only on Polygon testnet (Mumbai). Check your Network on your wallet": "El minting está actualmente disponible sólo en la red test de Polygon. Compruebe su red en su wallet",
         "No wallet" : "No se encuentra ninguna billetera. Por favor instala una billetera para poder realizar el Mint"
 
       },
