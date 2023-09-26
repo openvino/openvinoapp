@@ -8,7 +8,6 @@ import { create } from "ipfs-http-client";
 import i18next from "i18next";
 import { createInstance } from "../eth/Ydiyoi";
 import { createProvider } from "../eth/provider";
-import { addNetwork } from "../eth/mintNFT";
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -33,10 +32,6 @@ export default class BoardUser extends Component {
   }
 
   async componentDidMount() {
-    if (!localStorage.getItem("pageReloaded")) {
-      localStorage.setItem("pageReloaded", "true");
-      window.location.reload();
-    }
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
     if (!currentUser) {
@@ -113,11 +108,8 @@ export default class BoardUser extends Component {
       localStorage.setItem("ipfsURL", this.state.experiences[index].ipfsUrl);
       // console.log(this.state.ipfsUrlJSON);
       // console.log(this.state.nftGenerated);
-      const provider = createProvider();
-      const contract = createInstance(provider);
-
       try {
-        await mintToken(contract, provider, finalURL)
+        await mintToken()
           .then((tx) => {
             console.log(tx);
             this.setState({
@@ -142,7 +134,7 @@ export default class BoardUser extends Component {
 
             this.setState({
               errorMessage:
-                err.message + "Please try again later or refresh this page",
+                err.message + " Please try again later or refresh this page",
             });
 
             // console.log(url);

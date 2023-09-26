@@ -57,7 +57,6 @@ export const mintToken = async () => {
   if (!isInitialized) {
     await init();
   }
-
   const provider2 = createProvider();
   const contract = createInstance(provider2);
 
