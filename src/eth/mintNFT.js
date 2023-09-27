@@ -36,11 +36,14 @@ export async function registerMint(contract, provider, data) {
     if (!window.ethereum) throw new Error(`User wallet not found`);
 
     // Verificar si el usuario ya ha dado permiso
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    if (accounts.length === 0) {
-      // El usuario no ha dado permiso, esperar confirmación
-      await requestPermissionAndRetry();
-    }
+    const accounts = await window.ethereum
+      .request({
+        method: "wallet_requestPermissions",
+        params: [{ eth_accounts: {} }],
+      })
+      .then((e) => {
+        console.log(e);
+      });
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const userNetwork = await userProvider.getNetwork();
@@ -61,17 +64,7 @@ export async function registerMint(contract, provider, data) {
     throw new Error(error.message);
   }
 }
-async function requestPermissionAndRetry() {
-  try {
-    // Intentar habilitar Ethereum y esperar la confirmación del usuario
-    await window.ethereum.enable();
-  } catch (error) {
-    // Manejar el error si el usuario no otorga permiso
-    console.error("User denied permission:", error);
-    throw new Error("denied");
-    // Puedes decidir cómo manejar esta situación, por ejemplo, mostrar un mensaje al usuario y volver a intentar después de un tiempo
-  }
-}
+
 async function switchToCorrectNetwork() {
   try {
     const switchNetworkResult = await window.ethereum.request({
