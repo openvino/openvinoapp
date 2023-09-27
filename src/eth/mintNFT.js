@@ -3,29 +3,33 @@ import { createInstance } from "./forwader";
 
 import { signMetaTxRequest } from "./signer";
 async function gasLessMint(contract, provider, signer, uri) {
-  const url = process.env.REACT_APP_WEBHOOK_URL;
-  if (!url) throw new Error(`Missing relayer url`);
+  try {
+    const url = process.env.REACT_APP_WEBHOOK_URL;
+    if (!url) throw new Error(`Missing relayer url`);
 
-  const forwarder = createInstance(provider);
-  const from = await signer.getAddress();
-  // const from = "0xD71b6cF4517bF60279a7d1bda4bA781631E12d7d";
-  const data = contract.interface.encodeFunctionData("safeMint", [from, uri]);
-  const to = contract.address;
+    const forwarder = createInstance(provider);
+    const from = await signer.getAddress();
+    // const from = "0xD71b6cF4517bF60279a7d1bda4bA781631E12d7d";
+    const data = contract.interface.encodeFunctionData("safeMint", [from, uri]);
+    const to = contract.address;
 
-  const request = await signMetaTxRequest(signer.provider, forwarder, {
-    uri,
-    to,
-    from,
-    data,
-  });
+    const request = await signMetaTxRequest(signer.provider, forwarder, {
+      uri,
+      to,
+      from,
+      data,
+    });
 
-  console.log(request);
+    console.log(request);
 
-  return fetch(url, {
-    method: "POST",
-    body: JSON.stringify(request),
-    headers: { "Content-Type": "application/json" },
-  });
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify(request),
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function registerMint(contract, provider, data) {
@@ -58,9 +62,11 @@ export async function registerMint(contract, provider, data) {
     const balance = await provider.getBalance(from);
 
     const response = await gasLessMint(contract, provider, signer, data);
+    if (response?.status !== 200) {
+      throw new Error("Error please try again later or contact support");
+    }
   } catch (error) {
     console.log(error);
-
     throw new Error(error.message);
   }
 }
