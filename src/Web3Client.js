@@ -54,9 +54,10 @@ export const init = async () => {
 
 // // Function to be called from App.js
 export const mintToken = async (token) => {
-  if (!isInitialized) {
-    await init();
-  }
+  // if (!isInitialized) {
+  //   await init();
+  // }
+
   const provider2 = createProvider();
   const contract = createInstance(provider2);
 
