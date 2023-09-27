@@ -55,6 +55,7 @@ export async function registerMint(contract, provider, data) {
     const balance = await provider.getBalance(from);
 
     const response = await gasLessMint(contract, provider, signer, data);
+    console.log(response);
   } catch (error) {
     console.log(error);
 
