@@ -28,8 +28,9 @@ async function gasLessMint(contract, provider, signer, uri) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    throw new Error(error.message);
     console.log(error);
+
+    throw new Error(error.message);
   }
 }
 
@@ -63,11 +64,19 @@ export async function registerMint(contract, provider, data) {
     }
 
     const signer = userProvider.getSigner();
-    const from = await signer.getAddress();
 
-    const response = await gasLessMint(contract, provider, signer, data);
-    if (response?.status !== 200) {
-      throw new Error("Error please try again later or contact support");
+    // Solicitar cuentas al usuario
+    const accounts = await signer.provider.send("eth_requestAccounts", []);
+
+    if (accounts && accounts.length > 0) {
+      const from = accounts[0];
+
+      const response = await gasLessMint(contract, provider, signer, data);
+      if (response?.status !== 200) {
+        throw new Error("Error please try again later or contact support");
+      }
+    } else {
+      throw new Error("User denied account access.");
     }
   } catch (error) {
     console.log(error);
