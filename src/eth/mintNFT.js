@@ -28,7 +28,6 @@ async function gasLessMint(contract, provider, signer, uri) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    throw new Error(error.message);
     console.log(error);
   }
 }
@@ -41,19 +40,31 @@ export async function registerMint(contract, provider, data) {
     if (!window.ethereum) throw new Error(`User wallet not found`);
 
     // Verificar si el usuario ya ha dado permiso
-    const permissions = await window.ethereum
-      .request({ method: "wallet_getPermissions" })
+
+    const hasGetPermissions =
+      window.ethereum &&
+      typeof window.ethereum.request === "function" &&
+      window.ethereum.request({ method: "wallet_getPermissions" });
+
+    if (hasGetPermissions) {
+      // Verificar los permisos del usuario
+      const permissions = await window.ethereum.request({
+        method: "wallet_getPermissions",
+      });
+      // Resto de tu código para verificar y solicitar permisos
+    } else {
+      // Continuar sin verificar permisos
+    }
+
+    const accounts = await window.ethereum
+      .request({
+        method: "wallet_requestPermissions",
+        params: [{ eth_accounts: {} }],
+      })
+      .then((e) => {})
       .catch((e) => {
         throw new Error(e.message);
       });
-
-    if (!permissions.some((perm) => perm.parentCapability === "eth_accounts")) {
-      // Si el permiso "eth_accounts" no está presente, solicitarlo
-      await window.ethereum.request({
-        method: "wallet_requestPermissions",
-        params: [{ eth_accounts: {} }],
-      });
-    }
 
     const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const userNetwork = await userProvider.getNetwork();
@@ -78,18 +89,10 @@ export async function registerMint(contract, provider, data) {
 
 async function switchToCorrectNetwork() {
   try {
-    const hasGetPermissions =
-      window.ethereum &&
-      typeof window.ethereum.request === "function" &&
-      window.ethereum.request({ method: "wallet_getPermissions" });
-
-    if (hasGetPermissions) {
-      // Verificar los permisos del usuario
-      const permissions = await window.ethereum.request({
-        method: "wallet_getPermissions",
-      });
-      // Resto de tu código para verificar y solicitar permisos
-    }
+    const switchNetworkResult = await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
+    });
 
     if (switchNetworkResult) {
       // La red se ha cambiado exitosamente.
