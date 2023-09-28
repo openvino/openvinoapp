@@ -28,6 +28,7 @@ export default class BoardUser extends Component {
       redirect: null,
       alert: null,
       errorMessage: null,
+      loading: false,
     };
   }
 
@@ -97,6 +98,9 @@ export default class BoardUser extends Component {
   async createCollectible(index) {
     console.log(this.state.experiences[index].ipfsUrl);
     try {
+      this.setState({
+        loading: true,
+      });
       const url = this.state.experiences[index].ipfsUrl;
       const finalURL = await url.replace("ipfs.infura.io", "ipfs.io");
       console.log(finalURL);
@@ -149,6 +153,10 @@ export default class BoardUser extends Component {
       //localStorage.removeItem("ipfsURL");
       const finalURL = "";
       const added = "";
+    } finally {
+      this.setState({
+        loading: false,
+      });
     }
   }
 
@@ -171,6 +179,7 @@ export default class BoardUser extends Component {
               className="btn-primary btn"
               // onClick with index of the experience for create JSON file and upload to IPFS
               onClick={() => this.createCollectible(index)}
+              disabled={this.state.loading}
             >
               {i18next.t("Mint NFT")}
             </button>

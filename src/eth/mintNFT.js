@@ -28,6 +28,7 @@ async function gasLessMint(contract, provider, signer, uri) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
+    throw new Error(error.message);
     console.log(error);
   }
 }
@@ -37,41 +38,28 @@ export async function registerMint(contract, provider, data) {
 
   try {
     if (!data) throw new Error(`Data cannot be empty`);
-    if (!window.ethereum) throw new Error(`User wallet not found`);
 
-    // Verificar si el usuario ya ha dado permiso
+    let userProvider;
 
-    const hasGetPermissions =
-      window.ethereum &&
-      typeof window.ethereum.request === "function" &&
-      window.ethereum.request({ method: "wallet_getPermissions" });
-
-    if (hasGetPermissions) {
-      // Verificar los permisos del usuario
-      const permissions = await window.ethereum.request({
-        method: "wallet_getPermissions",
-      });
-      // Resto de tu código para verificar y solicitar permisos
+    if (typeof window.ethereum !== "undefined") {
+      // Metamask u otro proveedor de Web3
+      userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    } else if (typeof window.web3 !== "undefined") {
+      // Web3.js o Web3.py
+      userProvider = new ethers.providers.Web3Provider(
+        window.web3.currentProvider
+      );
     } else {
-      // Continuar sin verificar permisos
+      throw new Error(
+        "No Web3 provider detected. Please install a Web3 wallet extension or use a compatible browser."
+      );
     }
 
-    const accounts = await window.ethereum
-      .request({
-        method: "wallet_requestPermissions",
-        params: [{ eth_accounts: {} }],
-      })
-      .then((e) => {})
-      .catch((e) => {
-        throw new Error(e.message);
-      });
-
-    const userProvider = new ethers.providers.Web3Provider(window.ethereum);
     const userNetwork = await userProvider.getNetwork();
 
     if (userNetwork.chainId !== Number(chainId)) {
       // El usuario no está en la red correcta, esperar cambio de red
-      await switchToCorrectNetwork();
+      await switchToCorrectNetwork(userProvider);
     }
 
     const signer = userProvider.getSigner();
@@ -87,12 +75,12 @@ export async function registerMint(contract, provider, data) {
   }
 }
 
-async function switchToCorrectNetwork() {
+async function switchToCorrectNetwork(userProvider) {
   try {
-    const switchNetworkResult = await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
-    });
+    const switchNetworkResult = await userProvider.send(
+      "wallet_switchEthereumChain",
+      [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }]
+    );
 
     if (switchNetworkResult) {
       // La red se ha cambiado exitosamente.
@@ -102,7 +90,7 @@ async function switchToCorrectNetwork() {
       throw new Error("Network switch canceled or failed.");
     }
   } catch (error) {
-    addNetwork();
+    addNetwork(userProvider);
 
     // handle "add" error
     console.log("Error switching network:", error);
@@ -110,18 +98,15 @@ async function switchToCorrectNetwork() {
   }
 }
 
-export async function addNetwork() {
+async function addNetwork(userProvider) {
   try {
-    await window.ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [
-        {
-          chainId: process.env.REACT_APP_NETWORK_TARGET_ID,
-          chainName: process.env.REACT_APP_NETWORK_NAME,
-          rpcUrls: [process.env.REACT_APP_NETWORK_RPC] /* ... */,
-        },
-      ],
-    });
+    await userProvider.send("wallet_addEthereumChain", [
+      {
+        chainId: process.env.REACT_APP_NETWORK_TARGET_ID,
+        chainName: process.env.REACT_APP_NETWORK_NAME,
+        rpcUrls: [process.env.REACT_APP_NETWORK_RPC] /* ... */,
+      },
+    ]);
   } catch (error) {
     console.log(error);
   }
