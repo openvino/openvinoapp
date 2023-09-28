@@ -78,10 +78,18 @@ export async function registerMint(contract, provider, data) {
 
 async function switchToCorrectNetwork() {
   try {
-    const switchNetworkResult = await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: process.env.REACT_APP_NETWORK_TARGET_ID }],
-    });
+    const hasGetPermissions =
+      window.ethereum &&
+      typeof window.ethereum.request === "function" &&
+      window.ethereum.request({ method: "wallet_getPermissions" });
+
+    if (hasGetPermissions) {
+      // Verificar los permisos del usuario
+      const permissions = await window.ethereum.request({
+        method: "wallet_getPermissions",
+      });
+      // Resto de tu código para verificar y solicitar permisos
+    }
 
     if (switchNetworkResult) {
       // La red se ha cambiado exitosamente.
