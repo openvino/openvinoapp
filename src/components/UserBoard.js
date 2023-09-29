@@ -113,7 +113,7 @@ export default class BoardUser extends Component {
       // console.log(this.state.ipfsUrlJSON);
       // console.log(this.state.nftGenerated);
       try {
-        await mintToken(finalURL)
+        await mintToken(url)
           .then((tx) => {
             console.log(tx);
             this.setState({
