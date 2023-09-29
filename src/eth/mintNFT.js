@@ -3,6 +3,7 @@ import { createInstance } from "./forwader";
 
 import { signMetaTxRequest } from "./signer";
 async function gasLessMint(contract, provider, signer, uri) {
+  console.log(uri);
   try {
     const url = process.env.REACT_APP_WEBHOOK_URL;
     if (!url) throw new Error(`Missing relayer url`);
@@ -56,11 +57,25 @@ export async function registerMint(contract, provider, data) {
       );
     }
 
+    // Esperar a que el proveedor esté listo
+    await userProvider.send("eth_requestAccounts", []);
+
     const userNetwork = await userProvider.getNetwork();
+
+    const networkToAdd = {
+      chainId: process.env.REACT_APP_NETWORK_TARGET_ID,
+      chainName: process.env.REACT_APP_NETWORK_NAME,
+      rpcUrls: [process.env.REACT_APP_NETWORK_RPC] /* ... */,
+    };
 
     if (userNetwork.chainId !== Number(chainId)) {
       // El usuario no está en la red correcta, esperar cambio de red
-      await switchToCorrectNetwork(userProvider);
+      await userProvider.send("wallet_addEthereumChain", [networkToAdd]);
+    } else {
+      // El proveedor está listo, cambiar de red si es necesario
+      await userProvider.send("wallet_switchEthereumChain", [
+        { chainId: process.env.REACT_APP_NETWORK_TARGET_ID },
+      ]);
     }
 
     const signer = userProvider.getSigner();
@@ -99,8 +114,6 @@ async function switchToCorrectNetwork(userProvider) {
       throw new Error("Network switch canceled or failed.");
     }
   } catch (error) {
-    addNetwork(userProvider);
-
     // handle "add" error
     console.log("Error switching network:", error);
     // Puedes decidir cómo manejar esta situación, por ejemplo, mostrar un mensaje al usuario y volver a intentar después de un tiempo
