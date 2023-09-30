@@ -8,6 +8,7 @@ import { create } from 'ipfs-http-client';
 import i18next from 'i18next';
 import { createInstance } from '../eth/Ydiyoi';
 import { createProvider } from '../eth/provider';
+import LoadingSpinner from './Spinner';
 /* Create an instance of the client */
 const client = create('https://ipfs.infura.io:5001/api/v0');
 
@@ -214,6 +215,7 @@ export default class BoardUser extends Component {
               disabled={this.state.loading}
             >
               {i18next.t('Mint NFT')}
+              {this.state.loading && <LoadingSpinner />}
             </button>
           ) : (
             <p>{i18next.t('NFT Minted Succesfully!')}</p>
