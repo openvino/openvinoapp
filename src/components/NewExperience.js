@@ -12,6 +12,7 @@ import CheckButton from 'react-validation/build/button';
 import i18next from 'i18next';
 import loading from '../assets/images/loading.gif';
 import dotenv from 'dotenv';
+import LoadingSpinner from './Spinner';
 dotenv.config();
 
 const { REACT_APP_API_KEY_SECRET, REACT_APP_API_KEY } = process.env;
@@ -78,6 +79,7 @@ class NewExperience extends React.Component {
       userReady: false,
       currentUser: { email: '' },
       imgPlaceHolder: null,
+      loading: false,
     };
   }
 
@@ -130,7 +132,9 @@ class NewExperience extends React.Component {
 
     if (JSON.stringify(acceptedImagesFormat).includes(`"${fileType}"`)) {
       console.log('Image type supported!!');
-      // Do some Shit.
+      this.setState({
+        loading: true,
+      });
       try {
         const added = await client.add(file);
         const url = `https://ipfs.infura.io/ipfs/${added.path}`;
@@ -155,6 +159,10 @@ class NewExperience extends React.Component {
         }
       } catch (error) {
         console.log('Error uploading file: ', error);
+      } finally {
+        this.setState({
+          loading: false,
+        });
       }
     } else {
       // Break the instance, alert user that image/type is not supported.
@@ -356,6 +364,7 @@ class NewExperience extends React.Component {
                     width="370px"
                   />
                 )}
+                {this.state.loading && <LoadingSpinner />}
               </div>
               <div className="form-group">
                 <label htmlFor="email">
