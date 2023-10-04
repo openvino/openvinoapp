@@ -1,43 +1,41 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import AuthService from '../services/auth.service';
-import UserService from '../services/user.service';
-import ExperienceService from '../services/experience.service';
-import { mintToken, switchNetwork } from '../Web3Client';
-import { create } from 'ipfs-http-client';
-import i18next from 'i18next';
-import { createInstance } from '../eth/Ydiyoi';
-import { createProvider } from '../eth/provider';
-import LoadingSpinner from './Spinner';
+import React, { Component } from "react";
+import AuthService from "../services/auth.service";
+import UserService from "../services/user.service";
+import ExperienceService from "../services/experience.service";
+import { mintToken, switchNetwork } from "../Web3Client";
+import { create } from "ipfs-http-client";
+import i18next from "i18next";
+import LoadingSpinner from "./Spinner";
 /* Create an instance of the client */
-const client = create('https://ipfs.infura.io:5001/api/v0');
+const client = create("https://ipfs.infura.io:5001/api/v0");
 
 export default class BoardUser extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      content: '',
+      content: "",
       userReady: false,
-      currentUser: { email: '' },
+      currentUser: { email: "" },
       // experiencesCount: "",
       experiences: [],
       currentExperiences: [],
       minted: false,
-      experienceId: '',
-      ipfsUrl: '',
+      experienceId: "",
+      ipfsUrl: "",
       redirect: null,
       alert: null,
       errorMessage: null,
       loading: false,
     };
+    this.experienceLoading = this.state.experiences.map(() => false);
   }
 
   async componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
     const currentToken = AuthService.getToken();
     if (!currentUser) {
-      this.setState({ redirect: '/' });
+      this.setState({ redirect: "/" });
     } else {
       this.setState({ userId: currentUser.id });
       const currentExperiences = await ExperienceService.getExperiences(
@@ -50,7 +48,7 @@ export default class BoardUser extends Component {
 
     if (window.ethereum === undefined) {
       this.setState({
-        alert: i18next.t('No wallet'),
+        alert: i18next.t("No wallet"),
       });
     }
 
@@ -101,16 +99,17 @@ export default class BoardUser extends Component {
     this.setState({
       loading: true,
     });
+    this.experienceLoading[index] = true;
     try {
       const url = this.state.experiences[index].ipfsUrl;
-      const finalURL = await url.replace('ipfs.infura.io', 'ipfs.io');
-      console.log(finalURL);
+      // const finalURL = await url.replace("ipfs.infura.io", "ipfs.io");
+
       this.setState({
         nftGenerated: true,
         experienceId: this.state.experiences[index].id,
       });
       // Added IPFS URL to LocalStorage.
-      localStorage.setItem('ipfsURL', this.state.experiences[index].ipfsUrl);
+      localStorage.setItem("ipfsURL", this.state.experiences[index].ipfsUrl);
       // console.log(this.state.ipfsUrlJSON);
       // console.log(this.state.nftGenerated);
       try {
@@ -130,7 +129,7 @@ export default class BoardUser extends Component {
             });
             // console.log(this.state.nftGenerated);
             // The following line fixes experiencie not matching minting bug
-            localStorage.removeItem('ipfsURL');
+            localStorage.removeItem("ipfsURL");
           })
           .catch((err) => {
             // const url = "";
@@ -139,7 +138,7 @@ export default class BoardUser extends Component {
 
             this.setState({
               errorMessage:
-                err.message + ' Please try again later or refresh this page',
+                err.message + " Please try again later or refresh this page",
             });
 
             // console.log(url);
@@ -150,11 +149,12 @@ export default class BoardUser extends Component {
         console.log(error);
       }
     } catch (error) {
-      console.log('Error uploading file: ', error);
+      console.log("Error uploading file: ", error);
       //localStorage.removeItem("ipfsURL");
-      const finalURL = '';
-      const added = '';
+      const finalURL = "";
+      const added = "";
     } finally {
+      this.experienceLoading[index] = false;
       this.setState({
         loading: false,
       });
@@ -214,11 +214,11 @@ export default class BoardUser extends Component {
               onClick={() => this.createCollectible(index)}
               disabled={this.state.loading}
             >
-              {i18next.t('Mint NFT')}
-              {this.state.loading && <LoadingSpinner />}
+              {!this.experienceLoading[index] && i18next.t("Mint NFT")}
+              {this.experienceLoading[index] && <LoadingSpinner />}
             </button>
           ) : (
-            <p>{i18next.t('NFT Minted Succesfully!')}</p>
+            <p>{i18next.t("NFT Minted Succesfully!")}</p>
           )}
         </td>
       </tr>
@@ -244,7 +244,7 @@ export default class BoardUser extends Component {
         <header className="jumbotron" id="jumbotron-userboard">
           <div className="row">
             <div className="col-md">
-              <h3>{i18next.t('Tastings')}</h3>
+              <h3>{i18next.t("Tastings")}</h3>
             </div>
             <div className="col-md">
               {/* <Link to={'/app/add-tasting'} className="nav-link"> */}
@@ -279,10 +279,10 @@ export default class BoardUser extends Component {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">{i18next.t('Date')}</th>
-                  <th scope="col">{i18next.t('Token')}</th>
-                  <th scope="col">{i18next.t('Token ID')}</th>
-                  <th scope="col">{i18next.t('Actions')}</th>
+                  <th scope="col">{i18next.t("Date")}</th>
+                  <th scope="col">{i18next.t("Token")}</th>
+                  <th scope="col">{i18next.t("Token ID")}</th>
+                  <th scope="col">{i18next.t("Actions")}</th>
                 </tr>
               </thead>
               <tbody>{listItems}</tbody>
