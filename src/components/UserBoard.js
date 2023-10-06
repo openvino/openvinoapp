@@ -199,14 +199,16 @@ export default class BoardUser extends Component {
     // ));
 
     const listItems = this.state.experiences.map((item, index) => (
-      <tr key={item.id} >
+      <tr key={item.id}>
         <td>
-          <img
-            style={{ borderRadius: "50%" }}
-            src={item.photoFileName.replace("ipfs.infura.io", "ipfs.io")}
-            width={100}
-            height={100}
-          />
+          {item && item.photoFileName && (
+            <img
+              style={{ borderRadius: "50%" }}
+              src={item.photoFileName.replace("ipfs.infura.io", "ipfs.io")}
+              width={100}
+              height={100}
+            />
+          )}
         </td>
         <td>{item.date}</td>
         <td>{item.wine.name}</td>
