@@ -199,11 +199,20 @@ export default class BoardUser extends Component {
     // ));
 
     const listItems = this.state.experiences.map((item, index) => (
-      <tr key={item.id}>
+      <tr key={item.id} >
+        <td>
+          <img
+            style={{ borderRadius: "50%" }}
+            src={item.photoFileName.replace("ipfs.infura.io", "ipfs.io")}
+            width={100}
+            height={100}
+          />
+        </td>
         <td>{item.date}</td>
         <td>{item.wine.name}</td>
         <td>{item.wine.qrValue.slice(0, item.wine.qrValue.length - 6)}</td>
         {/* <td>{i18next.t("Coming Soon")}</td> */}
+
         <td>
           {!item.nftGenerated ? (
             <button
@@ -279,6 +288,7 @@ export default class BoardUser extends Component {
             <table className="table">
               <thead>
                 <tr>
+                  <th scope="col">Image</th>
                   <th scope="col">{i18next.t("Date")}</th>
                   <th scope="col">{i18next.t("Token")}</th>
                   <th scope="col">{i18next.t("Token ID")}</th>
