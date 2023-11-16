@@ -111,6 +111,20 @@ class AuthService {
   ) {
     let birthday = new Date(birthDate);
 
+    console.log("manda al registro>>>>", {
+      firstName: firstName,
+      lastName: lastName,
+      telegramId: telegramId,
+      birthDate: birthday,
+      email: email,
+      address_1: address,
+      address_2: "",
+      password: password,
+      walletAddress: walletAddress,
+      roleId: 1,
+      statusId: 3,
+    });
+
     return axios.post(API_URL + "/signup", {
       firstName: firstName,
       lastName: lastName,
