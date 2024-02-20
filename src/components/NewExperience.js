@@ -26,14 +26,24 @@ const auth =
   Buffer.from(REACT_APP_API_KEY + ':' + REACT_APP_API_KEY_SECRET).toString(
     'base64'
   );
+
 const client = create({
-  host: 'ipfs.infura.io',
+  host: 'localhost',
   port: 5001,
-  protocol: 'https',
+  protocol: 'http',
   headers: {
     authorization: auth,
   },
 });
+
+// const client = create({
+//   host: 'ipfs.infura.io',
+//   port: 5001,
+//   protocol: 'https',
+//   headers: {
+//     authorization: auth,
+//   },
+// });
 
 const required = (value) => {
   if (!value) {
