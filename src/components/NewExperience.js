@@ -15,7 +15,12 @@ import dotenv from 'dotenv';
 import LoadingSpinner from './Spinner';
 dotenv.config();
 
-const { REACT_APP_API_KEY_SECRET, REACT_APP_API_KEY } = process.env;
+const {
+  REACT_APP_API_KEY_SECRET,
+  REACT_APP_API_KEY,
+  REACT_APP_IPFS_PORT,
+  REACT_APP_IPFS_PROTOCOL,
+} = process.env;
 
 // Accepted Images file types
 const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
@@ -29,21 +34,12 @@ const auth =
 
 const client = create({
   host: 'localhost',
-  port: 5001,
-  protocol: 'http',
+  port: REACT_APP_IPFS_PORT,
+  protocol: REACT_APP_IPFS_PROTOCOL,
   headers: {
     authorization: auth,
   },
 });
-
-// const client = create({
-//   host: 'ipfs.infura.io',
-//   port: 5001,
-//   protocol: 'https',
-//   headers: {
-//     authorization: auth,
-//   },
-// });
 
 const required = (value) => {
   if (!value) {
