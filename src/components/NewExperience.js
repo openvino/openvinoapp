@@ -31,7 +31,7 @@ const auth =
   Buffer.from(REACT_APP_API_KEY + ':' + REACT_APP_API_KEY_SECRET).toString(
     'base64'
   );
-
+console.log("q pasa con infura y auth tiene = "+ auth);
 const client = create({
   host: 'localhost',
   port: REACT_APP_IPFS_PORT,
