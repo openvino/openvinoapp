@@ -7,3 +7,5 @@ client/chart/values-prod.yml
 yarn.lock
 package-lock.json
 .env
+.env*
+
