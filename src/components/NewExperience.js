@@ -26,19 +26,26 @@ const {
 const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 
 /* Create an instance of the client */
-const auth =
-  'Basic ' +
-  Buffer.from(REACT_APP_API_KEY + ':' + REACT_APP_API_KEY_SECRET).toString(
-    'base64'
-  );
-console.log("q pasa con infura y auth tiene = "+ auth);
+// const auth =
+//   'Basic ' +
+//   Buffer.from(REACT_APP_API_KEY + ':' + REACT_APP_API_KEY_SECRET).toString(
+//     'base64'
+//   );
+//console.log("q pasa con infura y auth tiene = "+ auth);
+// const client = create({
+//   host: 'localhost',
+//   port: REACT_APP_IPFS_PORT,
+//   protocol: REACT_APP_IPFS_PROTOCOL,
+//   headers: {
+//     authorization: auth,
+//   },
+// });
+
 const client = create({
   host: 'localhost',
   port: REACT_APP_IPFS_PORT,
   protocol: REACT_APP_IPFS_PROTOCOL,
-  headers: {
-    authorization: auth,
-  },
+  // sin header de auth...
 });
 
 const required = (value) => {
