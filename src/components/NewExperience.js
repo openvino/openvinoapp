@@ -150,11 +150,11 @@ class NewExperience extends React.Component {
       });
       try {
         const added = await client.add(file);
-        // const url = `https://ipfs.infura.io/ipfs/${added.path}`; 
-        const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
+        const url = `https://ipfs.io/ipfs/${added.path}`; 
+        //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
         const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
         console.log('Trying IPFS upload...LOCAL');
-        const expectedUrlPrefix = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/`;
+        const expectedUrlPrefix = `http://ipfs.io/ipfs/`;
 
         if (url.startsWith(expectedUrlPrefix)) {
           // Éxito en la carga a tu nodo IPFS local
@@ -303,8 +303,8 @@ class NewExperience extends React.Component {
                 const file = this.state.ipfsUrl;
                 try {
                   const added = await client.add(file);
-                  // const url = `https://ipfs.infura.io/ipfs/${added.path}`; 
-                  const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
+                  const url = `https://ipfs.io/ipfs/${added.path}`; 
+                  //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
                   this.setState({
                     ipfsUrlJson: url,
                   });
