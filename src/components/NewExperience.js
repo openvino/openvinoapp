@@ -42,7 +42,7 @@ const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 // });
 
 const client = create({
-  host: 'localhost',
+  host: '127.0.0.1',
   port: REACT_APP_IPFS_PORT,
   protocol: REACT_APP_IPFS_PROTOCOL,
   // sin header de auth...
@@ -149,8 +149,10 @@ class NewExperience extends React.Component {
         loading: true,
       });
       try {
+	console.log("antes del client.add(file), file es: "+file);
         const added = await client.add(file);
-        const url = `https://ipfs.io/ipfs/${added.path}`; 
+	console.log("variable added: " + added);
+        const url = `https://ipfs.io/ipfs/${added.path}`;
         //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
         const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
         console.log('Trying IPFS upload...LOCAL');

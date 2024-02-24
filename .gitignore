@@ -8,4 +8,6 @@ yarn.lock
 package-lock.json
 .env
 .env*
-
+build/
+envold
+openvino/

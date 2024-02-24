@@ -60,7 +60,7 @@ class App extends Component {
   };
 
   render() {
-    console.log("Polygon Version");
+    console.log("Optimism Version");
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     const changeLanguage = (lng) => {
       i18n.changeLanguage(lng);
