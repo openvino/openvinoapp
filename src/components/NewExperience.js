@@ -13,7 +13,7 @@ import i18next from "i18next";
 import loading from "../assets/images/loading.gif";
 import dotenv from "dotenv";
 import LoadingSpinner from "./Spinner";
-import ipfsClient from "ipfs-http-client";
+
 dotenv.config();
 
 const {
@@ -42,7 +42,7 @@ const acceptedImagesFormat = ["jpeg", "png", "heic", "jpg"];
 //   },
 // });
 
-const client = ipfsClient("http://localhost:5001");
+const client = create(new URL("http://127.0.0.1:5001"));
 
 const required = (value) => {
   if (!value) {
