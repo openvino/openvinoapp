@@ -1,18 +1,19 @@
-import React from 'react';
-import ExperienceService from '../services/experience.service';
-import AuthService from '../services/auth.service';
-import qrService from '../services/qr.service';
-import { withRouter } from 'react-router-dom';
-import { create } from 'ipfs-http-client';
-import { Redirect } from 'react-router-dom';
-import Form from 'react-validation/build/form';
-import Input from 'react-validation/build/input';
-import TextArea from 'react-validation/build/textarea';
-import CheckButton from 'react-validation/build/button';
-import i18next from 'i18next';
-import loading from '../assets/images/loading.gif';
-import dotenv from 'dotenv';
-import LoadingSpinner from './Spinner';
+import React from "react";
+import ExperienceService from "../services/experience.service";
+import AuthService from "../services/auth.service";
+import qrService from "../services/qr.service";
+import { withRouter } from "react-router-dom";
+import { create } from "ipfs-http-client";
+import { Redirect } from "react-router-dom";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import TextArea from "react-validation/build/textarea";
+import CheckButton from "react-validation/build/button";
+import i18next from "i18next";
+import loading from "../assets/images/loading.gif";
+import dotenv from "dotenv";
+import LoadingSpinner from "./Spinner";
+import ipfsClient from "ipfs-http-client";
 dotenv.config();
 
 const {
@@ -23,7 +24,7 @@ const {
 } = process.env;
 
 // Accepted Images file types
-const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
+const acceptedImagesFormat = ["jpeg", "png", "heic", "jpg"];
 
 /* Create an instance of the client */
 // const auth =
@@ -41,18 +42,13 @@ const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 //   },
 // });
 
-const client = create({
-  host: 'localhost',
-  port: REACT_APP_IPFS_PORT,
-  protocol: REACT_APP_IPFS_PROTOCOL,
-  // sin header de auth...
-});
+const client = ipfsClient("http://localhost:5001");
 
 const required = (value) => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        {i18next.t('This field is required!')}
+        {i18next.t("This field is required!")}
       </div>
     );
   }
@@ -75,22 +71,22 @@ class NewExperience extends React.Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      ipfsUrl: '',
-      ipfsUrlJson: '',
-      qrValue: '',
-      photoFileName: '',
+      ipfsUrl: "",
+      ipfsUrlJson: "",
+      qrValue: "",
+      photoFileName: "",
       statusId: 5,
-      location: '',
-      userId: '',
-      date: '',
+      location: "",
+      userId: "",
+      date: "",
       latitude: null,
       longitude: null,
-      experienceId: '',
-      qRCodeClaim: '',
+      experienceId: "",
+      qRCodeClaim: "",
       nftGenerated: false,
       redirect: null,
       userReady: false,
-      currentUser: { email: '' },
+      currentUser: { email: "" },
       imgPlaceHolder: null,
       loading: false,
     };
@@ -102,12 +98,12 @@ class NewExperience extends React.Component {
     const currentToken = AuthService.getToken();
     const qrCode = qrService.getQRClaimed();
     const qRCodeClaim = qrService.getallowClaim();
-    console.log('currentUser:', currentUser);
-    console.log('currentToken:', currentToken);
-    console.log('qrCode:', qrCode);
-    console.log('qRCodeClaim:', qRCodeClaim);
+    console.log("currentUser:", currentUser);
+    console.log("currentToken:", currentToken);
+    console.log("qrCode:", qrCode);
+    console.log("qRCodeClaim:", qRCodeClaim);
     if (!currentUser) {
-      this.setState({ redirect: '/' });
+      this.setState({ redirect: "/" });
     } else {
       this.setState({ userId: currentUser.id });
       if (!qRCodeClaim) {
@@ -119,10 +115,10 @@ class NewExperience extends React.Component {
     this.setState({ qrValue: qrCode });
     this.setState({ qRCodeClaim: qRCodeClaim });
     this.setState({ date: new Date() });
-    this.setState({ location: 'Mendoza' });
+    this.setState({ location: "Mendoza" });
     //console.log(currentToken);
-    console.log('currentUser', currentUser);
-    console.log('currentUser.id', currentUser.id);
+    console.log("currentUser", currentUser);
+    console.log("currentUser.id", currentUser.id);
     //console.log(qrCode);
     //console.log(questions);
     window.navigator.geolocation.getCurrentPosition((success) =>
@@ -140,25 +136,25 @@ class NewExperience extends React.Component {
       photoFileName: loading,
     });
     let imageType = file.name.toString();
-    var fileType = imageType.split('.').pop();
-    console.log('Image extension', `"${fileType}"`);
+    var fileType = imageType.split(".").pop();
+    console.log("Image extension", `"${fileType}"`);
 
     if (JSON.stringify(acceptedImagesFormat).includes(`"${fileType}"`)) {
-      console.log('Image type supported!!');
+      console.log("Image type supported!!");
       this.setState({
         loading: true,
       });
       try {
         const added = await client.add(file);
-        const url = `https://ipfs.io/ipfs/${added.path}`; 
+        const url = `https://ipfs.io/ipfs/${added.path}`;
         //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
         const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
-        console.log('Trying IPFS upload...LOCAL');
+        console.log("Trying IPFS upload...LOCAL");
         const expectedUrlPrefix = `http://ipfs.io/ipfs/`;
 
         if (url.startsWith(expectedUrlPrefix)) {
           // Éxito en la carga a tu nodo IPFS local
-          console.log('Success uploading to IPFS!! LOCAL');
+          console.log("Success uploading to IPFS!! LOCAL");
 
           this.setState({
             photoFileName: url,
@@ -166,15 +162,15 @@ class NewExperience extends React.Component {
           });
         } else {
           // Error en la carga a tu nodo IPFS local
-          console.warn('Error uploading to IPFS. LOCAL');
-          alert('Failed to upload to IPFS LOCAL, try again!!');
+          console.warn("Error uploading to IPFS. LOCAL");
+          alert("Failed to upload to IPFS LOCAL, try again!!");
           window.location.reload();
           // this.setState({
           //   photoFileName: null
-          // });    
+          // });
         }
       } catch (error) {
-        console.log('Error uploading file: ', error);
+        console.log("Error uploading file: ", error);
       } finally {
         this.setState({
           loading: false,
@@ -182,8 +178,8 @@ class NewExperience extends React.Component {
       }
     } else {
       // Break the instance, alert user that image/type is not supported.
-      console.warn('Image type not supported...');
-      alert('Image type not supported.');
+      console.warn("Image type not supported...");
+      alert("Image type not supported.");
       this.setState({
         photoFileName: null,
       });
@@ -201,7 +197,7 @@ class NewExperience extends React.Component {
     e.preventDefault();
     console.log(this.state.ipfsUrl);
     this.setState({
-      message: '',
+      message: "",
       successful: false,
     });
 
@@ -256,28 +252,28 @@ class NewExperience extends React.Component {
                   arrQuestions,
                   arrAnswers
                 );
-                localStorage.removeItem('qrCodeT');
-                localStorage.removeItem('allowClaim');
+                localStorage.removeItem("qrCodeT");
+                localStorage.removeItem("allowClaim");
 
                 let uno =
-                  '-' +
-                  '**Are you sharing this bottle with other people? How many?** ' +
+                  "-" +
+                  "**Are you sharing this bottle with other people? How many?** " +
                   `${this.state.answer1} `;
                 let dos =
-                  '-' +
-                  '**Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?** ' +
+                  "-" +
+                  "**Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?** " +
                   `${this.state.answer2} `;
                 let tres =
-                  '-' +
-                  '**Are you drinking this wine with food? What are you eating?** ' +
+                  "-" +
+                  "**Are you drinking this wine with food? What are you eating?** " +
                   `${this.state.answer3} `;
                 let cuatro =
-                  '-' +
-                  '**Do you like this wine? How would you rank it?** ' +
+                  "-" +
+                  "**Do you like this wine? How would you rank it?** " +
                   `${this.state.answer4} `;
                 let cinco =
-                  '-' +
-                  '**Do you think we should build a colony on Mars?** ' +
+                  "-" +
+                  "**Do you think we should build a colony on Mars?** " +
                   `${this.state.answer5} `;
                 let str = this.state.qrValue;
                 let state = {
@@ -303,7 +299,7 @@ class NewExperience extends React.Component {
                 const file = this.state.ipfsUrl;
                 try {
                   const added = await client.add(file);
-                  const url = `https://ipfs.io/ipfs/${added.path}`; 
+                  const url = `https://ipfs.io/ipfs/${added.path}`;
                   //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
                   this.setState({
                     ipfsUrlJson: url,
@@ -313,9 +309,9 @@ class NewExperience extends React.Component {
                     this.state.experienceId,
                     this.state.ipfsUrlJson
                   );
-                  this.props.history.push('/app/user');
+                  this.props.history.push("/app/user");
                 } catch (error) {
-                  console.log('Error uploading file: ', error);
+                  console.log("Error uploading file: ", error);
                 }
               },
               (error) => {
@@ -362,11 +358,11 @@ class NewExperience extends React.Component {
         >
           <div className="col-md-12">
             <div className="card card-container login-form">
-              <h1>{i18next.t('Add New Tasting')}</h1>
+              <h1>{i18next.t("Add New Tasting")}</h1>
               <div className="form-group">
                 <label className="cameraButton">
-                  <i className="fas fa-camera-retro"></i>{' '}
-                  {i18next.t('Take a picture')}
+                  <i className="fas fa-camera-retro"></i>{" "}
+                  {i18next.t("Take a picture")}
                   <Input
                     type="file"
                     onChange={this.onChangeFile}
@@ -386,7 +382,7 @@ class NewExperience extends React.Component {
               <div className="form-group">
                 <label htmlFor="email">
                   {i18next.t(
-                    'Are you sharing this bottle with other people? How many?'
+                    "Are you sharing this bottle with other people? How many?"
                   )}
                 </label>
                 <TextArea
@@ -401,7 +397,7 @@ class NewExperience extends React.Component {
               <div className="form-group">
                 <label htmlFor="email">
                   {i18next.t(
-                    'Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?'
+                    "Did you buy this bottle with crypto? or in a shop or restaurant? was it a gift?"
                   )}
                 </label>
                 <TextArea
@@ -416,7 +412,7 @@ class NewExperience extends React.Component {
               <div className="form-group">
                 <label htmlFor="email">
                   {i18next.t(
-                    'Are you drinking this wine with food? What are you eating?'
+                    "Are you drinking this wine with food? What are you eating?"
                   )}
                 </label>
                 <TextArea
@@ -430,7 +426,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  {i18next.t('Do you like this wine? How would you rank it?')}
+                  {i18next.t("Do you like this wine? How would you rank it?")}
                 </label>
                 <TextArea
                   type="text"
@@ -443,7 +439,7 @@ class NewExperience extends React.Component {
               </div>
               <div className="form-group">
                 <label htmlFor="email">
-                  {i18next.t('Do you think we should build a colony on Mars?')}
+                  {i18next.t("Do you think we should build a colony on Mars?")}
                 </label>
                 <TextArea
                   type="text"
@@ -465,7 +461,7 @@ class NewExperience extends React.Component {
                   {this.state.loading && (
                     <span className="spinner-border spinner-border-sm"></span>
                   )}
-                  <span>{i18next.t('Register Tasting')}</span>
+                  <span>{i18next.t("Register Tasting")}</span>
                 </button>
               </div>
 
@@ -477,7 +473,7 @@ class NewExperience extends React.Component {
                 </div>
               )}
               <CheckButton
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
                 ref={(c) => {
                   this.checkBtn = c;
                 }}
@@ -493,21 +489,21 @@ class NewExperience extends React.Component {
             <div className="card card-container login-form">
               <h1
                 style={{
-                  fontSize: '35px',
-                  fontWeight: 'bold',
-                  color: '#840c4a',
-                  lineHeight: '33px',
+                  fontSize: "35px",
+                  fontWeight: "bold",
+                  color: "#840c4a",
+                  lineHeight: "33px",
                 }}
               >
-                {i18next.t('SCAN YOUR QR CODE')}
+                {i18next.t("SCAN YOUR QR CODE")}
               </h1>
               <p
                 style={{
-                  marginTop: '20px',
+                  marginTop: "20px",
                 }}
               >
                 {i18next.t(
-                  'First, you have to scan the QR Code that is in the reverse of your wine bottle.'
+                  "First, you have to scan the QR Code that is in the reverse of your wine bottle."
                 )}
               </p>
             </div>
