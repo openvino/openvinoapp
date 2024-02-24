@@ -14503,3 +14503,8 @@
     "which-module" "^2.0.0"
     "y18n" "^3.2.1 || ^4.0.0"
     "yargs-parser" "^11.1.1"
+
+"yarn@^1.22.21":
+  "integrity" "sha512-ynXaJsADJ9JiZ84zU25XkPGOvVMmZ5b7tmTSpKURYwgELdjucAOydqIOrOfTxVYcNXe91xvLZwcRh68SR3liCg=="
+  "resolved" "https://registry.npmjs.org/yarn/-/yarn-1.22.21.tgz"
+  "version" "1.22.21"
