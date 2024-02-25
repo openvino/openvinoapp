@@ -42,7 +42,7 @@ const acceptedImagesFormat = ["jpeg", "png", "heic", "jpg"];
 //   },
 // });
 
-const client = create(new URL("http://127.0.0.1:5001"));
+const client = create("/ip4/127.0.0.1/tcp/5001");
 
 const required = (value) => {
   if (!value) {
@@ -145,10 +145,10 @@ class NewExperience extends React.Component {
         loading: true,
       });
       try {
-	console.log("antes del client.add(file), file es: "+file);
+        console.log("antes del client.add(file), file es: " + file);
         const added = await client.add(file);
 
-	console.log("variable added: " + added);
+        console.log("variable added: " + added);
         const url = `https://ipfs.io/ipfs/${added.path}`;
         //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
         const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
