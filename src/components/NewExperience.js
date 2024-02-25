@@ -42,7 +42,7 @@ const acceptedImagesFormat = ["jpeg", "png", "heic", "jpg"];
 //   },
 // });
 
-const client = create("/ip4/127.0.0.1/tcp/5001");
+const client = create("/ip4/0.0.0.0/tcp/5001");
 
 const required = (value) => {
   if (!value) {
