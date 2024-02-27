@@ -42,7 +42,7 @@ const acceptedImagesFormat = ["jpeg", "png", "heic", "jpg"];
 //   },
 // });
 
-const client = create("/ip4/0.0.0.0/tcp/5001");
+const client = create("/ip4/127.0.0.1/tcp/5001");
 
 const required = (value) => {
   if (!value) {
@@ -150,28 +150,19 @@ class NewExperience extends React.Component {
 
         console.log("variable added: " + added);
         const url = `https://ipfs.io/ipfs/${added.path}`;
-        //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
-        const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
+
+        const placeHolderImg = `http://localhost:8080/ipfs/${added.path}`;
         console.log("Trying IPFS upload...LOCAL");
-        const expectedUrlPrefix = `http://ipfs.io/ipfs/`;
 
-        if (url.startsWith(expectedUrlPrefix)) {
-          // Éxito en la carga a tu nodo IPFS local
-          console.log("Success uploading to IPFS!! LOCAL");
+        console.log(added);
 
-          this.setState({
-            photoFileName: url,
-            imgPlaceHolder: placeHolderImg,
-          });
-        } else {
-          // Error en la carga a tu nodo IPFS local
-          console.warn("Error uploading to IPFS. LOCAL");
-          alert("Failed to upload to IPFS LOCAL, try again!!");
-          window.location.reload();
-          // this.setState({
-          //   photoFileName: null
-          // });
-        }
+        // Éxito en la carga a tu nodo IPFS local
+        console.log("Success uploading to IPFS!! LOCAL", url);
+
+        this.setState({
+          photoFileName: url,
+          imgPlaceHolder: placeHolderImg,
+        });
       } catch (error) {
         console.log("Error uploading file: ", error);
       } finally {
@@ -301,7 +292,7 @@ class NewExperience extends React.Component {
                 console.log(this.state.ipfsUrl);
                 const file = this.state.ipfsUrl;
                 try {
-                  const added = await client.add(file);
+                  const added = await client.add("hello world!");
                   const url = `https://ipfs.io/ipfs/${added.path}`;
                   //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
                   this.setState({
