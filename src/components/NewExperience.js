@@ -13,7 +13,7 @@ import i18next from 'i18next';
 import loading from '../assets/images/loading.gif';
 import dotenv from 'dotenv';
 import LoadingSpinner from './Spinner';
-import IPFS from 'ipfs';
+
 dotenv.config();
 
 const {
@@ -25,15 +25,6 @@ const {
 
 // Accepted Images file types
 const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
-
-
-const pepe = async() => {
-    const node = await IPFS.create();
-    const version = await node.version();
-    console.log('IPFS Version:', version.version);
-}
-
-pepe();
 
 /* Create an instance of the client */
 // const auth =
@@ -51,11 +42,10 @@ pepe();
 //   },
 // });
 
+// const client = create("/ip4/159.203.169.184/tcp/5001");
 const client = create({
-  host: 'localhost',
-  port: REACT_APP_IPFS_PORT,
-  protocol: REACT_APP_IPFS_PROTOCOL,
-  // sin header de auth...
+  host: 'ipfs.openvino.org',
+  protocol: 'https',
 });
 
 const required = (value) => {
@@ -159,30 +149,25 @@ class NewExperience extends React.Component {
         loading: true,
       });
       try {
+        console.log('antes del client.add(file), file es: ' + file);
         const added = await client.add(file);
-        const url = `https://ipfs.io/ipfs/${added.path}`; 
-        //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
-        const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
+
+        console.log('variable added: ' + added);
+        const url = `https://ipfs.openvino.org/ipfs/${added.path}`;
+
+        const placeHolderImg = `https://ipfs.openvino.org/ipfs/${added.path}`;
         console.log('Trying IPFS upload...LOCAL');
-        const expectedUrlPrefix = `http://ipfs.io/ipfs/`;
 
-        if (url.startsWith(expectedUrlPrefix)) {
-          // Éxito en la carga a tu nodo IPFS local
-          console.log('Success uploading to IPFS!! LOCAL');
+        console.log(added);
 
-          this.setState({
-            photoFileName: url,
-            imgPlaceHolder: placeHolderImg,
-          });
-        } else {
-          // Error en la carga a tu nodo IPFS local
-          console.warn('Error uploading to IPFS. LOCAL');
-          alert('Failed to upload to IPFS LOCAL, try again!!');
-          window.location.reload();
-          // this.setState({
-          //   photoFileName: null
-          // });    
-        }
+
+        // Éxito en la carga a tu nodo IPFS local
+        console.log('Success uploading to IPFS!! LOCAL', url);
+
+        this.setState({
+          photoFileName: url,
+          imgPlaceHolder: placeHolderImg,
+        });
       } catch (error) {
         console.log('Error uploading file: ', error);
       } finally {
@@ -313,7 +298,7 @@ class NewExperience extends React.Component {
                 const file = this.state.ipfsUrl;
                 try {
                   const added = await client.add(file);
-                  const url = `https://ipfs.io/ipfs/${added.path}`; 
+                  const url = `https://ipfs.openvino.org/ipfs/${added.path}`;
                   //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
                   this.setState({
                     ipfsUrlJson: url,
