@@ -16,6 +16,7 @@
     "ethers": "^5.0.30",
     "i18next": "^21.6.6",
     "i18next-browser-languagedetector": "^6.1.2",
+    "ipfs": "^0.66.1",
     "ipfs-http-client": "^53.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",

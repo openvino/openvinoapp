@@ -13,6 +13,7 @@ import i18next from 'i18next';
 import loading from '../assets/images/loading.gif';
 import dotenv from 'dotenv';
 import LoadingSpinner from './Spinner';
+import IPFS from 'ipfs';
 dotenv.config();
 
 const {
@@ -24,6 +25,15 @@ const {
 
 // Accepted Images file types
 const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
+
+
+const pepe = async() => {
+    const node = await IPFS.create();
+    const version = await node.version();
+    console.log('IPFS Version:', version.version);
+}
+
+pepe();
 
 /* Create an instance of the client */
 // const auth =
