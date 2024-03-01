@@ -14,6 +14,7 @@ import loading from '../assets/images/loading.gif';
 import dotenv from 'dotenv';
 import LoadingSpinner from './Spinner';
 
+
 dotenv.config();
 
 const {
@@ -42,6 +43,7 @@ const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 //   },
 // });
 
+// const client = create("/ip4/159.203.169.184/tcp/5001");
 // const client = create("/ip4/159.203.169.184/tcp/5001");
 const client = create({
   host: 'ipfs.openvino.org',
