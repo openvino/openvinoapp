@@ -8,6 +8,8 @@ const { REACT_APP_API_URL: API_URL } = process.env;
 //const API_URL = "http://143.198.152.77:4000"
 //const API_URL = "http://159.203.169.184:3000"
 
+console.log("API_URL >>> ", API_URL);
+
 class AuthService {
   async login(email, password) {
     const response = await axios.post(API_URL + "/login", {
