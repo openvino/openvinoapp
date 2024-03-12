@@ -13,7 +13,6 @@ import i18next from 'i18next';
 import loading from '../assets/images/loading.gif';
 import dotenv from 'dotenv';
 import LoadingSpinner from './Spinner';
-
 import imageCompression from 'browser-image-compression';
 
 dotenv.config();
@@ -25,27 +24,8 @@ const {
   REACT_APP_IPFS_PROTOCOL,
 } = process.env;
 
-// Accepted Images file types
 const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 
-/* Create an instance of the client */
-// const auth =
-//   'Basic ' +
-//   Buffer.from(REACT_APP_API_KEY + ':' + REACT_APP_API_KEY_SECRET).toString(
-//     'base64'
-//   );
-//console.log("q pasa con infura y auth tiene = "+ auth);
-// const client = create({
-//   host: 'localhost',
-//   port: REACT_APP_IPFS_PORT,
-//   protocol: REACT_APP_IPFS_PROTOCOL,
-//   headers: {
-//     authorization: auth,
-//   },
-// });
-
-// const client = create("/ip4/159.203.169.184/tcp/5001");
-// const client = create("/ip4/159.203.169.184/tcp/5001");
 const client = create({
   host: 'ipfs.openvino.org',
   protocol: 'https',
@@ -154,21 +134,18 @@ class NewExperience extends React.Component {
       try {
         const file = await imageCompression(rawFile, {
           maxSizeMB: 2,
-          maxWidthOrHeight: 1920, // Puedes ajustar esto según tus necesidades
+          maxWidthOrHeight: 1920,
         });
         console.log('Image compressed succesfully');
         const added = await client.add(file);
-
         console.log('variable added: ' + added);
         const url = `https://ipfs.openvino.org/ipfs/${added.path}`;
 
-        const placeHolderImg = `http://localhost:8080/ipfs/${added.path}`;
+        const placeHolderImg = `https://ipfs.openvino.org/ipfs/${added.path}`;
         console.log('Trying IPFS upload...LOCAL');
 
         console.log(added);
 
-
-        // Éxito en la carga a tu nodo IPFS local
         console.log('Success uploading to IPFS!! LOCAL', url);
 
         this.setState({
@@ -306,7 +283,6 @@ class NewExperience extends React.Component {
                 try {
                   const added = await client.add(file);
                   const url = `https://ipfs.openvino.org/ipfs/${added.path}`;
-                  //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
                   this.setState({
                     ipfsUrlJson: url,
                   });
