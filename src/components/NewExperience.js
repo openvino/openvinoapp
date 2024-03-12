@@ -13,7 +13,7 @@ import i18next from 'i18next';
 import loading from '../assets/images/loading.gif';
 import dotenv from 'dotenv';
 import LoadingSpinner from './Spinner';
-
+import imageCompression from 'browser-image-compression';
 
 dotenv.config();
 
@@ -137,11 +137,11 @@ class NewExperience extends React.Component {
 
   async onChangeFile(e) {
     console.log(e.target.files[0]);
-    const file = e.target.files[0];
+    const rawFile = e.target.files[0];
     this.setState({
       photoFileName: loading,
     });
-    let imageType = file.name.toString();
+    let imageType = rawFile.name.toString();
     var fileType = imageType.split('.').pop();
     console.log('Image extension', `"${fileType}"`);
 
@@ -151,9 +151,12 @@ class NewExperience extends React.Component {
         loading: true,
       });
       try {
-        console.log('antes del client.add(file), file es: ' + file);
+         const file = await imageCompression(rawFile, {
+          maxSizeMB: 2,
+          maxWidthOrHeight: 1920, 
+        });
+        console.log('Image compressed succesfully');
         const added = await client.add(file);
-
         console.log('variable added: ' + added);
         const url = `https://ipfs.openvino.org/ipfs/${added.path}`;
 
