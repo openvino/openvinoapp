@@ -45,12 +45,11 @@ const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 // });
 
 // const client = create("/ip4/159.203.169.184/tcp/5001");
-const client = create('https://ipfs.openvino.org/');
-// const client = create({
-//   host: '159.203.169.184',
-//   port: 5001,
-//   protocol: 'https',
-// });
+// const client = create("/ip4/159.203.169.184/tcp/5001");
+const client = create({
+  host: 'ipfs.openvino.org',
+  protocol: 'https',
+});
 
 const required = (value) => {
   if (!value) {
@@ -161,12 +160,13 @@ class NewExperience extends React.Component {
         const added = await client.add(file);
 
         console.log('variable added: ' + added);
-        const url = `https://ipfs.io/ipfs/${added.path}`;
+        const url = `https://ipfs.openvino.org/ipfs/${added.path}`;
 
-        const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
+        const placeHolderImg = `http://localhost:8080/ipfs/${added.path}`;
         console.log('Trying IPFS upload...LOCAL');
 
         console.log(added);
+
 
         // Éxito en la carga a tu nodo IPFS local
         console.log('Success uploading to IPFS!! LOCAL', url);
@@ -304,8 +304,8 @@ class NewExperience extends React.Component {
                 console.log(this.state.ipfsUrl);
                 const file = this.state.ipfsUrl;
                 try {
-                  const added = await client.add('hello world!');
-                  const url = `https://ipfs.io/ipfs/${added.path}`;
+                  const added = await client.add(file);
+                  const url = `https://ipfs.openvino.org/ipfs/${added.path}`;
                   //const url = `http://localhost:${REACT_APP_IPFS_PORT}/ipfs/${added.path}`;
                   this.setState({
                     ipfsUrlJson: url,
