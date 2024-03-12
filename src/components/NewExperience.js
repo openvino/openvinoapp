@@ -14,6 +14,8 @@ import loading from '../assets/images/loading.gif';
 import dotenv from 'dotenv';
 import LoadingSpinner from './Spinner';
 
+import imageCompression from 'browser-image-compression';
+
 dotenv.config();
 
 const {
@@ -43,11 +45,12 @@ const acceptedImagesFormat = ['jpeg', 'png', 'heic', 'jpg'];
 // });
 
 // const client = create("/ip4/159.203.169.184/tcp/5001");
-const client = create({
-  host: '159.203.169.184',
-  port: 5001,
-  protocol: 'https',
-});
+const client = create('https://ipfs.openvino.org/');
+// const client = create({
+//   host: '159.203.169.184',
+//   port: 5001,
+//   protocol: 'https',
+// });
 
 const required = (value) => {
   if (!value) {
@@ -136,11 +139,11 @@ class NewExperience extends React.Component {
 
   async onChangeFile(e) {
     console.log(e.target.files[0]);
-    const file = e.target.files[0];
+    const rawFile = e.target.files[0];
     this.setState({
       photoFileName: loading,
     });
-    let imageType = file.name.toString();
+    let imageType = rawFile.name.toString();
     var fileType = imageType.split('.').pop();
     console.log('Image extension', `"${fileType}"`);
 
@@ -150,13 +153,17 @@ class NewExperience extends React.Component {
         loading: true,
       });
       try {
-        console.log('antes del client.add(file), file es: ' + file);
+        const file = await imageCompression(rawFile, {
+          maxSizeMB: 2,
+          maxWidthOrHeight: 1920, // Puedes ajustar esto según tus necesidades
+        });
+        console.log('Image compressed succesfully');
         const added = await client.add(file);
 
         console.log('variable added: ' + added);
         const url = `https://ipfs.io/ipfs/${added.path}`;
 
-        const placeHolderImg = `http://localhost:8080/ipfs/${added.path}`;
+        const placeHolderImg = `https://ipfs.io/ipfs/${added.path}`;
         console.log('Trying IPFS upload...LOCAL');
 
         console.log(added);
