@@ -198,42 +198,48 @@ export default class BoardUser extends Component {
     //   </tr>
     // ));
 
-    const listItems = this.state.experiences.map((item, index) => (
-      <tr key={item.id}>
-        <td>
-          {item && item.photoFileName && (
-            <img
-              style={{ borderRadius: "50%" }}
-              src={item.photoFileName.replace("ipfs.infura.io", "ipfs.io")}
-              width={100}
-              height={100}
-            />
-          )}
-        </td>
-        <td>{item.date}</td>
-        <td>{item.wine.name}</td>
-        <td>{item.wine.qrValue.slice(0, item.wine.qrValue.length - 6)}</td>
-        {/* <td>{i18next.t("Coming Soon")}</td> */}
+     const listItems = this.state.experiences.map((item, index) => {
+      // Verifica si el enlace contiene "ipfs.infura.io"
+      const src = item.photoFileName.includes("ipfs.infura.io")
+        ? item.photoFileName.replace("ipfs.infura.io", "ipfs.openvino.org")
+        : item.photoFileName;
+      return (
+        <tr key={item.id}>
+          <td>
+            {item && item.photoFileName && (
+              <img
+                style={{ borderRadius: "50%" }}
+                src={src}
+                width={100}
+                height={100}
+              />
+            )}
+          </td>
+          <td>{item.date}</td>
+          <td>{item.wine.name}</td>
+          <td>{item.wine.qrValue.slice(0, item.wine.qrValue.length - 6)}</td>
+          {/* <td>{i18next.t("Coming Soon")}</td> */}
 
-        <td>
-          {!item.nftGenerated ? (
-            <button
-              tabIndex={index}
-              value={index}
-              className="btn-primary btn"
-              // onClick with index of the experience for create JSON file and upload to IPFS
-              onClick={() => this.createCollectible(index)}
-              disabled={this.state.loading}
-            >
-              {!this.experienceLoading[index] && i18next.t("Mint NFT")}
-              {this.experienceLoading[index] && <LoadingSpinner />}
-            </button>
-          ) : (
-            <p>{i18next.t("NFT Minted Succesfully!")}</p>
-          )}
-        </td>
-      </tr>
-    ));
+          <td>
+            {!item.nftGenerated ? (
+              <button
+                tabIndex={index}
+                value={index}
+                className="btn-primary btn"
+                // onClick with index of the experience for create JSON file and upload to IPFS
+                onClick={() => this.createCollectible(index)}
+                disabled={this.state.loading}
+              >
+                {!this.experienceLoading[index] && i18next.t("Mint NFT")}
+                {this.experienceLoading[index] && <LoadingSpinner />}
+              </button>
+            ) : (
+              <p>{i18next.t("NFT Minted Succesfully!")}</p>
+            )}
+          </td>
+        </tr>
+      );
+    });
     return (
       <div className="container">
         {this.state.alert && (
