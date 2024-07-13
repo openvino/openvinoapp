@@ -13,7 +13,7 @@ async function gasLessMint(contract, provider, signer, uri) {
 
     const data = contract.interface.encodeFunctionData("safeMint", [from, uri]);
     const to = contract.address;
-
+    console.log("hola", to, from, data);
     const request = await signMetaTxRequest(signer.provider, forwarder, {
       uri,
       to,
@@ -61,7 +61,7 @@ export async function registerMint(contract, provider, data) {
     await userProvider.send("eth_requestAccounts", []);
 
     const userNetwork = await userProvider.getNetwork();
-
+    console.log(userNetwork);
     const networkToAdd = {
       chainId: process.env.REACT_APP_NETWORK_TARGET_ID,
       chainName: process.env.REACT_APP_NETWORK_NAME,
@@ -69,9 +69,11 @@ export async function registerMint(contract, provider, data) {
     };
 
     if (userNetwork.chainId !== Number(chainId)) {
+      console.log("hola");
       // El usuario no está en la red correcta, esperar cambio de red
       await userProvider.send("wallet_addEthereumChain", [networkToAdd]);
     } else {
+      console.log("hola");
       // El proveedor está listo, cambiar de red si es necesario
       await userProvider.send("wallet_switchEthereumChain", [
         { chainId: process.env.REACT_APP_NETWORK_TARGET_ID },
@@ -79,10 +81,10 @@ export async function registerMint(contract, provider, data) {
     }
 
     const signer = userProvider.getSigner();
-
+    console.log(signer);
     // Solicitar cuentas al usuario
     const accounts = await signer.provider.send("eth_requestAccounts", []);
-
+    console.log(accounts);
     if (accounts && accounts.length > 0) {
       const from = accounts[0];
 
