@@ -2,104 +2,127 @@ import { ethers } from "ethers";
 import { createInstance } from "./forwader";
 
 import { signMetaTxRequest } from "./signer";
-async function gasLessMint(contract, provider, signer, uri) {
+import { initWeb3Auth } from "../services/web3auth";
+async function gasLessMint(contract, provider, signer, uri, webWalletData) {
+  console.log(contract);
+  console.log(provider);
+  console.log(webWalletData.webWalletSigner);
   console.log(uri);
+
   try {
     const url = process.env.REACT_APP_WEBHOOK_URL;
-    if (!url) throw new Error(`Missing relayer url`);
+    if (!url) throw new Error("Missing relayer url");
 
     const forwarder = createInstance(provider);
-    const from = await signer.getAddress();
-
+    const from = webWalletData.webWalletAddress;
     const data = contract.interface.encodeFunctionData("safeMint", [from, uri]);
     const to = contract.address;
     console.log("hola", to, from, data);
-    const request = await signMetaTxRequest(signer.provider, forwarder, {
-      uri,
-      to,
-      from,
-      data,
-    });
+    const request = await signMetaTxRequest(
+      webWalletData.webWalletSigner,
+      // signer.provider,
+
+      forwarder,
+      {
+        uri,
+        to,
+        from,
+        data,
+      }
+    );
 
     console.log(request);
 
-    return fetch(url, {
-      method: "POST",
-      body: JSON.stringify(request),
-      headers: { "Content-Type": "application/json" },
-    });
+    // return fetch(url, {
+    //   method: "POST",
+    //   body: JSON.stringify(request),
+    //   headers: { "Content-Type": "application/json" },
+    // });
   } catch (error) {
     console.log(error);
 
-    throw new Error(error.message);
+    // throw new Error(error.message);
   }
 }
 
-export async function registerMint(contract, provider, data) {
-  const chainId = process.env.REACT_APP_CHAIN_ID;
-
+export const registerMint = async (contract, provider, data, webWalletData) => {
+  const { webWalletProvider, webWalletSigner } = webWalletData;
+  console.log(webWalletSigner);
   try {
-    if (!data) throw new Error(`Data cannot be empty`);
+    // console.log("hla", userProvider);
+    console.log(contract, provider, data);
+    const chainId = process.env.REACT_APP_CHAIN_ID;
+    if (!data) throw new Error("Data cannot be empty");
 
-    let userProvider;
-
-    if (typeof window.ethereum !== "undefined") {
-      // Metamask u otro proveedor de Web3
-      userProvider = new ethers.providers.Web3Provider(window.ethereum);
-    } else if (typeof window.web3 !== "undefined") {
-      // Web3.js o Web3.py
-      userProvider = new ethers.providers.Web3Provider(
-        window.web3.currentProvider
-      );
-    } else {
-      throw new Error(
-        "No Web3 provider detected. Please install a Web3 wallet extension or use a compatible browser."
-      );
-    }
+    let userProvider = webWalletProvider;
+    console.log("===========================================>", userProvider);
+    // if (typeof window.ethereum !== "undefined") {
+    //   // Metamask u otro proveedor de Web3
+    //   userProvider = new ethers.providers.Web3Provider(window.ethereum);
+    // } else if (typeof window.web3 !== "undefined") {
+    //   // Web3.js o Web3.py
+    //   userProvider = new ethers.providers.Web3Provider(
+    //     window.web3.currentProvider
+    //   );
+    // } else {
+    //   throw new Error(
+    //     "No Web3 provider detected. Please install a Web3 wallet extension or use a compatible browser."
+    //   );
+    // }
 
     // Esperar a que el proveedor esté listo
-    await userProvider.send("eth_requestAccounts", []);
+    // await webWalletProvider.send("eth_requestAccounts", []);
 
-    const userNetwork = await userProvider.getNetwork();
-    console.log(userNetwork);
-    const networkToAdd = {
-      chainId: process.env.REACT_APP_NETWORK_TARGET_ID,
-      chainName: process.env.REACT_APP_NETWORK_NAME,
-      rpcUrls: [process.env.REACT_APP_NETWORK_RPC] /* ... */,
-    };
+    // const userNetwork = await webWalletProvider.getNetwork();
 
-    if (userNetwork.chainId !== Number(chainId)) {
-      console.log("hola");
-      // El usuario no está en la red correcta, esperar cambio de red
-      await userProvider.send("wallet_addEthereumChain", [networkToAdd]);
-    } else {
-      console.log("hola");
-      // El proveedor está listo, cambiar de red si es necesario
-      await userProvider.send("wallet_switchEthereumChain", [
-        { chainId: process.env.REACT_APP_NETWORK_TARGET_ID },
-      ]);
-    }
+    // console.log(userNetwork);
+    // const networkToAdd = {
+    //   chainId: process.env.REACT_APP_NETWORK_TARGET_ID,
+    //   chainName: process.env.REACT_APP_NETWORK_NAME,
+    //   rpcUrls: [process.env.REACT_APP_NETWORK_RPC],
+    // };
 
-    const signer = userProvider.getSigner();
-    console.log(signer);
+    // if (userNetwork.chainId !== Number(chainId)) {
+    //   console.log("hola");
+    //   // El usuario no está en la red correcta, esperar cambio de red
+    //   await userProvider.send("wallet_addEthereumChain", [networkToAdd]);
+    // } else {
+    //   console.log("hola");
+    //   // El proveedor está listo, cambiar de red si es necesario
+    //   await userProvider.send("wallet_switchEthereumChain", [
+    //     { chainId: process.env.REACT_APP_NETWORK_TARGET_ID },
+    //   ]);
+    // }
+
+    const signer = webWalletSigner;
+
     // Solicitar cuentas al usuario
-    const accounts = await signer.provider.send("eth_requestAccounts", []);
-    console.log(accounts);
-    if (accounts && accounts.length > 0) {
-      const from = accounts[0];
+    // const accounts = await signer.provider.send("eth_requestAccounts", []);
+    // const accounts = await signer.provider.send("eth_requestAccounts", []);
 
-      const response = await gasLessMint(contract, provider, signer, data);
-      if (response?.status !== 200) {
-        throw new Error("Error please try again later or contact support");
-      }
-    } else {
-      throw new Error("User denied account access.");
-    }
+    const response = await gasLessMint(
+      contract,
+      provider,
+      webWalletSigner,
+      data,
+      webWalletData
+    );
+    // console.log(accounts);
+    // if (accounts && accounts.length > 0) {
+    //   const from = accounts[0];
+
+    //   const response = await gasLessMint(contract, provider, signer, data);
+    //   if (response?.status !== 200) {
+    //     throw new Error("Error please try again later or contact support");
+    //   }
+    // } else {
+    //   throw new Error("User denied account access.");
+    // }
   } catch (error) {
     console.log(error);
     throw new Error(error.message);
   }
-}
+};
 
 async function switchToCorrectNetwork(userProvider) {
   try {

@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
-import { MinimalForwarder as address } from "./deploy.json";
+import deploy from "./deploy.json";
+const address = deploy.MinimalForwarder;
 const abi = [
   {
     inputs: [],

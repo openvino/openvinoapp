@@ -6,6 +6,14 @@ import { mintToken, switchNetwork } from "../Web3Client";
 import { create } from "ipfs-http-client";
 import i18next from "i18next";
 import LoadingSpinner from "./Spinner";
+// import { web3authLogin, coreKitInstance } from "../services/web3auth";
+
+// import useWebWallet from "../hooks/useWebWallet";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { useWebWallet } from "../hooks/useWebWallet";
+
+// import { useHistory } from "react-router-dom";
+
 /* Create an instance of the client */
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -23,7 +31,20 @@ const BoardUser = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [experienceLoading, setExperienceLoading] = useState([]);
-
+  const [webProvider, setWebProvider] = useState(null);
+  const history = useHistory();
+  const webWalletData = useWebWallet();
+  const {
+    webWalletUser,
+    webWalletAddress,
+    webWalletProvider,
+    webWalletSigner,
+    webWalletIsInitialized,
+    webWalletIsConnected,
+    connectWebWallet,
+    disconnectWebWallet,
+    updateWebWalletUserInfo,
+  } = webWalletData;
   useEffect(() => {
     const loadUserData = async () => {
       const currentUser = AuthService.getCurrentUser();
@@ -90,7 +111,8 @@ const BoardUser = () => {
       localStorage.setItem("ipfsURL", experiences[index].ipfsUrl);
 
       try {
-        await mintToken(url)
+        console.log("hola", webProvider?.status);
+        await mintToken(url, webWalletData)
           .then((tx) => {
             console.log(tx);
             setMinted(true);
@@ -160,7 +182,16 @@ const BoardUser = () => {
       </td>
     </tr>
   ));
-
+  const handleLogin = async () => {
+    console.log("handleLogin");
+    const result = await connectWebWallet();
+    console.log("result", webWalletUser, webWalletAddress, webWalletProvider);
+  };
+  const handleLogut = async () => {
+    console.log("handleLogut");
+    const result = await disconnectWebWallet();
+    console.log("result", result);
+  };
   return (
     <div className="container">
       {alert && (
@@ -173,6 +204,11 @@ const BoardUser = () => {
         <div className="row">
           <div className="col-md">
             <h3>{i18next.t("Tastings")}</h3>
+            <button onClick={() => handleLogin()}>CONNECT</button>
+          </div>
+          <div className="col-md">
+            <h3>{i18next.t("Tastings")}</h3>
+            <button onClick={() => handleLogut()}>DISCONNECT</button>
           </div>
         </div>
       </header>

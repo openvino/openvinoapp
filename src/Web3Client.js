@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { registerMint } from "./eth/mintNFT";
 import { createInstance } from "./eth/Ydiyoi";
 import { createProvider } from "./eth/provider";
+import { initWeb3Auth, web3authLogin } from "./services/web3auth";
 
 dotenv.config();
 let token_uri = localStorage.getItem("ipfsURL");
@@ -17,43 +18,7 @@ let isInitialized = false;
 let provider;
 const { REACT_APP_CONTRACT_ADDRESS, REACT_APP_NETWORK_TARGET_ID } = process.env;
 
-// export const init = async () => {
-//   provider = window.ethereum;
-
-//   if (typeof provider !== "undefined") {
-//     // Metamask is installed
-//     provider
-//       .request({ method: "eth_requestAccounts" })
-//       .then((accounts) => {
-//         selectedAccount = accounts[0];
-//         console.log("Selected account is ", { selectedAccount });
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         return;
-//       });
-//     // Account is changed Logic
-//     window.ethereum.on("accountsChanged", function (accounts) {
-//       selectedAccount = accounts[0];
-//       console.log("Selected account changed to ", { selectedAccount });
-//     });
-//   }
-
-//   web3 = new Web3(provider);
-
-//   // const networkId = await web3.eth.net.getId();
-
-//   // // Smart contract declare + contract address
-//   // SimpleCollectible = new web3.eth.Contract(
-//   //   NFTContractBuild.abi,
-//   //   ([networkId].addressCon = REACT_APP_CONTRACT_ADDRESS)
-//   // );
-
-//   isInitialized = true;
-// };
-
-// // Function to be called from App.js
-export const mintToken = async (token) => {
+export const mintToken = async (token, webWalletData) => {
   // if (!isInitialized) {
   //   await init();
   // }
@@ -61,7 +26,7 @@ export const mintToken = async (token) => {
   const provider2 = createProvider();
   const contract = createInstance(provider2);
 
-  return await registerMint(contract, provider2, token);
+  return await registerMint(contract, provider2, token, webWalletData);
 
   // if (!isInitialized) {
   //   await init();

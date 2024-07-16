@@ -33,19 +33,28 @@ function getMetaTxTypeData(chainId, verifyingContract) {
 }
 
 async function signTypedData(signer, from, data) {
+  const { domain, types, message } = data;
+  console.log(data);
+  console.log(signer, from, data);
+  // return await signer._signTypedData(data.domain, data.types, data.message);
   // If signer is a private key, use it to sign
-  if (typeof signer === "string") {
-    const privateKey = Buffer.from(signer.replace(/^0x/, ""), "hex");
-    return ethSigUtil.signTypedMessage(privateKey, { data });
-  }
+  // if (typeof signer === "string") {
+  //   const privateKey = Buffer.from(signer.replace(/^0x/, ""), "hex");
+  //   return ethSigUtil.signTypedMessage(privateKey, { data });
+  // }
 
   // Otherwise, send the signTypedData RPC call
   // Note that hardhatvm and metamask require different EIP712 input
-  const isHardhat = data.domain.chainId == 31337;
-  const [method, argData] = isHardhat
-    ? ["eth_signTypedData", data]
-    : ["eth_signTypedData_v4", JSON.stringify(data)];
-  return await signer.send(method, [from, argData]);
+  // const isHardhat = data.domain.chainId == 31337;
+  // const [method, argData] = ["eth_signTypedData_v4", JSON.stringify(data)];
+  // const [method, argData] = ["eth_signTypedData_v4", data];
+  const [method, argData] = ["eth_signTypedData", data];
+  console.log(method, argData);
+  //   ? ["eth_signTypedData", data]
+  //   : ["eth_signTypedData_v4", JSON.stringify(data)];
+  // return await signer.send(method, [from, argData]);
+  return await signer._signTypedData(method, [from, JSON.stringify(data)]);
+  // return await signer._signTypedData(method, [from, argData]);
 }
 
 async function buildRequest(forwarder, input) {
@@ -63,7 +72,10 @@ async function buildTypedData(forwarder, request) {
 
 export async function signMetaTxRequest(signer, forwarder, input) {
   const request = await buildRequest(forwarder, input);
+  console.log(request);
   const toSign = await buildTypedData(forwarder, request);
+  console.log(toSign);
   const signature = await signTypedData(signer, input.from, toSign);
+  console.log(signature);
   return { signature, request };
 }
