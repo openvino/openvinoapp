@@ -4,10 +4,10 @@ import { Web3Auth } from "@web3auth/modal";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { WEB3AUTH_NETWORK, WALLET_ADAPTERS } from "@web3auth/base";
 
-// const clientId =
-//   "BAW5bwK0f0-pUV4_owkK8z1l6_0TbXex43P-94Oa6fCke4Js8ZQ7OLClu7jHGCe7Z5hRCtRNyLZiT1hfAMWwkfE";
 const clientId =
-  "BFI8C9qKjt-WCdLsGgJLwnfL_J2Nt2xNlfbVhALMf7KHvQW6BQlQpl23W2k4rJUUQA4WCoAeJqj0J6pV-DFW_Tw";
+  "BAW5bwK0f0-pUV4_owkK8z1l6_0TbXex43P-94Oa6fCke4Js8ZQ7OLClu7jHGCe7Z5hRCtRNyLZiT1hfAMWwkfE";
+// const clientId =
+//   "BFI8C9qKjt-WCdLsGgJLwnfL_J2Nt2xNlfbVhALMf7KHvQW6BQlQpl23W2k4rJUUQA4WCoAeJqj0J6pV-DFW_Tw";
 
 const chainConfig = {
   chainNamespace: "eip155",
@@ -27,7 +27,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 const web3auth = new Web3Auth({
   clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.TESTNET,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   chainConfig: chainConfig,
   privateKeyProvider: privateKeyProvider,
 });
